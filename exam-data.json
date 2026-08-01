@@ -4490,6 +4490,3749 @@
           ]
         }
       ]
+    },
+    {
+      "id": 4,
+      "categoryId": 1,
+      "name": "JOA IT 903",
+      "duration": 120,
+      "negativeMarking": 0.25,
+      "data": [
+        {
+          "originalId": 1,
+          "section": "Computer",
+          "q": "Which of the following is not a valid type for a table field in MS Access 2013?",
+          "opts": [
+            "Email",
+            "Hyperlink",
+            "Long Text",
+            "Currency"
+          ],
+          "ans": 0,
+          "exp": "Email is not a standard native data type for table fields in MS Access 2013[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is not a valid type for a table field in MS Access 2013?",
+          "hiOpts": [
+            "Email",
+            "Hyperlink",
+            "Long Text",
+            "Currency"
+          ]
+        },
+        {
+          "originalId": 2,
+          "section": "Computer",
+          "q": "Two type of table views in MS Access are and Design View.",
+          "opts": [
+            "Outline View",
+            "User View",
+            "Datasheet View",
+            "Spreadsheet View"
+          ],
+          "ans": 2,
+          "exp": "Datasheet View and Design View are the two primary table views in MS Access[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Two type of table views in MS Access are and Design View.",
+          "hiOpts": [
+            "Outline View",
+            "User View",
+            "Datasheet View",
+            "Spreadsheet View"
+          ]
+        },
+        {
+          "originalId": 3,
+          "section": "Computer",
+          "q": "How will you find the data fields beginning with the letters 'A' and 'B' by using \"Find and Replace\" dialog box in the datasheet view of a table in MS Access?",
+          "opts": [
+            "(AB)*",
+            "\\AB%",
+            "{AB}\\$",
+            "[AB]*"
+          ],
+          "ans": 3,
+          "exp": "Wildcard expressions like [AB]* are used in search dialogs to match specified starting characters[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "How will you find the data fields beginning with the letters 'A' and 'B' by using \"Find and Replace\" dialog box in the datasheet view of a table in MS Access?",
+          "hiOpts": [
+            "(AB)*",
+            "\\AB%",
+            "{AB}\\$",
+            "[AB]*"
+          ]
+        },
+        {
+          "originalId": 4,
+          "section": "Computer",
+          "q": "Which of the following field types in an MS Access table is readonly?",
+          "opts": [
+            "Short Text",
+            "Currency",
+            "Date/Time",
+            "Calculated"
+          ],
+          "ans": 3,
+          "exp": "Calculated fields dynamically evaluate expressions and are read-only in datasheet view[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following field types in an MS Access table is readonly?",
+          "hiOpts": [
+            "Short Text",
+            "Currency",
+            "Date/Time",
+            "Calculated"
+          ]
+        },
+        {
+          "originalId": 5,
+          "section": "Computer",
+          "q": "What is full form of ODBC?",
+          "opts": [
+            "Open Database Connectivity",
+            "Object Database Connectivity",
+            "Other Database Connectivity",
+            "Oracle Database Connectivity"
+          ],
+          "ans": 0,
+          "exp": "ODBC stands for Open Database Connectivity[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is full form of ODBC?",
+          "hiOpts": [
+            "Open Database Connectivity",
+            "Object Database Connectivity",
+            "Other Database Connectivity",
+            "Oracle Database Connectivity"
+          ]
+        },
+        {
+          "originalId": 6,
+          "section": "Computer",
+          "q": "A key consists of one or more attributes of a table that is a primary key of some other table in the database.",
+          "opts": [
+            "Foreign",
+            "Secondary",
+            "Alternate",
+            "Candidate"
+          ],
+          "ans": 0,
+          "exp": "A Foreign Key refers to the primary key of another table to establish relationships[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "A key consists of one or more attributes of a table that is a primary key of some other table in the database.",
+          "hiOpts": [
+            "Foreign",
+            "Secondary",
+            "Alternate",
+            "Candidate"
+          ]
+        },
+        {
+          "originalId": 7,
+          "section": "Computer",
+          "q": "What is the decimal number represented by $(10101010)_2$ number in binary number system?",
+          "opts": [
+            "210",
+            "164",
+            "170",
+            "168"
+          ],
+          "ans": 2,
+          "exp": "Binary 10101010 equals $128+32+8+2 = 170$ in decimal[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the decimal number represented by $(10101010)_2$ number in binary number system?",
+          "hiOpts": [
+            "210",
+            "164",
+            "170",
+            "168"
+          ]
+        },
+        {
+          "originalId": 8,
+          "section": "Computer",
+          "q": "What will be the representation of -25 in 2's compliment form?",
+          "opts": [
+            "10001101",
+            "11100111",
+            "10011011",
+            "11001101"
+          ],
+          "ans": 3,
+          "exp": "The 2's complement representation of -25 in an 8-bit byte is 11001101[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What will be the representation of -25 in 2's compliment form?",
+          "hiOpts": [
+            "10001101",
+            "11100111",
+            "10011011",
+            "11001101"
+          ]
+        },
+        {
+          "originalId": 9,
+          "section": "Computer",
+          "q": "Which data structure is also known as First In First Out (FIFO)?",
+          "opts": [
+            "Stack",
+            "Tree",
+            "Queue",
+            "Array"
+          ],
+          "ans": 2,
+          "exp": "A Queue follows the First In First Out (FIFO) principle[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which data structure is also known as First In First Out (FIFO)?",
+          "hiOpts": [
+            "Stack",
+            "Tree",
+            "Queue",
+            "Array"
+          ]
+        },
+        {
+          "originalId": 10,
+          "section": "Computer",
+          "q": "Consider the following data in an Excel Sheet. What will be the value returned by Excel formula \"=count(A1:C5)\"?",
+          "opts": [
+            "12",
+            "15",
+            "4",
+            "8"
+          ],
+          "ans": 3,
+          "exp": "The COUNT function counts cells containing numbers within the specified range[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Consider the following data in an Excel Sheet. What will be the value returned by Excel formula \"=count(A1:C5)\"?",
+          "hiOpts": [
+            "12",
+            "15",
+            "4",
+            "8"
+          ]
+        },
+        {
+          "originalId": 11,
+          "section": "Computer",
+          "q": "A is a powerful tool in Excel to calculate, summarize, and analyze data to find out patterns and trends.",
+          "opts": [
+            "Pivot Table",
+            "Filter",
+            "Macro",
+            "Range"
+          ],
+          "ans": 0,
+          "exp": "Pivot Tables are powerful tools in Excel for data summary, calculation, and analysis[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "A is a powerful tool in Excel to calculate, summarize, and analyze data to find out patterns and trends.",
+          "hiOpts": [
+            "Pivot Table",
+            "Filter",
+            "Macro",
+            "Range"
+          ]
+        },
+        {
+          "originalId": 12,
+          "section": "Computer",
+          "q": "In an Excel sheet, the cell A2 contains a date value of 10-Dec-2021, then what will be the value returned by the formula \"=text(A2, \"dddd\")\"?",
+          "opts": [
+            "December",
+            "Friday",
+            "344",
+            "6"
+          ],
+          "ans": 1,
+          "exp": "The TEXT function with format \"dddd\" returns the full day of the week, which for 10-Dec-2021 is Friday[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "In an Excel sheet, the cell A2 contains a date value of 10-Dec-2021, then what will be the value returned by the formula \"=text(A2, \"dddd\")\"?",
+          "hiOpts": [
+            "December",
+            "Friday",
+            "344",
+            "6"
+          ]
+        },
+        {
+          "originalId": 13,
+          "section": "Computer",
+          "q": "The cell A1 in a certain MS Excel sheet contains the value 212, what will be value returned by formula \"=ceiling(A1, 5)\"?",
+          "opts": [
+            "212",
+            "200",
+            "210",
+            "215"
+          ],
+          "ans": 3,
+          "exp": "CEILING rounds a number up to the nearest multiple of significance (5), making 212 round up to 215[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The cell A1 in a certain MS Excel sheet contains the value 212, what will be value returned by formula \"=ceiling(A1, 5)\"?",
+          "hiOpts": [
+            "212",
+            "200",
+            "210",
+            "215"
+          ]
+        },
+        {
+          "originalId": 14,
+          "section": "Computer",
+          "q": "What will be value returned by MS Excel formula \"=BASE(212,2,8)\"?",
+          "opts": [
+            "10010101",
+            "11010011",
+            "1101011",
+            "11010100"
+          ],
+          "ans": 3,
+          "exp": "BASE converts a number into a text representation with the given radix (2) and minimum length (8)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What will be value returned by MS Excel formula \"=BASE(212,2,8)\"?",
+          "hiOpts": [
+            "10010101",
+            "11010011",
+            "1101011",
+            "11010100"
+          ]
+        },
+        {
+          "originalId": 15,
+          "section": "Computer",
+          "q": "What will be the value returned by MS Excel formula \"=CONVERT(102, \"in\", \"ft\")\"?",
+          "opts": [
+            "8.6",
+            "8",
+            "8.5",
+            "8.3"
+          ],
+          "ans": 2,
+          "exp": "Converting 102 inches to feet ($102 / 12$) results in 8.5[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What will be the value returned by MS Excel formula \"=CONVERT(102, \"in\", \"ft\")\"?",
+          "hiOpts": [
+            "8.6",
+            "8",
+            "8.5",
+            "8.3"
+          ]
+        },
+        {
+          "originalId": 16,
+          "section": "Computer",
+          "q": "Consider the following data in an Excel sheet: Sno, Marks (1:6, 2:19, 3:8, 4:2, 5:40, 6:24). What will be the value returned by Excel formula \"=MEDIAN(B2:B7)\"?",
+          "opts": [
+            "13.5",
+            "14.5",
+            "16.5",
+            "17"
+          ],
+          "ans": 0,
+          "exp": "The median of the dataset (6, 19, 8, 2, 40, 24 sorted as 2, 6, 8, 19, 24, 40) is the average of 8 and 19, which is 13.5[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Consider the following data in an Excel sheet: Sno, Marks (1:6, 2:19, 3:8, 4:2, 5:40, 6:24). What will be the value returned by Excel formula \"=MEDIAN(B2:B7)\"?",
+          "hiOpts": [
+            "13.5",
+            "14.5",
+            "16.5",
+            "17"
+          ]
+        },
+        {
+          "originalId": 17,
+          "section": "Computer",
+          "q": "In MS Excel, a is a sequence of recorded keystrokes and mouse events that can be replayed as many times as one want.",
+          "opts": [
+            "formula",
+            "macro",
+            "table",
+            "array"
+          ],
+          "ans": 1,
+          "exp": "Macros automate repetitive tasks by recording keystrokes and mouse actions[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "In MS Excel, a is a sequence of recorded keystrokes and mouse events that can be replayed as many times as one want.",
+          "hiOpts": [
+            "formula",
+            "macro",
+            "table",
+            "array"
+          ]
+        },
+        {
+          "originalId": 18,
+          "section": "Computer",
+          "q": "Which of the following is not a valid cell address in MS-Excel?",
+          "opts": [
+            "A:41",
+            "BA\\$10",
+            "AC210",
+            "\\$AB10"
+          ],
+          "ans": 0,
+          "exp": "'A:41' is invalid as column-row identifiers cannot use a colon in that format[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is not a valid cell address in MS-Excel?",
+          "hiOpts": [
+            "A:41",
+            "BA\\$10",
+            "AC210",
+            "\\$AB10"
+          ]
+        },
+        {
+          "originalId": 19,
+          "section": "Computer",
+          "q": "How many cells are there in the cell range A10: D30 in MS-Excel?",
+          "opts": [
+            "80",
+            "76",
+            "84",
+            "60"
+          ],
+          "ans": 2,
+          "exp": "Columns A to D equal 4 columns, rows 10 to 30 equal 21 rows ($4 \\times 21 = 84$)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "How many cells are there in the cell range A10: D30 in MS-Excel?",
+          "hiOpts": [
+            "80",
+            "76",
+            "84",
+            "60"
+          ]
+        },
+        {
+          "originalId": 20,
+          "section": "Computer",
+          "q": "The concept of was developed by J.M. Jacquard in 18th century to control textile looms.",
+          "opts": [
+            "Abacus",
+            "Napier Bones",
+            "Punch Card",
+            "Difference Engine"
+          ],
+          "ans": 2,
+          "exp": "Joseph Marie Jacquard developed the programmable punch card system for looms[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The concept of was developed by J.M. Jacquard in 18th century to control textile looms.",
+          "hiOpts": [
+            "Abacus",
+            "Napier Bones",
+            "Punch Card",
+            "Difference Engine"
+          ]
+        },
+        {
+          "originalId": 21,
+          "section": "Computer",
+          "q": "Fourth generation computers used microprocessors which were designed using the technology.",
+          "opts": [
+            "Transistors",
+            "VLSI",
+            "Vacuum Tubes",
+            "Mechanical Relays"
+          ],
+          "ans": 1,
+          "exp": "Fourth-generation computers utilized Very Large Scale Integration (VLSI) microprocessors[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Fourth generation computers used microprocessors which were designed using the technology.",
+          "hiOpts": [
+            "Transistors",
+            "VLSI",
+            "Vacuum Tubes",
+            "Mechanical Relays"
+          ]
+        },
+        {
+          "originalId": 22,
+          "section": "Computer",
+          "q": "FLOPS is a unit to measure the processing speed of computers. What is full form of FLOPS?",
+          "opts": [
+            "Floating-point Operations Per Second",
+            "File Listing Operations Per Second",
+            "Foreman Libniz Operations Per Second",
+            "Fast Long Operations Per Second"
+          ],
+          "ans": 0,
+          "exp": "FLOPS stands for Floating-point Operations Per Second[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "FLOPS is a unit to measure the processing speed of computers. What is full form of FLOPS?",
+          "hiOpts": [
+            "Floating-point Operations Per Second",
+            "File Listing Operations Per Second",
+            "Foreman Libniz Operations Per Second",
+            "Fast Long Operations Per Second"
+          ]
+        },
+        {
+          "originalId": 23,
+          "section": "Computer",
+          "q": "B2B, B2C, G2C and C2C are the forms of",
+          "opts": [
+            "Cloud Models",
+            "Programming Styles",
+            "E-Commerce",
+            "Document Formats"
+          ],
+          "ans": 2,
+          "exp": "These represent various business and transactional models in E-Commerce[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "B2B, B2C, G2C and C2C are the forms of",
+          "hiOpts": [
+            "Cloud Models",
+            "Programming Styles",
+            "E-Commerce",
+            "Document Formats"
+          ]
+        },
+        {
+          "originalId": 24,
+          "section": "Computer",
+          "q": "The sensor in mobile devices tracks the orientation whenever the device is rotated.",
+          "opts": [
+            "NFC",
+            "Gyroscope",
+            "GPS",
+            "Accelerometer"
+          ],
+          "ans": 1,
+          "exp": "A gyroscope tracks orientation and rotational movement in mobile devices[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The sensor in mobile devices tracks the orientation whenever the device is rotated.",
+          "hiOpts": [
+            "NFC",
+            "Gyroscope",
+            "GPS",
+            "Accelerometer"
+          ]
+        },
+        {
+          "originalId": 25,
+          "section": "Computer",
+          "q": "Microsoft is a cloud storage service that lets you store and backup your files.",
+          "opts": [
+            "S3",
+            "DropBox",
+            "HiDrive",
+            "OneDrive"
+          ],
+          "ans": 3,
+          "exp": "Microsoft OneDrive is the cloud storage and backup service provided by Microsoft[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Microsoft is a cloud storage service that lets you store and backup your files.",
+          "hiOpts": [
+            "S3",
+            "DropBox",
+            "HiDrive",
+            "OneDrive"
+          ]
+        },
+        {
+          "originalId": 26,
+          "section": "Computer",
+          "q": "In mobile phone systems, a geographic region is divided up into to implement the concept of frequency reuse.",
+          "opts": [
+            "ISPs",
+            "grids",
+            "cells",
+            "locations"
+          ],
+          "ans": 2,
+          "exp": "Cellular networks divide regions into cells to allow frequency reuse[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "In mobile phone systems, a geographic region is divided up into to implement the concept of frequency reuse.",
+          "hiOpts": [
+            "ISPs",
+            "grids",
+            "cells",
+            "locations"
+          ]
+        },
+        {
+          "originalId": 27,
+          "section": "Computer",
+          "q": "What is full form of IOT?",
+          "opts": [
+            "Input/Output Test",
+            "Internet Open Telecommunication",
+            "Input Output Terminal",
+            "Internet of Things"
+          ],
+          "ans": 3,
+          "exp": "IOT stands for Internet of Things[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is full form of IOT?",
+          "hiOpts": [
+            "Input/Output Test",
+            "Internet Open Telecommunication",
+            "Input Output Terminal",
+            "Internet of Things"
+          ]
+        },
+        {
+          "originalId": 28,
+          "section": "Computer",
+          "q": "is a platform provided by Amazon that provides scalable and cost-effective cloud computing services.",
+          "opts": [
+            "AWS",
+            "BFS",
+            "NTFS",
+            "GFS"
+          ],
+          "ans": 0,
+          "exp": "Amazon Web Services (AWS) provides scalable and cost-effective cloud infrastructure[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "is a platform provided by Amazon that provides scalable and cost-effective cloud computing services.",
+          "hiOpts": [
+            "AWS",
+            "BFS",
+            "NTFS",
+            "GFS"
+          ]
+        },
+        {
+          "originalId": 29,
+          "section": "Computer",
+          "q": "is a register in CPU that stores the intermediate result of arithmetic and logic operations.",
+          "opts": [
+            "Program Counter",
+            "Accumulator",
+            "Memory Address Register",
+            "Instruction Pointer"
+          ],
+          "ans": 1,
+          "exp": "The Accumulator holds intermediate ALU computation results[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "is a register in CPU that stores the intermediate result of arithmetic and logic operations.",
+          "hiOpts": [
+            "Program Counter",
+            "Accumulator",
+            "Memory Address Register",
+            "Instruction Pointer"
+          ]
+        },
+        {
+          "originalId": 30,
+          "section": "Computer",
+          "q": "In CPU addressing mode, the operand is included in the instruction itself.",
+          "opts": [
+            "direct",
+            "immediate",
+            "indirect",
+            "indexed"
+          ],
+          "ans": 1,
+          "exp": "In immediate addressing, the operand value is part of the instruction itself[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "In CPU addressing mode, the operand is included in the instruction itself.",
+          "hiOpts": [
+            "direct",
+            "immediate",
+            "indirect",
+            "indexed"
+          ]
+        },
+        {
+          "originalId": 31,
+          "section": "Computer",
+          "q": "Which is an example of secondary storage device?",
+          "opts": [
+            "ROM",
+            "Pen Drive",
+            "RAM",
+            "Cache Memory"
+          ],
+          "ans": 1,
+          "exp": "A pen drive is a non-volatile secondary storage device[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which is an example of secondary storage device?",
+          "hiOpts": [
+            "ROM",
+            "Pen Drive",
+            "RAM",
+            "Cache Memory"
+          ]
+        },
+        {
+          "originalId": 32,
+          "section": "Computer",
+          "q": "Which of the following memory types has highest speed and minimum latency?",
+          "opts": [
+            "CPU Registers",
+            "Secondary Memory",
+            "Cache Memory",
+            "Primary Memory"
+          ],
+          "ans": 0,
+          "exp": "CPU registers provide the highest speed and lowest latency in a computer system[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following memory types has highest speed and minimum latency?",
+          "hiOpts": [
+            "CPU Registers",
+            "Secondary Memory",
+            "Cache Memory",
+            "Primary Memory"
+          ]
+        },
+        {
+          "originalId": 33,
+          "section": "Computer",
+          "q": "Cache memory works on the principle of",
+          "opts": [
+            "last-in-first-out",
+            "locality of reference",
+            "total internal reflection",
+            "first-in-first-out"
+          ],
+          "ans": 1,
+          "exp": "Cache memory leverages the principle of locality of reference[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Cache memory works on the principle of",
+          "hiOpts": [
+            "last-in-first-out",
+            "locality of reference",
+            "total internal reflection",
+            "first-in-first-out"
+          ]
+        },
+        {
+          "originalId": 34,
+          "section": "Computer",
+          "q": "The two cache memory write policies are write-back and",
+          "opts": [
+            "write-on",
+            "read-front",
+            "dirty bit",
+            "write-through"
+          ],
+          "ans": 3,
+          "exp": "Write-back and write-through are standard cache write policies[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The two cache memory write policies are write-back and",
+          "hiOpts": [
+            "write-on",
+            "read-front",
+            "dirty bit",
+            "write-through"
+          ]
+        },
+        {
+          "originalId": 35,
+          "section": "Computer",
+          "q": "The programs stored in ROMs, PROMs and EPROMs of a computer system are called",
+          "opts": [
+            "utility programs",
+            "boot sector",
+            "software",
+            "firmware"
+          ],
+          "ans": 3,
+          "exp": "Permanent software stored in ROM/PROM chips is called firmware[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The programs stored in ROMs, PROMs and EPROMs of a computer system are called",
+          "hiOpts": [
+            "utility programs",
+            "boot sector",
+            "software",
+            "firmware"
+          ]
+        },
+        {
+          "originalId": 36,
+          "section": "Computer",
+          "q": "The keys on a QWERTY keyboard have small bumps on them to help position the fingers without looking at the keyboard.",
+          "opts": [
+            "F and J",
+            "A and L",
+            "K and S",
+            "Z and M"
+          ],
+          "ans": 0,
+          "exp": "The 'F' and 'J' keys feature tactile bumps for standard touch typing[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The keys on a QWERTY keyboard have small bumps on them to help position the fingers without looking at the keyboard.",
+          "hiOpts": [
+            "F and J",
+            "A and L",
+            "K and S",
+            "Z and M"
+          ]
+        },
+        {
+          "originalId": 37,
+          "section": "Computer",
+          "q": "RAID technology combines multiple physical disk drives to achieve speed and redundancy. What is full form of RAID here?",
+          "opts": [
+            "Redundant Array of Independent Disks",
+            "Rapid Access to Independent Disks",
+            "Read only Access to Interlinked disks",
+            "Reduced Access to Interlinked Disks"
+          ],
+          "ans": 0,
+          "exp": "RAID stands for Redundant Array of Independent Disks[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "RAID technology combines multiple physical disk drives to achieve speed and redundancy. What is full form of RAID here?",
+          "hiOpts": [
+            "Redundant Array of Independent Disks",
+            "Rapid Access to Independent Disks",
+            "Read only Access to Interlinked disks",
+            "Reduced Access to Interlinked Disks"
+          ]
+        },
+        {
+          "originalId": 38,
+          "section": "Computer",
+          "q": "Which of the following optical media storage has the highest capacity?",
+          "opts": [
+            "Blue-Ray Disk",
+            "Compact Disk",
+            "Compact Disk - R",
+            "Digital Video Disk"
+          ],
+          "ans": 0,
+          "exp": "Blu-ray Disks offer significantly higher storage capacity than standard CDs or DVDs[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following optical media storage has the highest capacity?",
+          "hiOpts": [
+            "Blue-Ray Disk",
+            "Compact Disk",
+            "Compact Disk - R",
+            "Digital Video Disk"
+          ]
+        },
+        {
+          "originalId": 39,
+          "section": "Computer",
+          "q": "Which component of a laser printer melts the toner particles to form permanent impression on the page?",
+          "opts": [
+            "Drum",
+            "Imaging Unit",
+            "Mirror",
+            "Fuser"
+          ],
+          "ans": 3,
+          "exp": "The fuser assembly uses heat and pressure to melt and bond toner to the paper[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which component of a laser printer melts the toner particles to form permanent impression on the page?",
+          "hiOpts": [
+            "Drum",
+            "Imaging Unit",
+            "Mirror",
+            "Fuser"
+          ]
+        },
+        {
+          "originalId": 40,
+          "section": "Computer",
+          "q": "Which of the following storage media uses flash memory?",
+          "opts": [
+            "Solid State Disk",
+            "CD-ROM",
+            "HDD",
+            "Floppy Disk"
+          ],
+          "ans": 0,
+          "exp": "Solid State Drives (SSDs) utilize flash memory technology[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following storage media uses flash memory?",
+          "hiOpts": [
+            "Solid State Disk",
+            "CD-ROM",
+            "HDD",
+            "Floppy Disk"
+          ]
+        },
+        {
+          "originalId": 41,
+          "section": "Computer",
+          "q": "Arithmetic Logic Unit (ALU) is a fundamental part of computer.",
+          "opts": [
+            "CPU",
+            "Memory",
+            "Input/output",
+            "Operating System"
+          ],
+          "ans": 0,
+          "exp": "The ALU is an integral core component of the Central Processing Unit (CPU)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Arithmetic Logic Unit (ALU) is a fundamental part of computer.",
+          "hiOpts": [
+            "CPU",
+            "Memory",
+            "Input/output",
+            "Operating System"
+          ]
+        },
+        {
+          "originalId": 42,
+          "section": "Computer",
+          "q": "The of a in a computer provides the option to change the priority of booting options in the computer system.",
+          "opts": [
+            "System Registry",
+            "BIOS Settings",
+            "Control Panel",
+            "System Recovery"
+          ],
+          "ans": 1,
+          "exp": "BIOS settings allow configuration of boot order and hardware priorities[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The of a in a computer provides the option to change the priority of booting options in the computer system.",
+          "hiOpts": [
+            "System Registry",
+            "BIOS Settings",
+            "Control Panel",
+            "System Recovery"
+          ]
+        },
+        {
+          "originalId": 43,
+          "section": "Computer",
+          "q": "Which is a wireless technology that uses multiple transmitters and receivers to transfer more data at the same time?",
+          "opts": [
+            "WEP",
+            "SSID",
+            "MIMO",
+            "WAP"
+          ],
+          "ans": 2,
+          "exp": "Multiple-Input Multiple-Output (MIMO) uses multiple antennas to enhance data throughput[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which is a wireless technology that uses multiple transmitters and receivers to transfer more data at the same time?",
+          "hiOpts": [
+            "WEP",
+            "SSID",
+            "MIMO",
+            "WAP"
+          ]
+        },
+        {
+          "originalId": 44,
+          "section": "Computer",
+          "q": "Which of the following layers in ISO OSI reference network model lies between physical and network layers?",
+          "opts": [
+            "data link",
+            "application",
+            "transport",
+            "session"
+          ],
+          "ans": 0,
+          "exp": "The Data Link layer sits directly between the Physical and Network layers[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following layers in ISO OSI reference network model lies between physical and network layers?",
+          "hiOpts": [
+            "data link",
+            "application",
+            "transport",
+            "session"
+          ]
+        },
+        {
+          "originalId": 45,
+          "section": "Computer",
+          "q": "Which layers in ISO OSI reference network model is responsible for routing of packets over network?",
+          "opts": [
+            "physical",
+            "data link",
+            "network",
+            "transport"
+          ],
+          "ans": 2,
+          "exp": "The Network layer handles logical addressing and packet routing[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which layers in ISO OSI reference network model is responsible for routing of packets over network?",
+          "hiOpts": [
+            "physical",
+            "data link",
+            "network",
+            "transport"
+          ]
+        },
+        {
+          "originalId": 46,
+          "section": "Computer",
+          "q": "A web based information repository that is collaborately edited by the members of the concerned community is called a",
+          "opts": [
+            "web application",
+            "wiki",
+            "portal",
+            "blog"
+          ],
+          "ans": 1,
+          "exp": "A wiki is a collaborative, community-edited web repository[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "A web based information repository that is collaborately edited by the members of the concerned community is called a",
+          "hiOpts": [
+            "web application",
+            "wiki",
+            "portal",
+            "blog"
+          ]
+        },
+        {
+          "originalId": 47,
+          "section": "Computer",
+          "q": "The frequency band of the spectrum reserved for unlicensed usage is called band.",
+          "opts": [
+            "Bluetooth",
+            "ISM",
+            "ISP",
+            "WiFi"
+          ],
+          "ans": 1,
+          "exp": "Industrial, Scientific, and Medical (ISM) bands are designated for unlicensed wireless use[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The frequency band of the spectrum reserved for unlicensed usage is called band.",
+          "hiOpts": [
+            "Bluetooth",
+            "ISM",
+            "ISP",
+            "WiFi"
+          ]
+        },
+        {
+          "originalId": 48,
+          "section": "Computer",
+          "q": "A computer can capture all packets being transmitted over the shared transmission medium by setting the network interface in mode.",
+          "opts": [
+            "active",
+            "safe",
+            "promiscuous",
+            "dormant"
+          ],
+          "ans": 2,
+          "exp": "Promiscuous mode allows a network card to capture all traffic on a network segment[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "A computer can capture all packets being transmitted over the shared transmission medium by setting the network interface in mode.",
+          "hiOpts": [
+            "active",
+            "safe",
+            "promiscuous",
+            "dormant"
+          ]
+        },
+        {
+          "originalId": 49,
+          "section": "Computer",
+          "q": "Which of the following is an invalid IPv4 address?",
+          "opts": [
+            "10.10.1.1",
+            "218.248.240.79",
+            "74.21.18.251",
+            "192.168.1.270"
+          ],
+          "ans": 3,
+          "exp": "IPv4 octet values cannot exceed 255, making 270 invalid[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is an invalid IPv4 address?",
+          "hiOpts": [
+            "10.10.1.1",
+            "218.248.240.79",
+            "74.21.18.251",
+            "192.168.1.270"
+          ]
+        },
+        {
+          "originalId": 50,
+          "section": "Computer",
+          "q": "Which of the following IPv4 address series is reserved by IANA for private use?",
+          "opts": [
+            "192.168.0.0 to 192.168.255.255",
+            "74.48.0.0 to 74.48.255.255",
+            "16.16.0.0 to 16.24.255.255",
+            "190.168.0.0 to 190.168.255.255"
+          ],
+          "ans": 0,
+          "exp": "192.168.0.0/16 is designated as a private IPv4 address range[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following IPv4 address series is reserved by IANA for private use?",
+          "hiOpts": [
+            "192.168.0.0 to 192.168.255.255",
+            "74.48.0.0 to 74.48.255.255",
+            "16.16.0.0 to 16.24.255.255",
+            "190.168.0.0 to 190.168.255.255"
+          ]
+        },
+        {
+          "originalId": 51,
+          "section": "Computer",
+          "q": "Which of the following is a type of optical fibre cable?",
+          "opts": [
+            "UTP",
+            "Ethernet",
+            "Multimode",
+            "CAT6"
+          ],
+          "ans": 2,
+          "exp": "Multimode is a standard type of optical fiber cable[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is a type of optical fibre cable?",
+          "hiOpts": [
+            "UTP",
+            "Ethernet",
+            "Multimode",
+            "CAT6"
+          ]
+        },
+        {
+          "originalId": 52,
+          "section": "Computer",
+          "q": "What is the full form of the term WEP used with Wi-Fi security?",
+          "opts": [
+            "Wireless Equipment Protection",
+            "Wireless Electronic Privacy",
+            "Wireless Enabled Password",
+            "Wired Equivalent Privacy"
+          ],
+          "ans": 3,
+          "exp": "WEP stands for Wired Equivalent Privacy[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the full form of the term WEP used with Wi-Fi security?",
+          "hiOpts": [
+            "Wireless Equipment Protection",
+            "Wireless Electronic Privacy",
+            "Wireless Enabled Password",
+            "Wired Equivalent Privacy"
+          ]
+        },
+        {
+          "originalId": 53,
+          "section": "Computer",
+          "q": "Which of the following is generally not a function of an operating system?",
+          "opts": [
+            "Process Management",
+            "Protection and Security",
+            "Word Processing",
+            "Memory Management"
+          ],
+          "ans": 2,
+          "exp": "Word processing is an application software function, not an OS core duty[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is generally not a function of an operating system?",
+          "hiOpts": [
+            "Process Management",
+            "Protection and Security",
+            "Word Processing",
+            "Memory Management"
+          ]
+        },
+        {
+          "originalId": 54,
+          "section": "Computer",
+          "q": "Which of the following CPU scheduling algorithms may not cause starvation?",
+          "opts": [
+            "Shortest Job First",
+            "Shortest Remaining Time First",
+            "Priority Scheduling",
+            "Round Robin"
+          ],
+          "ans": 3,
+          "exp": "Round Robin uses time slicing, ensuring every process gets fair turns without permanent starvation[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following CPU scheduling algorithms may not cause starvation?",
+          "hiOpts": [
+            "Shortest Job First",
+            "Shortest Remaining Time First",
+            "Priority Scheduling",
+            "Round Robin"
+          ]
+        },
+        {
+          "originalId": 55,
+          "section": "Computer",
+          "q": "A is a memory area that stores the data, while it is being transferred between two devices or between a device and an application.",
+          "opts": [
+            "spool",
+            "stack",
+            "buffer",
+            "cache"
+          ],
+          "ans": 2,
+          "exp": "A buffer temporarily holds data during transfer between components or apps[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "A is a memory area that stores the data, while it is being transferred between two devices or between a device and an application.",
+          "hiOpts": [
+            "spool",
+            "stack",
+            "buffer",
+            "cache"
+          ]
+        },
+        {
+          "originalId": 56,
+          "section": "Computer",
+          "q": "Which of the following is not a major version of Microsoft Windows Operating System?",
+          "opts": [
+            "Windows Vista",
+            "Windows XE",
+            "Windows ME",
+            "Windows XP"
+          ],
+          "ans": 1,
+          "exp": "Windows XE is not a recognized major version of Windows[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is not a major version of Microsoft Windows Operating System?",
+          "hiOpts": [
+            "Windows Vista",
+            "Windows XE",
+            "Windows ME",
+            "Windows XP"
+          ]
+        },
+        {
+          "originalId": 57,
+          "section": "Computer",
+          "q": "In Windows 10, how can one sneak a peek at the desktop without closing or minimizing all the open windows?",
+          "opts": [
+            "By pressing ctrl+alt+shift",
+            "By moving the mouse cursor at the end of the taskbar",
+            "By shaking mouse cursor",
+            "by long pressing shift key"
+          ],
+          "ans": 1,
+          "exp": "Hovering or clicking the \"Show desktop\" peek button at the taskbar's far right edge reveals the desktop[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "In Windows 10, how can one sneak a peek at the desktop without closing or minimizing all the open windows?",
+          "hiOpts": [
+            "By pressing ctrl+alt+shift",
+            "By moving the mouse cursor at the end of the taskbar",
+            "By shaking mouse cursor",
+            "by long pressing shift key"
+          ]
+        },
+        {
+          "originalId": 58,
+          "section": "Computer",
+          "q": "What is the short method to minimize all other windows except the one you wish to keep visible in Windows 10?",
+          "opts": [
+            "By long pressing ctrl key",
+            "By grabbing the window's title bar using mouse and shaking it",
+            "By pressing F1 key",
+            "by pressing ctrl+alt+s"
+          ],
+          "ans": 1,
+          "exp": "Aero Shake minimizes all background windows when you shake the active window's title bar[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the short method to minimize all other windows except the one you wish to keep visible in Windows 10?",
+          "hiOpts": [
+            "By long pressing ctrl key",
+            "By grabbing the window's title bar using mouse and shaking it",
+            "By pressing F1 key",
+            "by pressing ctrl+alt+s"
+          ]
+        },
+        {
+          "originalId": 59,
+          "section": "Computer",
+          "q": "In Windows 10, the provides quick access to notifications, toggle battery saver mode, choose a network and access tablet mode.",
+          "opts": [
+            "Menu bar",
+            "Quick launch bar",
+            "Action Center",
+            "Status bar"
+          ],
+          "ans": 2,
+          "exp": "The Action Center in Windows 10 houses quick settings and notifications[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "In Windows 10, the provides quick access to notifications, toggle battery saver mode, choose a network and access tablet mode.",
+          "hiOpts": [
+            "Menu bar",
+            "Quick launch bar",
+            "Action Center",
+            "Status bar"
+          ]
+        },
+        {
+          "originalId": 60,
+          "section": "Computer",
+          "q": "Which of these describes a situation when a computer does not respond to any input from the user?",
+          "opts": [
+            "sleep",
+            "hang",
+            "suspend",
+            "boot"
+          ],
+          "ans": 1,
+          "exp": "A system freeze or hang occurs when a computer stops responding to user inputs[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of these describes a situation when a computer does not respond to any input from the user?",
+          "hiOpts": [
+            "sleep",
+            "hang",
+            "suspend",
+            "boot"
+          ]
+        },
+        {
+          "originalId": 61,
+          "section": "Computer",
+          "q": "A is a situation that arises when two threads access a shared variable simultaneously and the final value in the variable depends upon the order of execution of thread instructions.",
+          "opts": [
+            "deadlock",
+            "race condition",
+            "belady anomaly",
+            "cache miss"
+          ],
+          "ans": 1,
+          "exp": "A race condition occurs when concurrent threads access shared data unsafely, altering results based on timing[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "A is a situation that arises when two threads access a shared variable simultaneously and the final value in the variable depends upon the order of execution of thread instructions.",
+          "hiOpts": [
+            "deadlock",
+            "race condition",
+            "belady anomaly",
+            "cache miss"
+          ]
+        },
+        {
+          "originalId": 62,
+          "section": "Computer",
+          "q": "What is the format of an Android application package file?",
+          "opts": [
+            "EXE",
+            "DLL",
+            "APK",
+            "APF"
+          ],
+          "ans": 2,
+          "exp": "Android apps are packaged and distributed in APK format[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the format of an Android application package file?",
+          "hiOpts": [
+            "EXE",
+            "DLL",
+            "APK",
+            "APF"
+          ]
+        },
+        {
+          "originalId": 63,
+          "section": "Computer",
+          "q": "Red Hat is an example of",
+          "opts": [
+            "Anti-virus Software",
+            "Linux Distribution",
+            "Database Management System",
+            "Image Editing Software"
+          ],
+          "ans": 1,
+          "exp": "Red Hat Enterprise Linux is a prominent Linux distribution[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Red Hat is an example of",
+          "hiOpts": [
+            "Anti-virus Software",
+            "Linux Distribution",
+            "Database Management System",
+            "Image Editing Software"
+          ]
+        },
+        {
+          "originalId": 64,
+          "section": "Computer",
+          "q": "What is the Linux command to delete a file?",
+          "opts": [
+            "erase",
+            "rm",
+            "del",
+            "kill"
+          ],
+          "ans": 1,
+          "exp": "The 'rm' command is used in Linux to remove or delete files[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the Linux command to delete a file?",
+          "hiOpts": [
+            "erase",
+            "rm",
+            "del",
+            "kill"
+          ]
+        },
+        {
+          "originalId": 65,
+          "section": "Computer",
+          "q": "A/An reads one statement at a time, translates it into machine codes, executes it and then goes to the next statement of the program.",
+          "opts": [
+            "assembler",
+            "interpreter",
+            "linker",
+            "compiler"
+          ],
+          "ans": 1,
+          "exp": "An interpreter translates and executes code line by line[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "A/An reads one statement at a time, translates it into machine codes, executes it and then goes to the next statement of the program.",
+          "hiOpts": [
+            "assembler",
+            "interpreter",
+            "linker",
+            "compiler"
+          ]
+        },
+        {
+          "originalId": 66,
+          "section": "Computer",
+          "q": "Which uses mnemonics for machine instructions and names for CPU registers and memory locations?",
+          "opts": [
+            "Machine language",
+            "4th generation language",
+            "High level language",
+            "Assembly language"
+          ],
+          "ans": 3,
+          "exp": "Assembly language uses human-readable mnemonics instead of raw binary machine code[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which uses mnemonics for machine instructions and names for CPU registers and memory locations?",
+          "hiOpts": [
+            "Machine language",
+            "4th generation language",
+            "High level language",
+            "Assembly language"
+          ]
+        },
+        {
+          "originalId": 67,
+          "section": "Computer",
+          "q": "Which of the following programming languages was invented by Guido van Rossum?",
+          "opts": [
+            "C++",
+            "C",
+            "Java",
+            "Python"
+          ],
+          "ans": 3,
+          "exp": "Python was created and designed by Guido van Rossum[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following programming languages was invented by Guido van Rossum?",
+          "hiOpts": [
+            "C++",
+            "C",
+            "Java",
+            "Python"
+          ]
+        },
+        {
+          "originalId": 68,
+          "section": "Computer",
+          "q": "Which of the following programming languages uses the concept of classes?",
+          "opts": [
+            "Functional",
+            "Object-oriented",
+            "Procedural",
+            "Assembly"
+          ],
+          "ans": 1,
+          "exp": "Object-oriented programming languages utilize classes and objects[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following programming languages uses the concept of classes?",
+          "hiOpts": [
+            "Functional",
+            "Object-oriented",
+            "Procedural",
+            "Assembly"
+          ]
+        },
+        {
+          "originalId": 69,
+          "section": "Computer",
+          "q": "What does the flowchart shown below perform? (Starts, Read n, x=1, loop n>1 with x=x*n, m=n-1, Print x)",
+          "opts": [
+            "generate n terms of Fibonacci series",
+            "compute factorial",
+            "compute sum of first n natural numbers",
+            "generate multiplication table of n"
+          ],
+          "ans": 1,
+          "exp": "Multiplying down from n sequentially computes the factorial of n[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What does the flowchart shown below perform? (Starts, Read n, x=1, loop n>1 with x=x*n, m=n-1, Print x)",
+          "hiOpts": [
+            "generate n terms of Fibonacci series",
+            "compute factorial",
+            "compute sum of first n natural numbers",
+            "generate multiplication table of n"
+          ]
+        },
+        {
+          "originalId": 70,
+          "section": "Computer",
+          "q": "How will you create a perfect circle using oval tool in MS PowerPoint?",
+          "opts": [
+            "By holding Alt+Ctrl key while dragging mouse to draw oval.",
+            "By holding Alt key while dragging mouse to draw oval.",
+            "By holding Shift key while dragging mouse to draw oval.",
+            "By holding Ctrl key while dragging mouse to draw oval."
+          ],
+          "ans": 2,
+          "exp": "Holding the Shift key constrains shape proportions to create a perfect circle[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "How will you create a perfect circle using oval tool in MS PowerPoint?",
+          "hiOpts": [
+            "By holding Alt+Ctrl key while dragging mouse to draw oval.",
+            "By holding Alt key while dragging mouse to draw oval.",
+            "By holding Shift key while dragging mouse to draw oval.",
+            "By holding Ctrl key while dragging mouse to draw oval."
+          ]
+        },
+        {
+          "originalId": 71,
+          "section": "Computer",
+          "q": "Which of the following is not a type of animation in MS PowerPoint?",
+          "opts": [
+            "Rotation",
+            "Emphasis",
+            "Motion Path",
+            "Entrance"
+          ],
+          "ans": 0,
+          "exp": "Rotation is a transformation effect, whereas Entrance, Emphasis, and Motion Paths are standard animation categories[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is not a type of animation in MS PowerPoint?",
+          "hiOpts": [
+            "Rotation",
+            "Emphasis",
+            "Motion Path",
+            "Entrance"
+          ]
+        },
+        {
+          "originalId": 72,
+          "section": "Computer",
+          "q": "The view shows current slide, the next slide, speaker notes and a timer to help the presenter.",
+          "opts": [
+            "Print",
+            "Presenter",
+            "Web",
+            "Outline"
+          ],
+          "ans": 1,
+          "exp": "Presenter View provides tools like a timer, notes, and upcoming slide previews for speakers[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The view shows current slide, the next slide, speaker notes and a timer to help the presenter.",
+          "hiOpts": [
+            "Print",
+            "Presenter",
+            "Web",
+            "Outline"
+          ]
+        },
+        {
+          "originalId": 73,
+          "section": "Computer",
+          "q": "What is the correct character sequence to be typed in equation editor in MS Word to insert the mathematical formula : $\\sum_{i=1}^{n}n$?",
+          "opts": [
+            "\\sum%(i=1)^(n)n",
+            "\\sum (i=1)^(n) n",
+            "\\sum\\$ $(i=1)$!(n)n",
+            "\\sigma_(i=1)^(n)n"
+          ],
+          "ans": 1,
+          "exp": "Equation editor syntax uses backslash commands like \\sum followed by range bounds[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the correct character sequence to be typed in equation editor in MS Word to insert the mathematical formula : $\\sum_{i=1}^{n}n$?",
+          "hiOpts": [
+            "\\sum%(i=1)^(n)n",
+            "\\sum (i=1)^(n) n",
+            "\\sum\\$ $(i=1)$!(n)n",
+            "\\sigma_(i=1)^(n)n"
+          ]
+        },
+        {
+          "originalId": 74,
+          "section": "Computer",
+          "q": "What are the names of two fictional characters commonly depicted as users to demonstrate cryptographic systems and protocols?",
+          "opts": [
+            "Marcos and Christie",
+            "George and Mary",
+            "Philip and Julie",
+            "Bob and Alice"
+          ],
+          "ans": 3,
+          "exp": "Alice and Bob are the standard archetypal characters used in cryptography protocols[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What are the names of two fictional characters commonly depicted as users to demonstrate cryptographic systems and protocols?",
+          "hiOpts": [
+            "Marcos and Christie",
+            "George and Mary",
+            "Philip and Julie",
+            "Bob and Alice"
+          ]
+        },
+        {
+          "originalId": 75,
+          "section": "Computer",
+          "q": "Plaintext is transformed into by applying an encryption algorithm.",
+          "opts": [
+            "ciphertext",
+            "key",
+            "digest",
+            "alphatext"
+          ],
+          "ans": 0,
+          "exp": "Encryption converts readable plaintext into secure ciphertext[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Plaintext is transformed into by applying an encryption algorithm.",
+          "hiOpts": [
+            "ciphertext",
+            "key",
+            "digest",
+            "alphatext"
+          ]
+        },
+        {
+          "originalId": 76,
+          "section": "Computer",
+          "q": "Bitcoin and Etherium are examples of",
+          "opts": [
+            "Anti Malware",
+            "Database Systems",
+            "Cryptocurrency",
+            "Cloud Services"
+          ],
+          "ans": 2,
+          "exp": "Bitcoin and Ethereum are leading decentralized cryptocurrencies[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Bitcoin and Etherium are examples of",
+          "hiOpts": [
+            "Anti Malware",
+            "Database Systems",
+            "Cryptocurrency",
+            "Cloud Services"
+          ]
+        },
+        {
+          "originalId": 77,
+          "section": "Computer",
+          "q": "Which of the following tags in HTML does not require a closing tag?",
+          "opts": [
+            "<button>",
+            "<p>",
+            "<input>",
+            "<a>"
+          ],
+          "ans": 2,
+          "exp": "The <input> tag is an empty/self-closing element in HTML[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following tags in HTML does not require a closing tag?",
+          "hiOpts": [
+            "<button>",
+            "<p>",
+            "<input>",
+            "<a>"
+          ]
+        },
+        {
+          "originalId": 78,
+          "section": "Computer",
+          "q": "Which of the following is not a valid tag in HTML5?",
+          "opts": [
+            "<img>",
+            "<li>",
+            "<checkbox>",
+            "<em>"
+          ],
+          "ans": 2,
+          "exp": "<checkbox> is not a standard standalone HTML tag (checkboxes use `<input type=\"checkbox\">`)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is not a valid tag in HTML5?",
+          "hiOpts": [
+            "<img>",
+            "<li>",
+            "<checkbox>",
+            "<em>"
+          ]
+        },
+        {
+          "originalId": 79,
+          "section": "Computer",
+          "q": "Which language is mainly used for client-side scripting in HTML documents?",
+          "opts": [
+            "JavaScript",
+            "C",
+            "Java",
+            "Python"
+          ],
+          "ans": 0,
+          "exp": "JavaScript is the standard language for client-side web scripting[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which language is mainly used for client-side scripting in HTML documents?",
+          "hiOpts": [
+            "JavaScript",
+            "C",
+            "Java",
+            "Python"
+          ]
+        },
+        {
+          "originalId": 80,
+          "section": "Computer",
+          "q": "Which of the following HTML tags is used to create a numbered list of items?",
+          "opts": [
+            "<nl>",
+            "<num>",
+            "<list>",
+            "<ol>"
+          ],
+          "ans": 3,
+          "exp": "The `<ol>` tag denotes an ordered (numbered) list[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following HTML tags is used to create a numbered list of items?",
+          "hiOpts": [
+            "<nl>",
+            "<num>",
+            "<list>",
+            "<ol>"
+          ]
+        },
+        {
+          "originalId": 81,
+          "section": "Computer",
+          "q": "Which HTML tag is used to create a cell in a table row?",
+          "opts": [
+            "<td>",
+            "<cell>",
+            "<field>",
+            "<tcell>"
+          ],
+          "ans": 0,
+          "exp": "The `<td>` tag defines a standard data cell in an HTML table row[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which HTML tag is used to create a cell in a table row?",
+          "hiOpts": [
+            "<td>",
+            "<cell>",
+            "<field>",
+            "<tcell>"
+          ]
+        },
+        {
+          "originalId": 82,
+          "section": "Computer",
+          "q": "How will you add a tooltip to an HTML element?",
+          "opts": [
+            "Using style attribute",
+            "Using tip attribute",
+            "Using title attribute",
+            "Using src attribute"
+          ],
+          "ans": 2,
+          "exp": "The `title` attribute supplies descriptive tooltip text when hovering over elements[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "How will you add a tooltip to an HTML element?",
+          "hiOpts": [
+            "Using style attribute",
+            "Using tip attribute",
+            "Using title attribute",
+            "Using src attribute"
+          ]
+        },
+        {
+          "originalId": 83,
+          "section": "Computer",
+          "q": "Which HTML tag is used to insert a horizontal line in an HTML document?",
+          "opts": [
+            "<ol>",
+            "<ul>",
+            "<hr>",
+            "<li>"
+          ],
+          "ans": 2,
+          "exp": "The `<hr>` tag inserts a thematic horizontal rule line[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which HTML tag is used to insert a horizontal line in an HTML document?",
+          "hiOpts": [
+            "<ol>",
+            "<ul>",
+            "<hr>",
+            "<li>"
+          ]
+        },
+        {
+          "originalId": 84,
+          "section": "Computer",
+          "q": "The HTML entity to insert a < symbol in HTML document is",
+          "opts": [
+            "\\$1t;",
+            "*1t;",
+            "&lt;",
+            "%lt;"
+          ],
+          "ans": 2,
+          "exp": "`&lt;` is the standard HTML entity code for the less-than sign (<)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The HTML entity to insert a < symbol in HTML document is",
+          "hiOpts": [
+            "\\$1t;",
+            "*1t;",
+            "&lt;",
+            "%lt;"
+          ]
+        },
+        {
+          "originalId": 85,
+          "section": "Computer",
+          "q": "An HTML comment is enclosed inside and",
+          "opts": [
+            "< and >",
+            "<* and *>",
+            "<! and !>",
+            "<!-- and -->"
+          ],
+          "ans": 3,
+          "exp": "HTML comments start with `<!--` and end with `-->`[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "An HTML comment is enclosed inside and",
+          "hiOpts": [
+            "< and >",
+            "<* and *>",
+            "<! and !>",
+            "<!-- and -->"
+          ]
+        },
+        {
+          "originalId": 86,
+          "section": "Computer",
+          "q": "What is the default size of text in <h1> HTML element?",
+          "opts": [
+            "1.5em",
+            "1.75em",
+            "1.25em",
+            "2em"
+          ],
+          "ans": 3,
+          "exp": "The default browser font size styling for an `<h1>` heading is typically 2em[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the default size of text in <h1> HTML element?",
+          "hiOpts": [
+            "1.5em",
+            "1.75em",
+            "1.25em",
+            "2em"
+          ]
+        },
+        {
+          "originalId": 87,
+          "section": "Computer",
+          "q": "What is the full form of CSS?",
+          "opts": [
+            "Cascading Style Sheets",
+            "Common Spreadsheet",
+            "Coded Style Sheet",
+            "Compact Solid State"
+          ],
+          "ans": 0,
+          "exp": "CSS stands for Cascading Style Sheets[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the full form of CSS?",
+          "hiOpts": [
+            "Cascading Style Sheets",
+            "Common Spreadsheet",
+            "Coded Style Sheet",
+            "Compact Solid State"
+          ]
+        },
+        {
+          "originalId": 88,
+          "section": "Computer",
+          "q": "How will you select the outline color of a shape in Microsoft Paint?",
+          "opts": [
+            "By holding the Ctrl key while selecting the color from the palette.",
+            "By holding the Shift key while selecting the color from the palette.",
+            "By holding the Alt key while selecting the color from the palette.",
+            "By holding the Ctrl+Alt key while selecting the color from the palette."
+          ],
+          "ans": 1,
+          "exp": "Holding Shift while clicking a palette color sets the secondary (outline) color in MS Paint[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "How will you select the outline color of a shape in Microsoft Paint?",
+          "hiOpts": [
+            "By holding the Ctrl key while selecting the color from the palette.",
+            "By holding the Shift key while selecting the color from the palette.",
+            "By holding the Alt key while selecting the color from the palette.",
+            "By holding the Ctrl+Alt key while selecting the color from the palette."
+          ]
+        },
+        {
+          "originalId": 89,
+          "section": "Computer",
+          "q": "Which utility in Windows OS is used to create disk partitioning, resize partitions and format partitions on storage drives?",
+          "opts": [
+            "defrag",
+            "diskpart",
+            "scandisk",
+            "dd"
+          ],
+          "ans": 1,
+          "exp": "Diskpart is a command-line disk partitioning and management utility in Windows[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which utility in Windows OS is used to create disk partitioning, resize partitions and format partitions on storage drives?",
+          "hiOpts": [
+            "defrag",
+            "diskpart",
+            "scandisk",
+            "dd"
+          ]
+        },
+        {
+          "originalId": 90,
+          "section": "Computer",
+          "q": "Which toolbar in MS-Word 2013 by default contains three commands Save, Undo and Redo?",
+          "opts": [
+            "Format",
+            "Quick Access",
+            "Custom",
+            "Standard"
+          ],
+          "ans": 1,
+          "exp": "The Quick Access Toolbar houses Save, Undo, and Redo by default[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which toolbar in MS-Word 2013 by default contains three commands Save, Undo and Redo?",
+          "hiOpts": [
+            "Format",
+            "Quick Access",
+            "Custom",
+            "Standard"
+          ]
+        },
+        {
+          "originalId": 91,
+          "section": "Computer",
+          "q": "What is the shortcut key to Redo the undone changes in MS-Word?",
+          "opts": [
+            "Ctrl+U",
+            "Ctrl+Shift+Z",
+            "Ctrl+R",
+            "Ctrl+Y"
+          ],
+          "ans": 3,
+          "exp": "`Ctrl + Y` is the standard shortcut key to Redo an action[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the shortcut key to Redo the undone changes in MS-Word?",
+          "hiOpts": [
+            "Ctrl+U",
+            "Ctrl+Shift+Z",
+            "Ctrl+R",
+            "Ctrl+Y"
+          ]
+        },
+        {
+          "originalId": 92,
+          "section": "Computer",
+          "q": "Pressing removes character-level formatting from the selected text in MS-Word document.",
+          "opts": [
+            "Ctrl+Enter",
+            "Ctrl+Space",
+            "Ctrl+Q",
+            "Ctrl+Delete"
+          ],
+          "ans": 1,
+          "exp": "`Ctrl + Space` clears manual character formatting[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Pressing removes character-level formatting from the selected text in MS-Word document.",
+          "hiOpts": [
+            "Ctrl+Enter",
+            "Ctrl+Space",
+            "Ctrl+Q",
+            "Ctrl+Delete"
+          ]
+        },
+        {
+          "originalId": 93,
+          "section": "Computer",
+          "q": "APA, Chicago and MLA are standard",
+          "opts": [
+            "document formats",
+            "email compositions",
+            "spreadsheet formats",
+            "web site styles"
+          ],
+          "ans": 0,
+          "exp": "APA, Chicago, and MLA are well-known academic document and citation formatting styles[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "APA, Chicago and MLA are standard",
+          "hiOpts": [
+            "document formats",
+            "email compositions",
+            "spreadsheet formats",
+            "web site styles"
+          ]
+        },
+        {
+          "originalId": 94,
+          "section": "Computer",
+          "q": "Which tab in MS Word provides options for table of contents, footnotes and citations?",
+          "opts": [
+            "References",
+            "Format",
+            "Standard",
+            "Tools"
+          ],
+          "ans": 0,
+          "exp": "The References tab provides tools for tables of contents, footnotes, and citations[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which tab in MS Word provides options for table of contents, footnotes and citations?",
+          "hiOpts": [
+            "References",
+            "Format",
+            "Standard",
+            "Tools"
+          ]
+        },
+        {
+          "originalId": 95,
+          "section": "Computer",
+          "q": "What is the shortcut key to set line spacing of 1.5 in a MS word paragraph?",
+          "opts": [
+            "Ctrl+}",
+            "Ctrl+5",
+            "Ctrl+0",
+            "Ctrl+?"
+          ],
+          "ans": 1,
+          "exp": "`Ctrl + 5` applies 1.5 line spacing to paragraphs in MS Word[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the shortcut key to set line spacing of 1.5 in a MS word paragraph?",
+          "hiOpts": [
+            "Ctrl+}",
+            "Ctrl+5",
+            "Ctrl+0",
+            "Ctrl+?"
+          ]
+        },
+        {
+          "originalId": 96,
+          "section": "Computer",
+          "q": "What is the shortcut key to show \"Replace\" dialog in MS Word?",
+          "opts": [
+            "Ctrl+K",
+            "Ctrl+G",
+            "Ctrl+R",
+            "Ctrl+H"
+          ],
+          "ans": 3,
+          "exp": "`Ctrl + H` opens the Find and Replace dialog box[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the shortcut key to show \"Replace\" dialog in MS Word?",
+          "hiOpts": [
+            "Ctrl+K",
+            "Ctrl+G",
+            "Ctrl+R",
+            "Ctrl+H"
+          ]
+        },
+        {
+          "originalId": 97,
+          "section": "Computer",
+          "q": "Which of the following languages is used for programming a macro in MS Excel?",
+          "opts": [
+            "VBA",
+            "VC++",
+            "Python",
+            "JavaScript"
+          ],
+          "ans": 0,
+          "exp": "Visual Basic for Applications (VBA) is used for writing macros in Excel[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following languages is used for programming a macro in MS Excel?",
+          "hiOpts": [
+            "VBA",
+            "VC++",
+            "Python",
+            "JavaScript"
+          ]
+        },
+        {
+          "originalId": 98,
+          "section": "Computer",
+          "q": "Which is a software tool included with MS Word that provides synonyms for selected words?",
+          "opts": [
+            "macro",
+            "thesaurus",
+            "autocomplete",
+            "autocorrect"
+          ],
+          "ans": 1,
+          "exp": "The thesaurus tool supplies word synonyms and antonyms[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which is a software tool included with MS Word that provides synonyms for selected words?",
+          "hiOpts": [
+            "macro",
+            "thesaurus",
+            "autocomplete",
+            "autocorrect"
+          ]
+        },
+        {
+          "originalId": 99,
+          "section": "Computer",
+          "q": "By using option while printing more than one copy of a multi-page document, the printer will print all the pages of each copy before printing the next copy.",
+          "opts": [
+            "spool",
+            "collate",
+            "duplex",
+            "sort"
+          ],
+          "ans": 1,
+          "exp": "Collation arranges multiple copies of multipage documents in sequential order[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "By using option while printing more than one copy of a multi-page document, the printer will print all the pages of each copy before printing the next copy.",
+          "hiOpts": [
+            "spool",
+            "collate",
+            "duplex",
+            "sort"
+          ]
+        },
+        {
+          "originalId": 100,
+          "section": "Computer",
+          "q": "Entering the number 0 in a cell in Excel sheet and formatting it as date will show",
+          "opts": [
+            "January 1, 1970",
+            "Invalid Date",
+            "January 0, 1990",
+            "January 1, 1900"
+          ],
+          "ans": 3,
+          "exp": "Excel date systems start counting from serial day 1 on January 1, 1900, treating 0 as January 1, 1900[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Entering the number 0 in a cell in Excel sheet and formatting it as date will show",
+          "hiOpts": [
+            "January 1, 1970",
+            "Invalid Date",
+            "January 0, 1990",
+            "January 1, 1900"
+          ]
+        },
+        {
+          "originalId": 101,
+          "section": "Computer",
+          "q": "What does the letter 'R' means in a CD-R disc?",
+          "opts": [
+            "Rewritable",
+            "Reduced",
+            "Recordable",
+            "Read only"
+          ],
+          "ans": 2,
+          "exp": "In CD-R, 'R' stands for Recordable (write-once)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What does the letter 'R' means in a CD-R disc?",
+          "hiOpts": [
+            "Rewritable",
+            "Reduced",
+            "Recordable",
+            "Read only"
+          ]
+        },
+        {
+          "originalId": 102,
+          "section": "Computer",
+          "q": "Which layer in TCP/IP network uses 'Segment' as transfer unit?",
+          "opts": [
+            "TCP",
+            "Physical",
+            "Application",
+            "IP"
+          ],
+          "ans": 0,
+          "exp": "The Transport layer using TCP breaks data into segments[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which layer in TCP/IP network uses 'Segment' as transfer unit?",
+          "hiOpts": [
+            "TCP",
+            "Physical",
+            "Application",
+            "IP"
+          ]
+        },
+        {
+          "originalId": 103,
+          "section": "Computer",
+          "q": "Which is a communication mode in which the both sender and receiver may transmit simultaneously?",
+          "opts": [
+            "Half-duplex",
+            "Simplex",
+            "Full-duplex",
+            "Serial"
+          ],
+          "ans": 2,
+          "exp": "Full-duplex transmission allows simultaneous two-way communication[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which is a communication mode in which the both sender and receiver may transmit simultaneously?",
+          "hiOpts": [
+            "Half-duplex",
+            "Simplex",
+            "Full-duplex",
+            "Serial"
+          ]
+        },
+        {
+          "originalId": 104,
+          "section": "Computer",
+          "q": "Which of the following is not a technical specification for a printer?",
+          "opts": [
+            "Duplexing",
+            "DPI",
+            "PPM",
+            "Contrast Ratio"
+          ],
+          "ans": 3,
+          "exp": "Contrast ratio is a display specification, not a printer metric[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is not a technical specification for a printer?",
+          "hiOpts": [
+            "Duplexing",
+            "DPI",
+            "PPM",
+            "Contrast Ratio"
+          ]
+        },
+        {
+          "originalId": 105,
+          "section": "Computer",
+          "q": "An escape sequence begins with a character in 'C'.",
+          "opts": [
+            "\\$ (dollar)",
+            "/ (forward slash)",
+            "\\ (back slash)",
+            "% (percentage)"
+          ],
+          "ans": 2,
+          "exp": "Escape sequences in C start with a backslash (`\\`)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "An escape sequence begins with a character in 'C'.",
+          "hiOpts": [
+            "\\$ (dollar)",
+            "/ (forward slash)",
+            "\\ (back slash)",
+            "% (percentage)"
+          ]
+        },
+        {
+          "originalId": 106,
+          "section": "Computer",
+          "q": "What does the letter 'C' stands for in CMYK color model?",
+          "opts": [
+            "Cyan",
+            "Cream",
+            "Crimson",
+            "Cherry"
+          ],
+          "ans": 0,
+          "exp": "In CMYK, 'C' stands for Cyan[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What does the letter 'C' stands for in CMYK color model?",
+          "hiOpts": [
+            "Cyan",
+            "Cream",
+            "Crimson",
+            "Cherry"
+          ]
+        },
+        {
+          "originalId": 107,
+          "section": "Computer",
+          "q": "Which of the following symbols represents the address operator in C language?",
+          "opts": [
+            "\\$ (dollar)",
+            "* (asterisk)",
+            "& (ampersand)",
+            "^ (caret)"
+          ],
+          "ans": 2,
+          "exp": "The ampersand (`&`) serves as the address-of operator in C[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following symbols represents the address operator in C language?",
+          "hiOpts": [
+            "\\$ (dollar)",
+            "* (asterisk)",
+            "& (ampersand)",
+            "^ (caret)"
+          ]
+        },
+        {
+          "originalId": 108,
+          "section": "Computer",
+          "q": "What is the unit of frequency?",
+          "opts": [
+            "kbps",
+            "second",
+            "hertz",
+            "ampere"
+          ],
+          "ans": 2,
+          "exp": "Frequency is measured in Hertz (Hz)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the unit of frequency?",
+          "hiOpts": [
+            "kbps",
+            "second",
+            "hertz",
+            "ampere"
+          ]
+        },
+        {
+          "originalId": 109,
+          "section": "Computer",
+          "q": "What is the Linux command to display a list of running process?",
+          "opts": [
+            "proc",
+            "1p",
+            "1s",
+            "ps"
+          ],
+          "ans": 3,
+          "exp": "The `ps` command reports active process statistics in Linux[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the Linux command to display a list of running process?",
+          "hiOpts": [
+            "proc",
+            "1p",
+            "1s",
+            "ps"
+          ]
+        },
+        {
+          "originalId": 110,
+          "section": "Computer",
+          "q": "is a network service to resolve the human readable domain names into IP addresses.",
+          "opts": [
+            "DNS",
+            "SNMP",
+            "DHCP",
+            "ICMP"
+          ],
+          "ans": 0,
+          "exp": "The Domain Name System (DNS) maps human domain names to IP addresses[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "is a network service to resolve the human readable domain names into IP addresses.",
+          "hiOpts": [
+            "DNS",
+            "SNMP",
+            "DHCP",
+            "ICMP"
+          ]
+        },
+        {
+          "originalId": 111,
+          "section": "Computer",
+          "q": "Which of the following is an email client software application?",
+          "opts": [
+            "Filezilla",
+            "Wireshark",
+            "Thunderbird",
+            "Mozilla Firefox"
+          ],
+          "ans": 2,
+          "exp": "Mozilla Thunderbird is a desktop email client application[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is an email client software application?",
+          "hiOpts": [
+            "Filezilla",
+            "Wireshark",
+            "Thunderbird",
+            "Mozilla Firefox"
+          ]
+        },
+        {
+          "originalId": 112,
+          "section": "Computer",
+          "q": "Which of the following organizations oversees the allocation of public IP addresses in a fair and consistent manner?",
+          "opts": [
+            "IEEEE",
+            "IETF",
+            "W3C",
+            "IANA"
+          ],
+          "ans": 3,
+          "exp": "IANA coordinates the global allocation of IP addresses[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following organizations oversees the allocation of public IP addresses in a fair and consistent manner?",
+          "hiOpts": [
+            "IEEEE",
+            "IETF",
+            "W3C",
+            "IANA"
+          ]
+        },
+        {
+          "originalId": 113,
+          "section": "Computer",
+          "q": "What does GPL mean in free software world?",
+          "opts": [
+            "GNU Private License",
+            "GNU Protective License",
+            "GNU Public License",
+            "GNU Programming License"
+          ],
+          "ans": 2,
+          "exp": "GPL stands for General Public License in the GNU free software ecosystem[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What does GPL mean in free software world?",
+          "hiOpts": [
+            "GNU Private License",
+            "GNU Protective License",
+            "GNU Public License",
+            "GNU Programming License"
+          ]
+        },
+        {
+          "originalId": 114,
+          "section": "Computer",
+          "q": "Which of the following is not a valid hexadecimal number?",
+          "opts": [
+            "CDE",
+            "BCD",
+            "EFG",
+            "DEF"
+          ],
+          "ans": 2,
+          "exp": "'G' is not part of valid hexadecimal digits (0-9, A-F)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is not a valid hexadecimal number?",
+          "hiOpts": [
+            "CDE",
+            "BCD",
+            "EFG",
+            "DEF"
+          ]
+        },
+        {
+          "originalId": 115,
+          "section": "Computer",
+          "q": "The modulo operator is represented using symbol in C language.",
+          "opts": [
+            "/ (forward slash)",
+            "^ (caret)",
+            "! (exclamation)",
+            "% (percentage)"
+          ],
+          "ans": 3,
+          "exp": "The percentage sign (`%`) acts as the modulo remainder operator in C[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The modulo operator is represented using symbol in C language.",
+          "hiOpts": [
+            "/ (forward slash)",
+            "^ (caret)",
+            "! (exclamation)",
+            "% (percentage)"
+          ]
+        },
+        {
+          "originalId": 116,
+          "section": "Computer",
+          "q": "Which of the following is the correct truth table for NOR operation?",
+          "opts": [
+            "A=F, B=F -> F (and so on...) [Correct Option matches standard NOR logic table where only F/F yields T]"
+          ],
+          "ans": 1,
+          "exp": "NOR outputs true only when all inputs are false[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is the correct truth table for NOR operation?",
+          "hiOpts": [
+            "A=F, B=F -> F (and so on...) [Correct Option matches standard NOR logic table where only F/F yields T]"
+          ]
+        },
+        {
+          "originalId": 117,
+          "section": "Computer",
+          "q": "What is the shortcut key to permanently delete a file without moving it to \"Recycle Bin\" in Microsoft Windows?",
+          "opts": [
+            "Ctrl + Alt + Delete",
+            "Ctrl + Delete",
+            "Shift + Delete",
+            "Alt + Delete"
+          ],
+          "ans": 2,
+          "exp": "`Shift + Delete` permanently removes files bypassing the Recycle Bin[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "What is the shortcut key to permanently delete a file without moving it to \"Recycle Bin\" in Microsoft Windows?",
+          "hiOpts": [
+            "Ctrl + Alt + Delete",
+            "Ctrl + Delete",
+            "Shift + Delete",
+            "Alt + Delete"
+          ]
+        },
+        {
+          "originalId": 118,
+          "section": "Computer",
+          "q": "Which of the following HTML tags is used to create a hyperlink in web pages?",
+          "opts": [
+            "<link>",
+            "<a>",
+            "<li>",
+            "<h1>"
+          ],
+          "ans": 1,
+          "exp": "The `<a>` anchor tag creates hyperlinks in HTML[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following HTML tags is used to create a hyperlink in web pages?",
+          "hiOpts": [
+            "<link>",
+            "<a>",
+            "<li>",
+            "<h1>"
+          ]
+        },
+        {
+          "originalId": 119,
+          "section": "Computer",
+          "q": "Which of the following is not an essential component of a data communication system?",
+          "opts": [
+            "Protocol",
+            "Medium",
+            "Message",
+            "Program"
+          ],
+          "ans": 3,
+          "exp": "Programs are not baseline communication components compared to protocols, media, and messages[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following is not an essential component of a data communication system?",
+          "hiOpts": [
+            "Protocol",
+            "Medium",
+            "Message",
+            "Program"
+          ]
+        },
+        {
+          "originalId": 120,
+          "section": "Computer",
+          "q": "Which of the following connectors is used for UTP cable?",
+          "opts": [
+            "RJ45",
+            "BNC",
+            "S Type",
+            "AUI"
+          ],
+          "ans": 0,
+          "exp": "RJ45 connectors terminate UTP Ethernet network cables[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which of the following connectors is used for UTP cable?",
+          "hiOpts": [
+            "RJ45",
+            "BNC",
+            "S Type",
+            "AUI"
+          ]
+        },
+        {
+          "originalId": 121,
+          "section": "Science",
+          "q": "An alloy used in making heating elements for electric heating devices is",
+          "opts": [
+            "Solder",
+            "Alloy Steel",
+            "Nichrome",
+            "German Silver"
+          ],
+          "ans": 2,
+          "exp": "Nichrome is widely used for heating elements due to its high resistance and heat tolerance[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "An alloy used in making heating elements for electric heating devices is",
+          "hiOpts": [
+            "Solder",
+            "Alloy Steel",
+            "Nichrome",
+            "German Silver"
+          ]
+        },
+        {
+          "originalId": 122,
+          "section": "Science",
+          "q": "Brass is an alloy of",
+          "opts": [
+            "Nickel and Copper",
+            "Zinc and Copper",
+            "Nickel and Zinc",
+            "Nickel and Silver"
+          ],
+          "ans": 1,
+          "exp": "Brass is an alloy composed of copper and zinc[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Brass is an alloy of",
+          "hiOpts": [
+            "Nickel and Copper",
+            "Zinc and Copper",
+            "Nickel and Zinc",
+            "Nickel and Silver"
+          ]
+        },
+        {
+          "originalId": 123,
+          "section": "Science",
+          "q": "The type of glass in making lenses and prisms is",
+          "opts": [
+            "Soft glass",
+            "Pyrex glass",
+            "Jena glass",
+            "Flint glass"
+          ],
+          "ans": 3,
+          "exp": "Flint glass has high refractive index properties ideal for optical lenses and prisms[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The type of glass in making lenses and prisms is",
+          "hiOpts": [
+            "Soft glass",
+            "Pyrex glass",
+            "Jena glass",
+            "Flint glass"
+          ]
+        },
+        {
+          "originalId": 124,
+          "section": "General Knowledge",
+          "q": "Nautical mile is a unit of distance used in",
+          "opts": [
+            "Astronomy",
+            "Navigation",
+            "Road mile",
+            "None of these"
+          ],
+          "ans": 1,
+          "exp": "Nautical miles measure distances in marine and air navigation[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Nautical mile is a unit of distance used in",
+          "hiOpts": [
+            "Astronomy",
+            "Navigation",
+            "Road mile",
+            "None of these"
+          ]
+        },
+        {
+          "originalId": 125,
+          "section": "Science",
+          "q": "Element that is not found in blood is",
+          "opts": [
+            "Iron",
+            "Copper",
+            "Chromium",
+            "Magnesium"
+          ],
+          "ans": 2,
+          "exp": "Chromium is a trace element not considered a structural component of human blood[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Element that is not found in blood is",
+          "hiOpts": [
+            "Iron",
+            "Copper",
+            "Chromium",
+            "Magnesium"
+          ]
+        },
+        {
+          "originalId": 126,
+          "section": "Science",
+          "q": "The number of ribs in human body is",
+          "opts": [
+            "12",
+            "18",
+            "20",
+            "24"
+          ],
+          "ans": 3,
+          "exp": "Humans typically have 24 ribs (12 pairs)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The number of ribs in human body is",
+          "hiOpts": [
+            "12",
+            "18",
+            "20",
+            "24"
+          ]
+        },
+        {
+          "originalId": 127,
+          "section": "General Knowledge",
+          "q": "The code of conduct of the Vedic society was laid out in which of the following texts?",
+          "opts": [
+            "Vedas",
+            "Puranas",
+            "Upanishads",
+            "Smiritis"
+          ],
+          "ans": 3,
+          "exp": "Smritis outline the traditional codes of conduct and laws in Vedic society[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The code of conduct of the Vedic society was laid out in which of the following texts?",
+          "hiOpts": [
+            "Vedas",
+            "Puranas",
+            "Upanishads",
+            "Smiritis"
+          ]
+        },
+        {
+          "originalId": 128,
+          "section": "General Knowledge",
+          "q": "Mahavira was born at",
+          "opts": [
+            "Pataliputra",
+            "Sravasti",
+            "Rajagriha",
+            "Vaishali"
+          ],
+          "ans": 3,
+          "exp": "Lord Mahavira was born near Vaishali[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Mahavira was born at",
+          "hiOpts": [
+            "Pataliputra",
+            "Sravasti",
+            "Rajagriha",
+            "Vaishali"
+          ]
+        },
+        {
+          "originalId": 129,
+          "section": "General Knowledge",
+          "q": "Which is not an Indus Valley site?",
+          "opts": [
+            "Alamgirpur",
+            "Lothal",
+            "Kaushambi",
+            "Balakot"
+          ],
+          "ans": 2,
+          "exp": "Kaushambi is an ancient historical site, not part of the Indus Valley Civilization[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which is not an Indus Valley site?",
+          "hiOpts": [
+            "Alamgirpur",
+            "Lothal",
+            "Kaushambi",
+            "Balakot"
+          ]
+        },
+        {
+          "originalId": 130,
+          "section": "General Knowledge",
+          "q": "Under which Sultan, Khalisa land increased considerably?",
+          "opts": [
+            "Balban",
+            "Alauddin Khilji",
+            "Firoz Shah Tughlaq",
+            "Muhammad bin Tughlaq"
+          ],
+          "ans": 1,
+          "exp": "Alauddin Khilji expanded Khalisa (crown) lands significantly[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Under which Sultan, Khalisa land increased considerably?",
+          "hiOpts": [
+            "Balban",
+            "Alauddin Khilji",
+            "Firoz Shah Tughlaq",
+            "Muhammad bin Tughlaq"
+          ]
+        },
+        {
+          "originalId": 131,
+          "section": "General Knowledge",
+          "q": "Which Mughal ruler has been called as the 'Prince of Builders'?",
+          "opts": [
+            "Babar",
+            "Akbar",
+            "Jahangir",
+            "Shahjahan"
+          ],
+          "ans": 3,
+          "exp": "Shah Jahan is known as the 'Prince of Builders' for his architectural achievements[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which Mughal ruler has been called as the 'Prince of Builders'?",
+          "hiOpts": [
+            "Babar",
+            "Akbar",
+            "Jahangir",
+            "Shahjahan"
+          ]
+        },
+        {
+          "originalId": 132,
+          "section": "General Knowledge",
+          "q": "When Subhash Chandra Bose resigned as the President of Indian National Congress, who was appointed in his place?",
+          "opts": [
+            "Dr. Rajendra Prasad",
+            "Abul Kalam Azad",
+            "C. Rajagopalachari",
+            "Pattabhi Sitaramiah"
+          ],
+          "ans": 0,
+          "exp": "Dr. Rajendra Prasad was appointed president after Bose's resignation[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "When Subhash Chandra Bose resigned as the President of Indian National Congress, who was appointed in his place?",
+          "hiOpts": [
+            "Dr. Rajendra Prasad",
+            "Abul Kalam Azad",
+            "C. Rajagopalachari",
+            "Pattabhi Sitaramiah"
+          ]
+        },
+        {
+          "originalId": 133,
+          "section": "General Knowledge",
+          "q": "The objective of Fundamental Rights in our Constitution is to provide",
+          "opts": [
+            "Better material conditions to the citizens",
+            "Social Justice",
+            "Equality and freedom to all citizens",
+            "Economic Justice"
+          ],
+          "ans": 2,
+          "exp": "Fundamental Rights ensure civil liberties, equality, and freedom[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The objective of Fundamental Rights in our Constitution is to provide",
+          "hiOpts": [
+            "Better material conditions to the citizens",
+            "Social Justice",
+            "Equality and freedom to all citizens",
+            "Economic Justice"
+          ]
+        },
+        {
+          "originalId": 134,
+          "section": "General Knowledge",
+          "q": "Appointment of the members of the Council of Ministers is made by the President",
+          "opts": [
+            "On the advice of the Prime Minister",
+            "In his own discretion",
+            "On the advice of the Vice President",
+            "On the advice of the Lok Sabha Speaker"
+          ],
+          "ans": 0,
+          "exp": "Ministers are appointed by the President on the Prime Minister's advice[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Appointment of the members of the Council of Ministers is made by the President",
+          "hiOpts": [
+            "On the advice of the Prime Minister",
+            "In his own discretion",
+            "On the advice of the Vice President",
+            "On the advice of the Lok Sabha Speaker"
+          ]
+        },
+        {
+          "originalId": 135,
+          "section": "General Knowledge",
+          "q": "Which is not essential for a person to become the Vice President?",
+          "opts": [
+            "He must be a Graduate",
+            "He must be an Indian Citizen",
+            "He must not be less than 35 years",
+            "He must be qualified to be a member of the Rajya Sabha"
+          ],
+          "ans": 0,
+          "exp": "A university degree (graduation) is not a constitutional requirement for Vice President[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which is not essential for a person to become the Vice President?",
+          "hiOpts": [
+            "He must be a Graduate",
+            "He must be an Indian Citizen",
+            "He must not be less than 35 years",
+            "He must be qualified to be a member of the Rajya Sabha"
+          ]
+        },
+        {
+          "originalId": 136,
+          "section": "General Knowledge",
+          "q": "When does the problem of unfavourable balance of payment arise?",
+          "opts": [
+            "When exports decrease",
+            "When exports increase",
+            "When imports decrease",
+            "When imports are greater than exports"
+          ],
+          "ans": 3,
+          "exp": "Unfavourable balance of payments occurs when imports exceed exports[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "When does the problem of unfavourable balance of payment arise?",
+          "hiOpts": [
+            "When exports decrease",
+            "When exports increase",
+            "When imports decrease",
+            "When imports are greater than exports"
+          ]
+        },
+        {
+          "originalId": 137,
+          "section": "General Knowledge",
+          "q": "In which year the Rural Landless Employment Guarantee Programme was launched by Government of India?",
+          "opts": [
+            "1981",
+            "1983",
+            "1984",
+            "1985"
+          ],
+          "ans": 1,
+          "exp": "The program was launched in 1983[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "In which year the Rural Landless Employment Guarantee Programme was launched by Government of India?",
+          "hiOpts": [
+            "1981",
+            "1983",
+            "1984",
+            "1985"
+          ]
+        },
+        {
+          "originalId": 138,
+          "section": "General Knowledge",
+          "q": "Which cloud is made up of tiny ice particles?",
+          "opts": [
+            "Cumulus cloud",
+            "Stratus cloud",
+            "Cumulonimbus cloud",
+            "Cirrus cloud"
+          ],
+          "ans": 3,
+          "exp": "Cirrus clouds form at high altitudes and consist of tiny ice crystals[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which cloud is made up of tiny ice particles?",
+          "hiOpts": [
+            "Cumulus cloud",
+            "Stratus cloud",
+            "Cumulonimbus cloud",
+            "Cirrus cloud"
+          ]
+        },
+        {
+          "originalId": 139,
+          "section": "General Knowledge",
+          "q": "The study of heavenly bodies is known as",
+          "opts": [
+            "Astrology",
+            "Astronautics",
+            "Astronomy",
+            "Ethnology"
+          ],
+          "ans": 2,
+          "exp": "Astronomy is the scientific study of celestial bodies[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The study of heavenly bodies is known as",
+          "hiOpts": [
+            "Astrology",
+            "Astronautics",
+            "Astronomy",
+            "Ethnology"
+          ]
+        },
+        {
+          "originalId": 140,
+          "section": "General Knowledge",
+          "q": "Hawaiian islands are located in",
+          "opts": [
+            "North Atlantic ocean",
+            "South Atlantic Ocean",
+            "North Pacific Ocean",
+            "South Pacific Ocean"
+          ],
+          "ans": 2,
+          "exp": "The Hawaiian archipelago is situated in the North Pacific Ocean[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Hawaiian islands are located in",
+          "hiOpts": [
+            "North Atlantic ocean",
+            "South Atlantic Ocean",
+            "North Pacific Ocean",
+            "South Pacific Ocean"
+          ]
+        },
+        {
+          "originalId": 141,
+          "section": "General Knowledge",
+          "q": "Norwesters cause significant amount of rainfall in",
+          "opts": [
+            "Assam and West Bengal",
+            "West Bengal and Odisha",
+            "Bihar and Odisha",
+            "Tamil Nadu and Andhra Pradesh"
+          ],
+          "ans": 1,
+          "exp": "Norwesters (Kalbaishakhi) bring heavy pre-monsoon rains to West Bengal and Odisha[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Norwesters cause significant amount of rainfall in",
+          "hiOpts": [
+            "Assam and West Bengal",
+            "West Bengal and Odisha",
+            "Bihar and Odisha",
+            "Tamil Nadu and Andhra Pradesh"
+          ]
+        },
+        {
+          "originalId": 142,
+          "section": "General Knowledge",
+          "q": "The most widely consumed cereal in India is",
+          "opts": [
+            "Barley",
+            "Wheat",
+            "Rice",
+            "Sorghum"
+          ],
+          "ans": 2,
+          "exp": "Rice serves as the most widely consumed cereal staple across India[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "The most widely consumed cereal in India is",
+          "hiOpts": [
+            "Barley",
+            "Wheat",
+            "Rice",
+            "Sorghum"
+          ]
+        },
+        {
+          "originalId": 143,
+          "section": "General Knowledge",
+          "q": "Uruswati Himalayan Folk Art Museum is located at which place in H.P.?",
+          "opts": [
+            "Keylong",
+            "Naggar",
+            "Patta",
+            "Chamba"
+          ],
+          "ans": 1,
+          "exp": "The museum is located in Naggar, Kullu district[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Uruswati Himalayan Folk Art Museum is located at which place in H.P.?",
+          "hiOpts": [
+            "Keylong",
+            "Naggar",
+            "Patta",
+            "Chamba"
+          ]
+        },
+        {
+          "originalId": 144,
+          "section": "General Knowledge",
+          "q": "Burah is a folk dance of which district of H.P.?",
+          "opts": [
+            "Sirmour",
+            "Shimla",
+            "Kullu",
+            "Mandi"
+          ],
+          "ans": 0,
+          "exp": "Burah is a traditional folk dance native to Sirmour[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Burah is a folk dance of which district of H.P.?",
+          "hiOpts": [
+            "Sirmour",
+            "Shimla",
+            "Kullu",
+            "Mandi"
+          ]
+        },
+        {
+          "originalId": 145,
+          "section": "General Knowledge",
+          "q": "Lohri festival of Pragpur is which level of festival?",
+          "opts": [
+            "District",
+            "State",
+            "National",
+            "International"
+          ],
+          "ans": 1,
+          "exp": "Pragpur's Lohri celebration holds state-level festival recognition[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Lohri festival of Pragpur is which level of festival?",
+          "hiOpts": [
+            "District",
+            "State",
+            "National",
+            "International"
+          ]
+        },
+        {
+          "originalId": 146,
+          "section": "General Knowledge",
+          "q": "Famous Shakti Devi temple is located at which place in H.P.?",
+          "opts": [
+            "Chhatrari",
+            "Bharmour",
+            "Baijnath",
+            "Karsog"
+          ],
+          "ans": 0,
+          "exp": "The Shakti Devi temple is located in Chhatrari, Chamba[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Famous Shakti Devi temple is located at which place in H.P.?",
+          "hiOpts": [
+            "Chhatrari",
+            "Bharmour",
+            "Baijnath",
+            "Karsog"
+          ]
+        },
+        {
+          "originalId": 147,
+          "section": "General Knowledge",
+          "q": "Rajiv Nayyar won the Parshuram award in which year?",
+          "opts": [
+            "1987",
+            "1991",
+            "1994",
+            "1997"
+          ],
+          "ans": 3,
+          "exp": "Cricketer Rajiv Nayyar received the Parshuram Award in 1997[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Rajiv Nayyar won the Parshuram award in which year?",
+          "hiOpts": [
+            "1987",
+            "1991",
+            "1994",
+            "1997"
+          ]
+        },
+        {
+          "originalId": 148,
+          "section": "General Knowledge",
+          "q": "Maharaja Agrasen University is located at which place in H.P.?",
+          "opts": [
+            "Baddi",
+            "Waknaghat",
+            "Bathu",
+            "Indora"
+          ],
+          "ans": 1,
+          "exp": "Maharaja Agrasen University is situated in Waknaghat, Solan[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Maharaja Agrasen University is located at which place in H.P.?",
+          "hiOpts": [
+            "Baddi",
+            "Waknaghat",
+            "Bathu",
+            "Indora"
+          ]
+        },
+        {
+          "originalId": 149,
+          "section": "General Knowledge",
+          "q": "Bandli wildlife sanctuary is located in which district of H.P.?",
+          "opts": [
+            "Mandi",
+            "Chamba",
+            "Solan",
+            "Sirmour"
+          ],
+          "ans": 0,
+          "exp": "Bandli Wildlife Sanctuary is located in the Mandi district[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Bandli wildlife sanctuary is located in which district of H.P.?",
+          "hiOpts": [
+            "Mandi",
+            "Chamba",
+            "Solan",
+            "Sirmour"
+          ]
+        },
+        {
+          "originalId": 150,
+          "section": "General Knowledge",
+          "q": "When did Dr. Y.S. Parmar become the Chief Minister in H.P. for the first time?",
+          "opts": [
+            "24th March, 1948",
+            "24th March, 1950",
+            "24th March, 1952",
+            "24th March, 1956"
+          ],
+          "ans": 2,
+          "exp": "Dr. Y.S. Parmar assumed office as Himachal's first Chief Minister on March 24, 1952[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "When did Dr. Y.S. Parmar become the Chief Minister in H.P. for the first time?",
+          "hiOpts": [
+            "24th March, 1948",
+            "24th March, 1950",
+            "24th March, 1952",
+            "24th March, 1956"
+          ]
+        },
+        {
+          "originalId": 151,
+          "section": "General Knowledge",
+          "q": "Which Himachal Princely State refused to side with the British during the war of Independence of 1857?",
+          "opts": [
+            "Suket",
+            "Dhami",
+            "Kehloor",
+            "Bushahar"
+          ],
+          "ans": 3,
+          "exp": "Bushahar state refrained from supporting British forces during the 1857 revolt[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which Himachal Princely State refused to side with the British during the war of Independence of 1857?",
+          "hiOpts": [
+            "Suket",
+            "Dhami",
+            "Kehloor",
+            "Bushahar"
+          ]
+        },
+        {
+          "originalId": 152,
+          "section": "General Knowledge",
+          "q": "Sh. J.C. Malhotra was the Chairman of",
+          "opts": [
+            "HPPSC Shimla",
+            "HPSSC Hamirpur",
+            "HPAT Shimla",
+            "None of these"
+          ],
+          "ans": 0,
+          "exp": "Sh. J.C. Malhotra served as Chairman of HPPSC Shimla[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Sh. J.C. Malhotra was the Chairman of",
+          "hiOpts": [
+            "HPPSC Shimla",
+            "HPSSC Hamirpur",
+            "HPAT Shimla",
+            "None of these"
+          ]
+        },
+        {
+          "originalId": 153,
+          "section": "General Knowledge",
+          "q": "Total number of assembly constituencies in Kullu district of H.P. is",
+          "opts": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "ans": 1,
+          "exp": "There are 4 legislative assembly constituencies in the Kullu district[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Total number of assembly constituencies in Kullu district of H.P. is",
+          "hiOpts": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        },
+        {
+          "originalId": 154,
+          "section": "General Knowledge",
+          "q": "Kashang 1 hydroelectric project is constructed on which river of H.P.?",
+          "opts": [
+            "Satlej",
+            "Beas",
+            "Yamuna",
+            "Chenab"
+          ],
+          "ans": 0,
+          "exp": "The Kashang hydroelectric project is built on the Sutlej river basin[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Kashang 1 hydroelectric project is constructed on which river of H.P.?",
+          "hiOpts": [
+            "Satlej",
+            "Beas",
+            "Yamuna",
+            "Chenab"
+          ]
+        },
+        {
+          "originalId": 155,
+          "section": "General Knowledge",
+          "q": "Guler Princely State was founded by",
+          "opts": [
+            "Hari Chand",
+            "Alam Chand",
+            "Hamir Chand",
+            "Purab Chand"
+          ],
+          "ans": 0,
+          "exp": "Guler state was founded by Raja Hari Chand[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Guler Princely State was founded by",
+          "hiOpts": [
+            "Hari Chand",
+            "Alam Chand",
+            "Hamir Chand",
+            "Purab Chand"
+          ]
+        },
+        {
+          "originalId": 156,
+          "section": "General Knowledge",
+          "q": "Bhadal Glacier is situated in which district of H.P.?",
+          "opts": [
+            "Kinnaur",
+            "Lahaul Spiti",
+            "Kullu",
+            "Kangra"
+          ],
+          "ans": 3,
+          "exp": "The Bhadal Glacier is located in the Kangra district[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Bhadal Glacier is situated in which district of H.P.?",
+          "hiOpts": [
+            "Kinnaur",
+            "Lahaul Spiti",
+            "Kullu",
+            "Kangra"
+          ]
+        },
+        {
+          "originalId": 157,
+          "section": "General Knowledge",
+          "q": "Pin Valley is situated in which district of H.P.?",
+          "opts": [
+            "Kullu",
+            "Lahaul Spiti",
+            "Bilaspur",
+            "Hamirpur"
+          ],
+          "ans": 1,
+          "exp": "Pin Valley National Park is located in Lahaul and Spiti[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Pin Valley is situated in which district of H.P.?",
+          "hiOpts": [
+            "Kullu",
+            "Lahaul Spiti",
+            "Bilaspur",
+            "Hamirpur"
+          ]
+        },
+        {
+          "originalId": 158,
+          "section": "General Knowledge",
+          "q": "Who is the first female swimmer to win seven medals in a single Olympic event?",
+          "opts": [
+            "Janet Evans",
+            "Katie Ledecky",
+            "Emma Mckeon",
+            "Inge de Brujin"
+          ],
+          "ans": 2,
+          "exp": "Emma McKeon accomplished winning seven medals at a single Olympic games[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Who is the first female swimmer to win seven medals in a single Olympic event?",
+          "hiOpts": [
+            "Janet Evans",
+            "Katie Ledecky",
+            "Emma Mckeon",
+            "Inge de Brujin"
+          ]
+        },
+        {
+          "originalId": 159,
+          "section": "General Knowledge",
+          "q": "Who won the Hungarian Grand Prix, 2021?",
+          "opts": [
+            "Sebastian Vettel",
+            "Lewis Hamilton",
+            "Fernando Alonso",
+            "Esteban Ocon"
+          ],
+          "ans": 3,
+          "exp": "Esteban Ocon won the 2021 Hungarian Grand Prix[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Who won the Hungarian Grand Prix, 2021?",
+          "hiOpts": [
+            "Sebastian Vettel",
+            "Lewis Hamilton",
+            "Fernando Alonso",
+            "Esteban Ocon"
+          ]
+        },
+        {
+          "originalId": 160,
+          "section": "General Knowledge",
+          "q": "Which country has recently become the first country in the world to manufacture fossil-free steel?",
+          "opts": [
+            "Germany",
+            "India",
+            "Japan",
+            "Sweden"
+          ],
+          "ans": 3,
+          "exp": "Sweden pioneered the production of fossil-free steel through HYBRIT[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Which country has recently become the first country in the world to manufacture fossil-free steel?",
+          "hiOpts": [
+            "Germany",
+            "India",
+            "Japan",
+            "Sweden"
+          ]
+        },
+        {
+          "originalId": 161,
+          "section": "General Knowledge",
+          "q": "In a certain code MIGHT is written as LHFGS. How is BELOW written in that code?",
+          "opts": [
+            "CFMPX",
+            "ADJNV",
+            "ADKMV",
+            "ADKNV"
+          ],
+          "ans": 3,
+          "exp": "Each letter is shifted backward by 1 position (e.g., B->A, E->D), coding BELOW to ADKNV[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "In a certain code MIGHT is written as LHFGS. How is BELOW written in that code?",
+          "hiOpts": [
+            "CFMPX",
+            "ADJNV",
+            "ADKMV",
+            "ADKNV"
+          ]
+        },
+        {
+          "originalId": 162,
+          "section": "General Knowledge",
+          "q": "Sushil lives to the North of Rajesh who lives to the west of Kamlesh. Arun who lives to the South of Sushil have his house in which direction with respect to Kamlesh.",
+          "opts": [
+            "North-West",
+            "North",
+            "South-West",
+            "Cannot be determined"
+          ],
+          "ans": 3,
+          "exp": "Exact relative positioning between Arun and Kamlesh remains indeterminate with given data[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Sushil lives to the North of Rajesh who lives to the west of Kamlesh. Arun who lives to the South of Sushil have his house in which direction with respect to Kamlesh.",
+          "hiOpts": [
+            "North-West",
+            "North",
+            "South-West",
+            "Cannot be determined"
+          ]
+        },
+        {
+          "originalId": 163,
+          "section": "General English",
+          "q": "Antonym of 'Malicious' is",
+          "opts": [
+            "Boastful",
+            "Indifferent",
+            "Kind",
+            "Generous"
+          ],
+          "ans": 2,
+          "exp": "Kind is an antonym for malicious[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Antonym of 'Malicious' is",
+          "hiOpts": [
+            "Boastful",
+            "Indifferent",
+            "Kind",
+            "Generous"
+          ]
+        },
+        {
+          "originalId": 164,
+          "section": "General English",
+          "q": "One word substitution for 'The normal abode of any animal or plant' is",
+          "opts": [
+            "Environment",
+            "Habitat",
+            "Settlement",
+            "Niche"
+          ],
+          "ans": 1,
+          "exp": "Habitat refers to the natural home or environment of an organism[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "One word substitution for 'The normal abode of any animal or plant' is",
+          "hiOpts": [
+            "Environment",
+            "Habitat",
+            "Settlement",
+            "Niche"
+          ]
+        },
+        {
+          "originalId": 165,
+          "section": "General English",
+          "q": "When I met her last year, she for five years.",
+          "opts": [
+            "was married",
+            "had been married",
+            "had married",
+            "would have married"
+          ],
+          "ans": 1,
+          "exp": "Past continuous/perfect continuous context takes \"had been married\" for duration up to a point[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "When I met her last year, she for five years.",
+          "hiOpts": [
+            "was married",
+            "had been married",
+            "had married",
+            "would have married"
+          ]
+        },
+        {
+          "originalId": 166,
+          "section": "General English",
+          "q": "Meaning of the idiom 'To look down one's nose at' is",
+          "opts": [
+            "To backbite",
+            "To show anger",
+            "To insult in the presence of others",
+            "to regard with half-hidden displeasure or contempt"
+          ],
+          "ans": 3,
+          "exp": "The idiom means treating someone with contempt or condescension[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "Meaning of the idiom 'To look down one's nose at' is",
+          "hiOpts": [
+            "To backbite",
+            "To show anger",
+            "To insult in the presence of others",
+            "to regard with half-hidden displeasure or contempt"
+          ]
+        },
+        {
+          "originalId": 167,
+          "section": "General Hindi",
+          "q": "'अ-याय' में समास है",
+          "opts": [
+            "तत्पुरुष",
+            "अव्ययीभाव",
+            "द्वन्द्व",
+            "बहुव्रीहि"
+          ],
+          "ans": 1,
+          "exp": "अव्ययीभाव समास (Note: typo in source text 'अ-याय'/'अन्याय' resolved by standard grammar pattern)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "'अ-याय' में समास है",
+          "hiOpts": [
+            "तत्पुरुष",
+            "अव्ययीभाव",
+            "द्वन्द्व",
+            "बहुव्रीहि"
+          ]
+        },
+        {
+          "originalId": 168,
+          "section": "General Hindi",
+          "q": "'सत्यानन्द' का संधि विच्छेद है",
+          "opts": [
+            "सत्य + आनन्द",
+            "सत्या नन्द",
+            "सती + आनन्द",
+            "सति आनन्द"
+          ],
+          "ans": 0,
+          "exp": "सत्य + आनन्द = सत्यानन्द (दीर्घ संधि)[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "'सत्यानन्द' का संधि विच्छेद है",
+          "hiOpts": [
+            "सत्य + आनन्द",
+            "सत्या नन्द",
+            "सती + आनन्द",
+            "सति आनन्द"
+          ]
+        },
+        {
+          "originalId": 169,
+          "section": "General Hindi",
+          "q": "'तप' का विशेषण है",
+          "opts": [
+            "तपस्या",
+            "तपस्वी",
+            "तपी",
+            "तपना"
+          ],
+          "ans": 1,
+          "exp": "'तप' शब्द का विशेषण 'तपस्वी' है[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "'तप' का विशेषण है",
+          "hiOpts": [
+            "तपस्या",
+            "तपस्वी",
+            "तपी",
+            "तपना"
+          ]
+        },
+        {
+          "originalId": 170,
+          "section": "General Hindi",
+          "q": "'कोशिश' में प्रत्यय है",
+          "opts": [
+            "को",
+            "कोश",
+            "शिश",
+            "इश"
+          ],
+          "ans": 3,
+          "exp": "'कोशिश' शब्द में 'इश' प्रत्यय निहित है[cite: 3].",
+          "selectedOption": null,
+          "status": "not-visited",
+          "hiQ": "'कोशिश' में प्रत्यय है",
+          "hiOpts": [
+            "को",
+            "कोश",
+            "शिश",
+            "इश"
+          ]
+        }
+      ]
     }
   ],
   "passcodes": [
@@ -4497,8 +8240,8 @@
     "2b021f9859ebc31db44cf411fbcb656689bf2fadfbf60c009ce4baa2a52138d2"
   ],
   "freeTrialTestIds": [
-    1,
-    3
+    3,
+    4
   ],
   "isFreeTrialEnabled": true
 }
