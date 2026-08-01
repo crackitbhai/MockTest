@@ -4496,7 +4496,7 @@
       "categoryId": 1,
       "name": "JOA IT 903",
       "duration": 120,
-      "negativeMarking": 0.25,
+      "negativeMarking": 0,
       "data": [
         {
           "originalId": 1,
@@ -8240,6 +8240,7 @@
     "2b021f9859ebc31db44cf411fbcb656689bf2fadfbf60c009ce4baa2a52138d2"
   ],
   "freeTrialTestIds": [
+    1,
     3,
     4
   ],
