@@ -1,0 +1,45 @@
+{
+  "categories": [
+    { "id": 1, "name": "HP JOA IT Mock Tests", "locked": false },
+    { "id": 2, "name": "HP Patwari Mock Tests", "locked": false },
+    { "id": 3, "name": "HP Constable Mock Tests", "locked": true }
+  ],
+  "catalog": [
+    {
+      "id": 1,
+      "categoryId": 1,
+      "name": "JOA IT - Sample Mock Test 1",
+      "duration": 120,
+      "negativeMarking": 0.25,
+      "data": [
+        {
+          "originalId": 1,
+          "section": "Computer",
+          "q": "What is the full form of CPU?",
+          "hiQ": "CPU का पूर्ण रूप क्या है?",
+          "opts": [
+            "Central Processing Unit",
+            "Control Processing Unit",
+            "Computer Personal Unit",
+            "Central Program Unit"
+          ],
+          "hiOpts": [
+            "सेंट्रल प्रोसेसिंग यूनिट",
+            "कंट्रोल प्रोसेसिंग यूनिट",
+            "कंप्यूटर पर्सनल यूनिट",
+            "सेंट्रल प्रोग्राम यूनिट"
+          ],
+          "ans": 0,
+          "exp": "CPU stands for Central Processing Unit."
+        }
+      ]
+    }
+  ],
+  "passcodes": [
+    "128d54ca2ac4d21cb5a7536d1b26c7d23d8c1c5a934448557a627233211516f4"
+  ],
+  "isFreeTrialEnabled": true,
+  "freeTrialTestIds": [
+    1
+  ]
+}
