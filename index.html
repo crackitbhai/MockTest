@@ -11,7 +11,7 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
         .hide { display: none !important; }
         
         @keyframes arrow-move {
@@ -49,10 +49,10 @@
     <div id="notification-box" class="hide fixed top-12 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-xl z-[250] font-black text-center text-sm md:text-base border border-slate-200 shadow-md bg-white"></div>
 
     <!-- Header -->
-    <header class="bg-[#0f172a] text-white px-6 py-3.5 flex justify-between items-center sticky top-0 z-50 border-b border-slate-800 shadow-sm">
-        <div class="flex items-center gap-3 select-none" style="cursor: default;" onclick="window.handleSecretAdminAccess()">
-            <div class="flex items-center" style="cursor: default;">
-                <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor: default;">
+    <header class="bg-[#0f172a] text-white px-4 md:px-6 py-3.5 flex justify-between items-center sticky top-0 z-50 border-b border-slate-800 shadow-sm">
+        <div class="flex items-center gap-3 select-none cursor-pointer" onclick="window.handleSecretAdminAccess()">
+            <div class="flex items-center">
+                <svg width="38" height="38" md:width="42" md:height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M50 10C33.43 10 20 23.43 20 40C20 50.11 25.13 58.9 32.8 64.18V74C32.8 76.21 34.59 78 36.8 78H63.2C65.41 78 67.2 76.21 67.2 74V64.18C74.87 58.9 80 50.11 80 40C80 23.43 66.57 10 50 10Z" fill="#F97316" stroke="#FFFFFF" stroke-width="2"/>
                     <path d="M42 82H58M45 86H55" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
                     <path d="M38 35C38 30 42 27 50 27C58 27 62 30 62 35C62 38 60 41 57 43V50H43V43C40 41 38 38 38 35Z" fill="#0EA5E9"/>
@@ -60,20 +60,20 @@
                     <path d="M56 33C54 33 53 35 53 37C53 39 54 41 56 41" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </div>
-            <div class="flex flex-col" style="cursor: default;">
-                <div class="flex items-center gap-2.5">
-                    <span class="text-lg md:text-xl font-black tracking-wider text-white leading-tight">CRACKIT <span class="text-[#f97316]">BHAI</span></span>
-                    <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-arrow shrink-0">
+            <div class="flex flex-col">
+                <div class="flex items-center gap-2">
+                    <span class="text-base md:text-xl font-black tracking-wider text-white leading-tight">CRACKIT <span class="text-[#f97316]">BHAI</span></span>
+                    <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-arrow shrink-0">
                         <path d="M15 72L44 40L65 61L90 26" stroke="#0EA5E9" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M66 26H90V50" stroke="#0EA5E9" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
-                <span class="text-[10px] text-slate-400 font-semibold tracking-tight">Unlock Your Knowledge. Ace Every Exam.</span>
+                <span class="text-[9px] md:text-[10px] text-slate-400 font-semibold tracking-tight">Unlock Your Knowledge. Ace Every Exam.</span>
             </div>
         </div>
         
         <div id="user-profile-nav" class="hide relative">
-            <button onclick="window.toggleDropdown()" class="flex items-center space-x-2.5 focus:outline-none bg-slate-800 hover:bg-slate-700 px-3.5 py-1.5 rounded-full transition">
+            <button onclick="window.toggleDropdown()" class="flex items-center space-x-2.5 focus:outline-none bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-full transition">
                 <span id="nav-user-name" class="hidden md:block font-semibold text-sm text-slate-200">Student</span>
                 <div id="nav-avatar" class="w-7 h-7 bg-[#f97316] text-white rounded-full flex items-center justify-center font-bold text-xs">S</div>
             </button>
@@ -107,8 +107,8 @@
                 <p class="text-xs italic font-semibold text-orange-400 mt-3 bg-slate-900 px-4 py-1.5 rounded-full border border-slate-800">"Consistency se hi safalta milti hai, rukna nahi."</p>
             </div>
         </div>
-        <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12 relative bg-[#0b1221] my-auto">
-            <div class="bg-white p-8 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md">
+        <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-4 md:p-12 relative bg-[#0b1221] my-auto">
+            <div class="bg-white p-6 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md">
                 <div class="text-center mb-6">
                     <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-1">Student Login</h2>
                     <p class="text-slate-500 font-medium text-xs md:text-sm">Enter your name and Access Code.</p>
@@ -124,7 +124,15 @@
                     </div>
                     <button onclick="window.login()" class="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3.5 rounded-xl transition text-base shadow-sm flex items-center justify-center gap-2 mt-2">Start Learning →</button>
                     
-                    <div id="free-trial-container" class="pt-2">
+                    <!-- WhatsApp Button -->
+                    <div class="pt-2">
+                        <button onclick="window.openWhatsAppInbox()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-3 rounded-xl transition text-sm flex items-center justify-center gap-2.5 shadow-sm hover:shadow-emerald-500/20">
+                            <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                            <span>Get ID and Password</span>
+                        </button>
+                    </div>
+
+                    <div id="free-trial-container" class="pt-1">
                         <button onclick="window.openFreeTrialHub()" class="w-full bg-slate-900 hover:bg-slate-800 text-sky-400 font-extrabold py-3 rounded-xl transition text-sm border border-slate-800 flex items-center justify-center gap-2 shadow-xs">🚀 Start Free Trial</button>
                     </div>
                 </div>
@@ -132,7 +140,7 @@
         </div>
     </div>
 
-    <!-- Free Trial Hub Screen (Attractive Styled Boxes) -->
+    <!-- Free Trial Hub Screen -->
     <div id="freetrial-hub-screen" class="hide max-w-5xl mx-auto p-4 md:p-8 mt-6">
         <button onclick="window.showScreen('login-screen', true)" class="text-[#f97316] font-semibold hover:underline mb-4 inline-flex items-center gap-1 text-sm">← Back to Login</button>
         <div class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-200 shadow-xl">
@@ -142,42 +150,39 @@
         </div>
     </div>
 
-    <!-- Study Material Category Selection Screen (Attractive Styled Boxes) -->
+    <!-- Study Material Folder Selection Screen -->
     <div id="studymaterial-hub-screen" class="hide max-w-6xl mx-auto p-4 md:p-8 mt-6">
         <button onclick="window.goHome()" class="text-[#f97316] font-semibold hover:underline mb-4 inline-flex items-center gap-1 text-sm">← Back to Dashboard</button>
-        <div class="mb-6 bg-gradient-to-r from-sky-500 to-indigo-600 text-white p-8 rounded-[2.5rem] shadow-xl">
+        <div class="mb-6 bg-gradient-to-r from-sky-500 to-indigo-600 text-white p-6 md:p-8 rounded-[2.5rem] shadow-xl">
             <span class="bg-white/20 text-white text-xs font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider backdrop-blur-sm">Resource Center</span>
-            <h2 class="text-2xl md:text-4xl font-black mt-2">📚 Study Material & Notes Hub</h2>
-            <p class="text-sky-100 text-sm mt-1">Select an exam category below to view and download assembled PDF notes.</p>
+            <h2 class="text-2xl md:text-4xl font-black mt-2">📚 Study Material & Folders</h2>
+            <p class="text-sky-100 text-sm mt-1">Select a folder below to view PDF notes or video lectures.</p>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="studymaterial-cat-grid"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="studymaterial-folder-grid"></div>
     </div>
 
-    <!-- Study Material PDF Files View Screen (Attractive Styled Boxes) -->
+    <!-- Study Material Files View Screen -->
     <div id="studymaterial-files-screen" class="hide max-w-5xl mx-auto p-4 md:p-8 mt-6">
-        <button onclick="window.openStudyMaterialHub()" class="text-[#f97316] font-semibold hover:underline mb-4 inline-flex items-center gap-1 text-sm">← Back to Study Categories</button>
+        <button onclick="window.openStudyMaterialHub()" class="text-[#f97316] font-semibold hover:underline mb-4 inline-flex items-center gap-1 text-sm">← Back to Folders</button>
         <div class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-200 shadow-xl">
-            <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-1" id="sm-cat-title">Study Notes</h2>
-            <p class="text-slate-500 text-sm mb-6">Download your notes below.</p>
+            <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-1" id="sm-folder-title">Folder Contents</h2>
+            <p class="text-slate-500 text-sm mb-6" id="sm-folder-subtitle">Access your materials below.</p>
             <div class="space-y-4" id="studymaterial-files-list"></div>
         </div>
     </div>
 
-    <!-- Category Selection Screen (Attractive UI with What's New on Top & Categories Below) -->
-    <div id="category-screen" class="hide max-w-6xl mx-auto p-6 md:p-10 mt-2">
-        
-        <!-- Whats New & Study Material Attractive Banner -->
+    <!-- Category Selection Screen -->
+    <div id="category-screen" class="hide max-w-6xl mx-auto p-4 md:p-10 mt-2">
         <div class="mb-8 bg-gradient-to-br from-indigo-900 via-slate-900 to-[#0f172a] text-white p-6 md:p-10 rounded-[2.5rem] shadow-xl flex justify-between items-center flex-wrap gap-6 border border-slate-800 relative overflow-hidden">
             <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-orange-500/10 rounded-full blur-2xl pointer-events-none"></div>
             <div class="relative z-10 max-w-xl">
                 <span class="bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[11px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-xs">✨ What's New & Updates</span>
                 <h3 class="text-2xl md:text-4xl font-black mt-3 tracking-tight">Study Material & Free Notes Hub</h3>
-                <p class="text-slate-300 text-xs md:text-sm mt-2 leading-relaxed">Boost your exam preparation with category-wise subject notes, formula sheets, and important PDF files updated regularly.</p>
+                <p class="text-slate-300 text-xs md:text-sm mt-2 leading-relaxed">Boost your exam preparation with custom subject folders, notes, and video lectures updated regularly.</p>
             </div>
             <button onclick="window.openStudyMaterialHub()" class="relative z-10 bg-[#f97316] hover:bg-[#ea580c] text-white font-black px-7 py-4 rounded-2xl text-sm transition shadow-lg hover:shadow-orange-500/25 flex items-center gap-2 shrink-0"><span>📚 Explore Study Notes</span> →</button>
         </div>
 
-        <!-- Section Title Header -->
         <div class="mb-6 bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-xs flex justify-between items-center flex-wrap gap-4">
             <div>
                 <span class="bg-orange-100 text-[#f97316] text-xs font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider">Exam Portal</span>
@@ -190,11 +195,10 @@
             </div>
         </div>
 
-        <!-- Attractive Dynamic Category Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="category-grid"></div>
     </div>
 
-    <!-- Dashboard Screen (Mock Test List with Attractive Styled Boxes) -->
+    <!-- Dashboard Screen -->
     <div id="dashboard-screen" class="hide max-w-6xl mx-auto p-4 md:p-8 mt-4">
         <button onclick="window.goHome()" class="text-[#f97316] font-semibold hover:underline mb-3 inline-flex items-center gap-1 text-sm">← Back to Categories</button>
         <div class="mb-6 bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
@@ -218,36 +222,35 @@
         </div>
     </div>
 
-    <!-- Admin Control Panel Screen -->
+    <!-- Admin Control Panel Screen with Full CRUD -->
     <div id="admin-dashboard-screen" class="hide max-w-7xl mx-auto p-4 md:p-8 mt-4">
         <!-- Top Banner -->
         <div class="bg-gradient-to-r from-slate-900 to-[#0f172a] text-white p-6 md:p-8 rounded-3xl mb-8 shadow-xl flex justify-between items-center flex-wrap gap-4 border border-slate-800">
             <div>
                 <span class="bg-[#f97316] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">SECURE DASHBOARD</span>
                 <h2 class="text-2xl md:text-4xl font-black mt-2 tracking-tight">Admin Control Panel</h2>
-                <p class="text-slate-400 text-xs md:text-sm mt-1">Manage platform access, passcodes, categories, and question banks seamlessly.</p>
+                <p class="text-slate-400 text-xs md:text-sm mt-1">Full CRUD control over categories, study folders, passcodes, and mock tests.</p>
             </div>
             <button onclick="window.showScreen('login-screen', true)" class="bg-rose-600 hover:bg-rose-700 text-white px-5 py-3 rounded-2xl font-bold text-sm transition shadow-md flex items-center gap-2">🚪 Logout Admin</button>
         </div>
 
-        <!-- JSON Sync Hub Box -->
+        <!-- GitHub Auto-Sync & JSON Backup Box -->
         <div class="bg-white p-6 rounded-3xl border border-slate-200 mb-6 shadow-sm border-l-4 border-l-purple-500">
-            <h3 class="text-lg font-black text-slate-900 mb-2">💾 JSON Sync & Backup</h3>
-            <p class="text-xs text-slate-500 mb-4">बदलावों को GitHub पर लाइव करने के लिए यहाँ से JSON फाइल डाउनलोड करें और उसे अपनी रिपॉजिटरी में <code class="bg-slate-100 px-1 py-0.5 rounded text-purple-600 font-bold">exam-data.json</code> नाम से अपलोड करें।</p>
+            <h3 class="text-lg font-black text-slate-900 mb-2">💾 GitHub Auto-Sync & Backup</h3>
+            <p class="text-xs text-slate-500 mb-4">बदलाव सीधे आपके GitHub (<code class="bg-slate-100 px-1 py-0.5 rounded text-purple-600 font-bold">MockTest/exam-data.json</code>) पर ऑटोमैटिक सिंक हो रहे हैं।</p>
             <div class="flex gap-3 flex-wrap">
                 <button onclick="window.exportToJsonFile()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-5 py-3 rounded-xl text-sm transition shadow-sm">📥 Download exam-data.json</button>
             </div>
         </div>
         
-        <!-- Grid Layout for Controls -->
+        <!-- Grid Controls -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <!-- FREE TRIAL CONTROL SECTION -->
-            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition border-t-4 border-t-[#0ea5e9]">
+            <!-- Free Trial Control -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-t-4 border-t-[#0ea5e9]">
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="text-lg font-black text-slate-900">🚀 Free Trial Control Hub</h3>
-                    <span class="text-xs bg-sky-50 text-sky-600 font-bold px-2.5 py-1 rounded-lg">Access Control</span>
+                    <span class="text-xs bg-sky-50 text-sky-600 font-bold px-2.5 py-1 rounded-lg">Access</span>
                 </div>
-                <p class="text-xs text-slate-500 mb-4">Enable or disable the public free trial button and select specific assessments.</p>
                 <div class="flex items-center gap-4 mb-4">
                     <button id="toggle-trial-btn" onclick="window.toggleFreeTrialSetting()" class="px-5 py-3 rounded-xl font-black text-xs text-white transition shadow-sm w-full"></button>
                 </div>
@@ -257,13 +260,12 @@
                 </div>
             </div>
 
-            <!-- Passcode Manager Section -->
-            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition border-t-4 border-t-[#f97316]">
+            <!-- Passcodes -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-t-4 border-t-[#f97316]">
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="text-lg font-black text-slate-900">🔑 Access Passcodes</h3>
                     <span class="text-xs bg-orange-50 text-[#f97316] font-bold px-2.5 py-1 rounded-lg">Security</span>
                 </div>
-                <p class="text-xs text-slate-500 mb-4">Add custom secret codes. Candidates require any valid code to enter student portal.</p>
                 <div class="flex gap-2 mb-4">
                     <input type="text" id="new-passcode-input" placeholder="e.g. CRACKIT2026" class="border border-slate-200 p-3 rounded-xl flex-1 outline-none text-sm bg-slate-50 font-bold text-slate-800 focus:bg-white focus:border-[#f97316] transition">
                     <button onclick="window.addPasscode()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-bold px-5 py-3 rounded-xl text-sm transition shadow-sm shrink-0">Add Code</button>
@@ -275,39 +277,59 @@
             </div>
         </div>
 
-        <!-- Categories Manager -->
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 mb-6 shadow-sm">
-            <h3 class="text-lg font-black text-slate-900 mb-2">📁 Exam Categories Manager</h3>
-            <p class="text-xs text-slate-500 mb-4">Create new exam boards or lock/unlock categories for users.</p>
+        <!-- EXAM CATEGORIES CRUD MANAGER -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 mb-6 shadow-sm border-t-4 border-t-emerald-500">
+            <h3 class="text-lg font-black text-slate-900 mb-2">📁 Exam Categories CRUD Manager (Create, Edit, Lock, Delete)</h3>
+            <p class="text-xs text-slate-500 mb-4">Create or modify exam categories dynamically.</p>
             <div class="flex gap-2 mb-4 max-w-lg">
                 <input type="text" id="new-cat-name" placeholder="Category Name (e.g. HP Police)" class="border border-slate-200 p-3 rounded-xl flex-1 outline-none text-sm bg-slate-50 font-bold text-slate-800 focus:bg-white focus:border-[#f97316] transition">
-                <button onclick="window.addCategory()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-sm shrink-0">Add Category</button>
+                <button onclick="window.addCategory()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-black px-6 py-3 rounded-xl text-sm transition shadow-sm shrink-0">Add Category</button>
             </div>
             <div id="admin-cat-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
         </div>
 
-        <!-- STUDY MATERIAL (PDF NOTES) UPLOAD & EDIT MANAGER -->
+        <!-- STUDY FOLDERS & ITEMS CRUD MANAGER -->
         <div class="bg-white p-6 rounded-3xl border border-slate-200 mb-6 shadow-sm border-t-4 border-t-sky-500">
-            <h3 class="text-lg font-black text-slate-900 mb-2">📚 Study Material & Notes Manager</h3>
-            <p class="text-xs text-slate-500 mb-4">Upload, edit title, or delete PDF study materials category-wise.</p>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
-                <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase tracking-wider">Category</label>
-                    <select id="new-note-category" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm font-bold text-slate-800"></select>
+            <h3 class="text-lg font-black text-slate-900 mb-2">📚 Study Material Folders & Items CRUD Manager</h3>
+            <p class="text-xs text-slate-500 mb-4">Create folders of type 'PDF' or 'Video', and add study items safely.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <div class="sm:col-span-2">
+                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">Folder Name</label>
+                    <input type="text" id="new-folder-name" placeholder="e.g. JOA IT Computer Lectures" class="w-full p-3 border border-slate-200 rounded-xl outline-none text-sm bg-white font-bold text-slate-800">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase tracking-wider">Note Title</label>
-                    <input type="text" id="new-note-title" placeholder="JOA IT Computer Shortcut PDF" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm font-bold text-slate-800">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase tracking-wider">Select PDF File</label>
-                    <input type="file" id="new-note-file" accept=".pdf" class="w-full text-xs text-slate-500 file:py-2.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#0f172a] file:text-white cursor-pointer">
+                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">Folder Type</label>
+                    <select id="new-folder-type" class="w-full p-3 border border-slate-200 rounded-xl bg-white outline-none text-sm font-bold text-slate-800">
+                        <option value="pdf">PDF Notes Folder</option>
+                        <option value="video">YouTube Video Folder</option>
+                    </select>
                 </div>
             </div>
-            <button onclick="window.uploadStudyNote()" class="bg-sky-500 hover:bg-sky-600 text-white font-black py-3 px-6 rounded-xl text-sm transition shadow-sm">Upload Study Note PDF</button>
-            
-            <div class="mt-6">
-                <h4 class="font-bold text-sm text-slate-800 mb-2">Uploaded Notes List (Edit / Delete):</h4>
+            <button onclick="window.addStudyFolder()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-sm mb-6">Create Study Folder</button>
+            <div id="admin-folder-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6"></div>
+
+            <hr class="border-slate-100 my-4">
+
+            <h4 class="font-bold text-sm text-slate-900 mb-2">Add Items (PDF File OR YouTube Link) to Folder:</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">Select Folder</label>
+                    <select id="new-item-folder" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm font-bold text-slate-800"></select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">Item Title</label>
+                    <input type="text" id="new-item-title" placeholder="Lecture 1 / Python Basics" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm font-bold text-slate-800">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <input type="file" id="new-note-file" accept=".pdf" class="w-full text-xs text-slate-500 border border-slate-200 p-2 rounded-xl bg-slate-50 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-slate-900 file:text-white cursor-pointer">
+                <input type="text" id="new-youtube-link" placeholder="Or Paste YouTube Link (https://youtu.be/...)" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none text-sm font-bold text-slate-800">
+            </div>
+            <button onclick="window.uploadStudyItem()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-sm mb-4">Save Study Item</button>
+
+            <div class="mt-4">
+                <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide mb-2">Uploaded Study Items (Edit / Delete):</h4>
                 <div id="admin-notes-list" class="space-y-2 max-h-56 overflow-y-auto"></div>
             </div>
         </div>
@@ -319,7 +341,7 @@
                 <div id="admin-test-list" class="space-y-3 overflow-y-auto max-h-[500px] pr-1"></div>
             </div>
             <div class="lg:col-span-2 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                <h3 class="text-lg font-black text-slate-900 mb-3 border-b border-slate-100 pb-3">📥 Bulk Upload New Mock Test</h3>
+                <h3 class="text-lg font-black text-slate-900 mb-3 border-b border-slate-100 pb-3">📥 Bulk Upload Safe Mock Test (HTML & Excel Safe)</h3>
                 
                 <div class="mb-5 bg-sky-50/70 border border-sky-200 p-4 rounded-2xl">
                     <label class="block text-xs font-black text-sky-900 uppercase tracking-wide mb-1.5">📁 Auto-Extract Questions from PDF Paper</label>
@@ -343,21 +365,46 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-xs font-bold text-slate-600 mb-2 uppercase tracking-wider">Questions Paste Area (<span class="text-[#f97316]">Follow text format</span>)</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-2 uppercase tracking-wider">Questions Paste Area (<span class="text-[#f97316]">HTML/Excel Safe</span>)</label>
                     <div class="bg-slate-900 text-sky-300 p-3.5 rounded-2xl font-mono text-xs leading-relaxed mb-3 border border-slate-800 shadow-inner select-all">
 Section: Computer<br>
-Question: What is the full form of CPU?<br>
-A) Central Processing Unit<br>
-B) Control Processing Unit<br>
-C) Computer Personal Unit<br>
-D) Central Program Unit<br>
+Question: What is &lt;b&gt;HTML&lt;/b&gt; & Excel formula =SUM(A1:A5)?<br>
+A) Markup Language<br>
+B) Programming Language<br>
+C) Database<br>
+D) Operating System<br>
 Correct: A<br>
-Explanation: CPU stands for Central Processing Unit.<br>
+Explanation: HTML stands for HyperText Markup Language.<br>
 <span class="text-slate-400 italic">(Leave one blank line between each question)</span>
                     </div>
                     <textarea id="bulk-questions-input" rows="7" class="w-full p-4 border border-slate-200 rounded-2xl font-mono text-xs leading-relaxed outline-none bg-slate-50 text-slate-700" placeholder="Paste your formatted questions here..."></textarea>
                 </div>
-                <button onclick="window.processBulkUpload()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-4 px-6 rounded-2xl w-full text-sm transition shadow-md">Save New Mock Test</button>
+                <button onclick="window.processBulkUpload()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-4 px-6 rounded-2xl w-full text-sm transition shadow-md">Save New Mock Test Safely</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Folder Modal -->
+    <div id="edit-folder-modal" class="hide fixed inset-0 modal-overlay z-[205] flex items-center justify-center p-3">
+        <div class="bg-white rounded-3xl w-full max-w-md p-6 border border-slate-200 shadow-2xl">
+            <h3 class="text-lg font-black text-slate-900 mb-4">Edit Study Folder</h3>
+            <div class="space-y-3.5 text-sm">
+                <input type="hidden" id="edit-folder-id">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">Folder Name</label>
+                    <input type="text" id="edit-folder-name-input" class="w-full p-3 border border-slate-200 rounded-xl font-bold outline-none bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">Folder Type</label>
+                    <select id="edit-folder-type-input" class="w-full p-3 border border-slate-200 rounded-xl font-bold outline-none bg-slate-50">
+                        <option value="pdf">PDF Notes Folder</option>
+                        <option value="video">YouTube Video Folder</option>
+                    </select>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="document.getElementById('edit-folder-modal').classList.add('hide')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-xs transition">Cancel</button>
+                    <button onclick="window.saveEditedFolder()" class="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-xl text-xs transition">Update Folder</button>
+                </div>
             </div>
         </div>
     </div>
@@ -365,16 +412,20 @@ Explanation: CPU stands for Central Processing Unit.<br>
     <!-- Edit Note Modal -->
     <div id="edit-note-modal" class="hide fixed inset-0 modal-overlay z-[205] flex items-center justify-center p-3">
         <div class="bg-white rounded-3xl w-full max-w-md p-6 border border-slate-200 shadow-2xl">
-            <h3 class="text-lg font-black text-slate-900 mb-4">Edit Study Note</h3>
+            <h3 class="text-lg font-black text-slate-900 mb-4">Edit Study Item</h3>
             <div class="space-y-3.5 text-sm">
                 <input type="hidden" id="edit-note-id">
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">Note Title</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">Item Title</label>
                     <input type="text" id="edit-note-title-input" class="w-full p-3 border border-slate-200 rounded-xl font-bold outline-none bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1 uppercase">YouTube Link (If video)</label>
+                    <input type="text" id="edit-note-link-input" class="w-full p-3 border border-slate-200 rounded-xl font-bold outline-none bg-slate-50">
                 </div>
                 <div class="flex gap-3 pt-2">
                     <button onclick="document.getElementById('edit-note-modal').classList.add('hide')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-xs transition">Cancel</button>
-                    <button onclick="window.saveEditedNote()" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-bold py-3 rounded-xl text-xs transition">Update Note</button>
+                    <button onclick="window.saveEditedNote()" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-bold py-3 rounded-xl text-xs transition">Update Item</button>
                 </div>
             </div>
         </div>
@@ -425,7 +476,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
     <!-- Edit Single Question Modal -->
     <div id="edit-q-modal" class="hide fixed inset-0 modal-overlay z-[210] flex items-center justify-center p-3">
         <div class="bg-white rounded-3xl w-full max-w-2xl p-6 border border-slate-200 max-h-[90vh] overflow-y-auto shadow-2xl">
-            <h3 class="text-lg font-black text-slate-900 mb-4">Question Editor</h3>
+            <h3 class="text-lg font-black text-slate-900 mb-4">Question Editor (Safe HTML/Excel)</h3>
             <div class="space-y-3.5 text-sm">
                 <input type="text" id="eq-section" placeholder="Section (e.g. Computer)" class="w-full p-3 border border-slate-200 rounded-xl font-bold outline-none bg-slate-50">
                 <textarea id="eq-q" rows="2" placeholder="Question Text" class="w-full p-3 border border-slate-200 rounded-xl outline-none bg-slate-50"></textarea>
@@ -441,7 +492,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 <textarea id="eq-exp" rows="2" placeholder="Explanation" class="w-full p-3 border border-slate-200 rounded-xl outline-none bg-slate-50"></textarea>
                 <div class="flex gap-3 pt-2">
                     <button onclick="document.getElementById('edit-q-modal').classList.add('hide')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-xs md:text-sm transition">Cancel</button>
-                    <button onclick="window.saveQuestionEdit()" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-bold py-3 rounded-xl text-xs md:text-sm transition">Save Question</button>
+                    <button onclick="window.saveQuestionEdit()" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3 rounded-xl text-xs md:text-sm transition">Save Question</button>
                 </div>
             </div>
         </div>
@@ -462,7 +513,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
     </div>
 
     <!-- Instructions Screen -->
-    <div id="instructions-screen" class="hide max-w-3xl mx-auto p-6 md:p-10 mt-8 bg-white rounded-3xl border border-slate-200 shadow-xs">
+    <div id="instructions-screen" class="hide max-w-3xl mx-auto p-4 md:p-10 mt-8 bg-white rounded-3xl border border-slate-200 shadow-xs">
         <h2 class="text-xl md:text-3xl font-black text-slate-900 border-b border-slate-100 pb-4 mb-6" id="inst-test-title">Mock Test</h2>
         <div class="space-y-3 text-slate-600 mb-8 bg-slate-50 p-6 rounded-2xl border border-slate-100 text-sm md:text-base font-medium">
             <p class="font-bold text-slate-900">Please read instructions carefully:</p>
@@ -496,17 +547,17 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 </div>
             </div>
 
-            <div class="p-6 md:p-10 flex-1 overflow-y-auto pb-32">
+            <div class="p-4 md:p-10 flex-1 overflow-y-auto pb-32">
                 <h3 class="text-lg md:text-xl font-black text-slate-900 mb-2">Question <span id="q-number-display" class="text-[#f97316]">1</span></h3>
                 <div class="w-12 h-1 bg-orange-500 rounded-full mb-6"></div>
-                <p id="question-text" class="text-base md:text-xl font-semibold mb-6 text-slate-800 leading-relaxed"></p>
+                <div id="question-text" class="text-base md:text-xl font-semibold mb-6 text-slate-800 leading-relaxed"></div>
                 <div id="options-container" class="space-y-3"></div>
             </div>
 
             <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-100 p-3.5 md:p-4 flex justify-between items-center z-10 gap-2 shadow-sm">
-                <button onclick="window.markForReview()" class="bg-[#0ea5e9] hover:bg-cyan-600 text-white py-2.5 px-4 md:px-6 rounded-xl font-bold text-xs md:text-sm transition">Mark Review</button>
-                <button onclick="window.clearResponse()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 px-4 md:px-6 rounded-xl font-bold text-xs md:text-sm transition">Clear</button>
-                <button onclick="window.saveAndNext()" class="bg-[#f97316] hover:bg-[#ea580c] text-white py-2.5 px-6 md:px-10 rounded-xl font-black text-xs md:text-base transition">Save & Next →</button>
+                <button onclick="window.markForReview()" class="bg-[#0ea5e9] hover:bg-cyan-600 text-white py-2.5 px-3 md:px-6 rounded-xl font-bold text-xs md:text-sm transition">Mark Review</button>
+                <button onclick="window.clearResponse()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 px-3 md:px-6 rounded-xl font-bold text-xs md:text-sm transition">Clear</button>
+                <button onclick="window.saveAndNext()" class="bg-[#f97316] hover:bg-[#ea580c] text-white py-2.5 px-5 md:px-10 rounded-xl font-black text-xs md:text-base transition">Save & Next →</button>
             </div>
         </div>
         
@@ -579,12 +630,18 @@ Explanation: CPU stands for Central Processing Unit.<br>
     </div>
 
     <script>
-        const STORAGE_KEY_CATS = 'crackit_v88_notes_cats';
-        const STORAGE_KEY_TESTS = 'crackit_v88_notes_tests';
-        const STORAGE_KEY_PASSCODES = 'crackit_v88_notes_passcodes';
-        const STORAGE_KEY_TRIAL = 'crackit_v88_notes_trial';
-        const STORAGE_KEY_TRIAL_IDS = 'crackit_v88_notes_trial_ids';
-        const STORAGE_KEY_NOTES = 'crackit_v88_notes_list';
+        const GITHUB_TOKEN = "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";
+        const GITHUB_OWNER = "crackitbhai";
+        const GITHUB_REPO = "MockTest";
+        const GITHUB_PATH = "exam-data.json";
+
+        const STORAGE_KEY_CATS = 'crackit_v121_cats';
+        const STORAGE_KEY_TESTS = 'crackit_v121_tests';
+        const STORAGE_KEY_PASSCODES = 'crackit_v121_passcodes';
+        const STORAGE_KEY_TRIAL = 'crackit_v121_trial';
+        const STORAGE_KEY_TRIAL_IDS = 'crackit_v121_trial_ids';
+        const STORAGE_KEY_NOTES = 'crackit_v121_notes';
+        const STORAGE_KEY_FOLDERS = 'crackit_v121_folders';
 
         function showNotification(msg, isSuccess = false) {
             const box = document.getElementById('notification-box');
@@ -614,9 +671,20 @@ Explanation: CPU stands for Central Processing Unit.<br>
         let categories = [];
         let catalog = [];
         let notesList = [];
+        let studyFolders = [];
         let passcodes = ["128d54ca2ac4d21cb5a7536d1b26c7d23d8c1c5a934448557a627233211516f4"];
         let isFreeTrialEnabled = true;
         let freeTrialTestIds = [1];
+
+        // Safe HTML Sanitizer for Excel / Special Symbols
+        function sanitizeText(text) {
+            if(!text) return "";
+            return text.replace(/&/g, "&amp;")
+                       .replace(/</g, "&lt;")
+                       .replace(/>/g, "&gt;")
+                       .replace(/"/g, "&quot;")
+                       .replace(/'/g, "&#039;");
+        }
 
         async function hashString(string) {
             const utf8 = new TextEncoder().encode(string);
@@ -628,13 +696,14 @@ Explanation: CPU stands for Central Processing Unit.<br>
         async function loadStorageData() {
             let loaded = false;
             try {
-                const response = await fetch('exam-data.json');
+                const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/${GITHUB_PATH}?t=${Date.now()}`);
                 if (response.ok) {
                     const jsonData = await response.json();
                     if(jsonData.categories && jsonData.catalog) {
                         categories = jsonData.categories;
                         catalog = jsonData.catalog;
                         notesList = jsonData.notes || [];
+                        studyFolders = jsonData.studyFolders || [];
                         passcodes = jsonData.passcodes || passcodes;
                         isFreeTrialEnabled = jsonData.isFreeTrialEnabled !== undefined ? jsonData.isFreeTrialEnabled : isFreeTrialEnabled;
                         freeTrialTestIds = jsonData.freeTrialTestIds || freeTrialTestIds;
@@ -647,6 +716,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 const savedCats = localStorage.getItem(STORAGE_KEY_CATS);
                 const savedTests = localStorage.getItem(STORAGE_KEY_TESTS);
                 const savedNotes = localStorage.getItem(STORAGE_KEY_NOTES);
+                const savedFolders = localStorage.getItem(STORAGE_KEY_FOLDERS);
                 const savedPasscodes = localStorage.getItem(STORAGE_KEY_PASSCODES);
                 const savedTrial = localStorage.getItem(STORAGE_KEY_TRIAL);
                 const savedTrialIds = localStorage.getItem(STORAGE_KEY_TRIAL_IDS);
@@ -654,8 +724,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 if(savedCats) categories = JSON.parse(savedCats);
                 else categories = [
                     { id: 1, name: "HP JOA IT Mock Tests", locked: false },
-                    { id: 2, name: "HP Patwari Mock Tests", locked: false },
-                    { id: 3, name: "HP Constable Mock Tests", locked: true }
+                    { id: 2, name: "HP Patwari Mock Tests", locked: false }
                 ];
 
                 if(savedTests) catalog = JSON.parse(savedTests);
@@ -664,23 +733,81 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 if(savedNotes) notesList = JSON.parse(savedNotes);
                 else notesList = [];
 
+                if(savedFolders) studyFolders = JSON.parse(savedFolders);
+                else studyFolders = [
+                    { id: 1, name: "JOA IT Computer Notes", type: "pdf", locked: false },
+                    { id: 2, name: "YouTube Video Lectures", type: "video", locked: false }
+                ];
+
                 if(savedPasscodes) passcodes = JSON.parse(savedPasscodes);
                 if(savedTrial !== null) isFreeTrialEnabled = JSON.parse(savedTrial);
                 if(savedTrialIds !== null) freeTrialTestIds = JSON.parse(savedTrialIds);
             }
 
-            saveAllData();
+            saveLocalCache();
             renderLoginScreenTrialBtn();
             showScreen('login-screen', false);
         }
 
-        function saveAllData() {
+        function saveLocalCache() {
             localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories));
             localStorage.setItem(STORAGE_KEY_TESTS, JSON.stringify(catalog));
             localStorage.setItem(STORAGE_KEY_NOTES, JSON.stringify(notesList));
+            localStorage.setItem(STORAGE_KEY_FOLDERS, JSON.stringify(studyFolders));
             localStorage.setItem(STORAGE_KEY_PASSCODES, JSON.stringify(passcodes));
             localStorage.setItem(STORAGE_KEY_TRIAL, JSON.stringify(isFreeTrialEnabled));
             localStorage.setItem(STORAGE_KEY_TRIAL_IDS, JSON.stringify(freeTrialTestIds));
+        }
+
+        async function saveAllData() {
+            saveLocalCache();
+
+            try {
+                showNotification("Syncing with GitHub...", true);
+                const dataObj = {
+                    categories: categories,
+                    catalog: catalog,
+                    notes: notesList,
+                    studyFolders: studyFolders,
+                    passcodes: passcodes,
+                    freeTrialTestIds: freeTrialTestIds,
+                    isFreeTrialEnabled: isFreeTrialEnabled
+                };
+
+                const jsonString = JSON.stringify(dataObj, null, 2);
+                const contentEncoded = btoa(unescape(encodeURIComponent(jsonString)));
+
+                let sha = "";
+                const getRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`, {
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}` }
+                });
+                if(getRes.ok) {
+                    const fileData = await getRes.json();
+                    sha = fileData.sha;
+                }
+
+                const putRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `token ${GITHUB_TOKEN}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message: "Auto-sync updated from admin panel",
+                        content: contentEncoded,
+                        sha: sha
+                    })
+                });
+
+                if(putRes.ok) {
+                    showNotification("Synced to GitHub Successfully! 🚀", true);
+                } else {
+                    showNotification("Saved locally, GitHub sync failed.");
+                }
+            } catch(err) {
+                console.error(err);
+                showNotification("Saved locally (Offline mode)");
+            }
         }
 
         function exportToJsonFile() {
@@ -688,6 +815,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 categories: categories,
                 catalog: catalog,
                 notes: notesList,
+                studyFolders: studyFolders,
                 passcodes: passcodes,
                 freeTrialTestIds: freeTrialTestIds,
                 isFreeTrialEnabled: isFreeTrialEnabled
@@ -706,6 +834,11 @@ Explanation: CPU stands for Central Processing Unit.<br>
         window.onload = function() {
             loadStorageData();
         };
+
+        function openWhatsAppInbox() {
+            const message = encodeURIComponent("Hi crackit Bhai, give me user name and password");
+            window.open(`https://wa.me/918219256192?text=${message}`, '_blank');
+        }
 
         function renderLoginScreenTrialBtn() {
             const container = document.getElementById('free-trial-container');
@@ -775,10 +908,9 @@ Explanation: CPU stands for Central Processing Unit.<br>
             }
         }
 
-        // STUDY MATERIAL CATEGORY HUB (STEP 1) - STYLISH BOXES
         function openStudyMaterialHub() {
             if(!currentStudent) currentStudent = "Student";
-            const grid = document.getElementById('studymaterial-cat-grid');
+            const grid = document.getElementById('studymaterial-folder-grid');
             if(!grid) return;
             grid.innerHTML = "";
 
@@ -788,21 +920,28 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 { bg: "bg-gradient-to-br from-purple-50 via-fuchsia-50 to-white", border: "border-purple-200 hover:border-purple-400", iconBg: "bg-purple-500 text-white shadow-md shadow-purple-500/20", textHover: "group-hover:text-purple-600" }
             ];
 
-            categories.forEach((cat, index) => {
-                const catNotes = notesList.filter(n => n.categoryId === cat.id);
+            if(studyFolders.length === 0) {
+                grid.innerHTML = `<p class="text-slate-500 text-sm col-span-full text-center py-10">No study material folders created by admin yet.</p>`;
+                showScreen('studymaterial-hub-screen');
+                return;
+            }
+
+            studyFolders.forEach((folder, index) => {
+                const folderItems = notesList.filter(n => n.folderId == folder.id);
                 const theme = themes[index % themes.length];
+                const isVideo = folder.type === 'video';
                 
                 grid.innerHTML += `
-                    <div onclick="window.openStudyMaterialFiles(${cat.id})" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} hover:-translate-y-1 hover:shadow-2xl cursor-pointer group transition-all duration-300 flex flex-col justify-between h-56 relative overflow-hidden shadow-sm">
+                    <div onclick="window.openStudyMaterialFiles(${folder.id})" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} hover:-translate-y-1 hover:shadow-2xl cursor-pointer group transition-all duration-300 flex flex-col justify-between h-56 relative overflow-hidden shadow-sm">
                         <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/40 rounded-full blur-xl pointer-events-none"></div>
                         <div class="relative z-10 flex justify-between items-start">
-                            <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110">📁</div>
-                            <span class="text-xs bg-white text-slate-700 font-extrabold px-3 py-1.5 rounded-full border border-slate-100 shadow-2xs">${catNotes.length} PDFs Available</span>
+                            <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110">${isVideo ? '📺' : '📁'}</div>
+                            <span class="text-xs bg-white text-slate-700 font-extrabold px-3 py-1.5 rounded-full border border-slate-100 shadow-2xs">${folderItems.length} ${isVideo ? 'Videos' : 'PDFs'}</span>
                         </div>
                         <div class="relative z-10 mt-4">
-                            <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight">${cat.name}</h3>
+                            <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight">${folder.name}</h3>
                             <div class="flex items-center justify-between text-xs font-bold text-slate-500 mt-2">
-                                <span>View Notes & Formula Sheets</span>
+                                <span>${isVideo ? 'Watch Video Lectures' : 'View PDF Notes'}</span>
                                 <span class="text-sky-600 font-black group-hover:translate-x-1 transition-transform">→</span>
                             </div>
                         </div>
@@ -812,33 +951,50 @@ Explanation: CPU stands for Central Processing Unit.<br>
             showScreen('studymaterial-hub-screen');
         }
 
-        // STUDY MATERIAL PDF FILES VIEW PAGE (STEP 2) - STYLISH BOXES
-        function openStudyMaterialFiles(catId) {
-            const cat = categories.find(c => c.id === catId);
-            document.getElementById('sm-cat-title').innerText = cat ? `${cat.name} - Study Notes` : "Study Notes";
+        function openStudyMaterialFiles(folderId) {
+            const folder = studyFolders.find(f => f.id == folderId);
+            const isVideoFolder = folder && folder.type === 'video';
+            
+            document.getElementById('sm-folder-title').innerText = folder ? folder.name : "Folder Contents";
+            document.getElementById('sm-folder-subtitle').innerText = isVideoFolder ? "Watch YouTube video lectures below." : "Download your PDF notes below.";
             
             const list = document.getElementById('studymaterial-files-list');
             if(!list) return;
             list.innerHTML = "";
 
-            const catNotes = notesList.filter(n => n.categoryId === catId);
-            if(catNotes.length > 0) {
-                catNotes.forEach(n => {
-                    list.innerHTML += `
-                        <div class="p-5 bg-gradient-to-r from-slate-50 via-sky-50/30 to-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-2xs hover:shadow-md transition-all">
-                            <div class="flex items-center gap-3.5">
-                                <div class="w-12 h-12 rounded-2xl bg-sky-500 text-white font-black flex items-center justify-center text-xl shadow-md shadow-sky-500/20">📄</div>
-                                <div>
-                                    <h4 class="font-black text-slate-900 text-base">${n.title}</h4>
-                                    <span class="text-xs text-slate-400 font-bold">Format: PDF Document</span>
+            const folderItems = notesList.filter(n => n.folderId == folderId);
+            if(folderItems.length > 0) {
+                folderItems.forEach(n => {
+                    if(isVideoFolder) {
+                        list.innerHTML += `
+                            <div class="p-5 bg-gradient-to-r from-slate-50 via-red-50/30 to-white border border-slate-200 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 shadow-2xs hover:shadow-md transition-all">
+                                <div class="flex items-center gap-3.5 w-full">
+                                    <div class="w-12 h-12 rounded-2xl bg-red-600 text-white font-black flex items-center justify-center text-xl shadow-md shrink-0">📺</div>
+                                    <div class="truncate">
+                                        <h4 class="font-black text-slate-900 text-base truncate">${n.title}</h4>
+                                        <span class="text-xs text-red-600 font-bold">YouTube Video Lecture</span>
+                                    </div>
                                 </div>
+                                <a href="${n.link}" target="_blank" class="w-full md:w-auto text-center bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold text-xs md:text-sm shrink-0 transition shadow-sm">▶ Watch on YouTube</a>
                             </div>
-                            <button onclick="window.downloadNote('${n.id}')" class="bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-xl font-bold text-xs md:text-sm shrink-0 transition shadow-sm">📥 Download PDF</button>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        list.innerHTML += `
+                            <div class="p-5 bg-gradient-to-r from-slate-50 via-sky-50/30 to-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-2xs hover:shadow-md transition-all">
+                                <div class="flex items-center gap-3.5 truncate">
+                                    <div class="w-12 h-12 rounded-2xl bg-sky-500 text-white font-black flex items-center justify-center text-xl shadow-md shadow-sky-500/20 shrink-0">📄</div>
+                                    <div class="truncate">
+                                        <h4 class="font-black text-slate-900 text-base truncate">${n.title}</h4>
+                                        <span class="text-xs text-slate-400 font-bold">Format: PDF Document</span>
+                                    </div>
+                                </div>
+                                <button onclick="window.downloadNote('${n.id}')" class="bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-xl font-bold text-xs md:text-sm shrink-0 transition shadow-sm">📥 Download PDF</button>
+                            </div>
+                        `;
+                    }
                 });
             } else {
-                list.innerHTML = `<p class="text-slate-500 text-sm text-center py-10">No PDF notes uploaded in this category yet.</p>`;
+                list.innerHTML = `<p class="text-slate-500 text-sm text-center py-10">No items uploaded in this folder yet.</p>`;
             }
 
             showScreen('studymaterial-files-screen');
@@ -859,39 +1015,124 @@ Explanation: CPU stands for Central Processing Unit.<br>
             showNotification("Downloading PDF...", true);
         }
 
-        function uploadStudyNote() {
-            const catSel = document.getElementById('new-note-category');
-            const titleInput = document.getElementById('new-note-title');
-            const fileInput = document.getElementById('new-note-file');
+        function addCategory() {
+            const nameInput = document.getElementById('new-cat-name');
+            if(!nameInput) return;
+            const name = nameInput.value.trim();
+            if(!name) { showNotification("Enter category name!"); return; }
+            categories.push({ id: Date.now(), name: name, locked: false });
+            saveAllData();
+            nameInput.value = "";
+            renderAdminDashboard();
+            showNotification("Category Created Successfully!", true);
+        }
 
-            if(!catSel || !titleInput || !fileInput) return;
-            const catId = parseInt(catSel.value);
+        function toggleCategoryLock(id) {
+            const cat = categories.find(c => c.id === id);
+            if(cat) {
+                cat.locked = !cat.locked;
+                saveAllData();
+                renderAdminDashboard();
+                showNotification("Category Lock Updated!", true);
+            }
+        }
+
+        function deleteCategory(id) {
+            if(categories.length <= 1) { showNotification("At least one category required!"); return; }
+            categories = categories.filter(c => c.id !== id);
+            saveAllData();
+            renderAdminDashboard();
+            showNotification("Category Deleted Successfully!", true);
+        }
+
+        function addStudyFolder() {
+            const nameInput = document.getElementById('new-folder-name');
+            const typeInput = document.getElementById('new-folder-type');
+            if(!nameInput || !typeInput) return;
+            const name = nameInput.value.trim();
+            const type = typeInput.value;
+            if(!name) { showNotification("Enter folder name!"); return; }
+
+            studyFolders.push({ id: Date.now(), name: name, type: type });
+            saveAllData();
+            nameInput.value = "";
+            renderAdminDashboard();
+            showNotification("Study Folder Created Successfully!", true);
+        }
+
+        function promptEditFolder(id) {
+            const folder = studyFolders.find(f => f.id == id);
+            if(!folder) return;
+            document.getElementById('edit-folder-id').value = folder.id;
+            document.getElementById('edit-folder-name-input').value = folder.name;
+            document.getElementById('edit-folder-type-input').value = folder.type || 'pdf';
+            document.getElementById('edit-folder-modal').classList.remove('hide');
+        }
+
+        function saveEditedFolder() {
+            const id = document.getElementById('edit-folder-id').value;
+            const newName = document.getElementById('edit-folder-name-input').value.trim();
+            const newType = document.getElementById('edit-folder-type-input').value;
+            if(!newName) { showNotification("Name cannot be empty!"); return; }
+
+            const folder = studyFolders.find(f => f.id == id);
+            if(folder) {
+                folder.name = newName;
+                folder.type = newType;
+                saveAllData();
+                renderAdminDashboard();
+                document.getElementById('edit-folder-modal').classList.add('hide');
+                showNotification("Folder Updated Successfully!", true);
+            }
+        }
+
+        function deleteStudyFolder(id) {
+            studyFolders = studyFolders.filter(f => f.id !== id);
+            notesList = notesList.filter(n => n.folderId !== id);
+            saveAllData();
+            renderAdminDashboard();
+            showNotification("Folder Deleted Successfully!", true);
+        }
+
+        function uploadStudyItem() {
+            const folderSel = document.getElementById('new-item-folder');
+            const titleInput = document.getElementById('new-item-title');
+            const fileInput = document.getElementById('new-note-file');
+            const linkInput = document.getElementById('new-youtube-link');
+
+            if(!folderSel || !titleInput) return;
+            const folderId = parseInt(folderSel.value);
             const title = titleInput.value.trim();
             const file = fileInput.files[0];
+            const link = linkInput.value.trim();
 
-            if(!title || !file) {
-                showNotification("Please enter title and select a PDF file!");
+            const folder = studyFolders.find(f => f.id == folderId);
+            if(!title || !folderId) {
+                showNotification("Select folder and enter title!");
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Data = e.target.result;
-                const newNote = {
-                    id: Date.now(),
-                    categoryId: catId,
-                    title: title,
-                    fileName: file.name,
-                    fileData: base64Data
-                };
-                notesList.push(newNote);
+            if(folder && folder.type === 'video') {
+                if(!link) { showNotification("Enter YouTube link!"); return; }
+                notesList.push({ id: Date.now(), folderId: folderId, title: title, link: link, fileData: "" });
                 saveAllData();
                 titleInput.value = "";
-                fileInput.value = "";
+                linkInput.value = "";
                 renderAdminDashboard();
-                showNotification("Study Material PDF Uploaded Successfully!", true);
-            };
-            reader.readAsDataURL(file);
+                showNotification("YouTube Video Saved!", true);
+            } else {
+                if(!file) { showNotification("Select PDF file!"); return; }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    notesList.push({ id: Date.now(), folderId: folderId, title: title, fileName: file.name, fileData: e.target.result, link: "" });
+                    saveAllData();
+                    titleInput.value = "";
+                    fileInput.value = "";
+                    renderAdminDashboard();
+                    showNotification("PDF Note Uploaded!", true);
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function promptEditNote(noteId) {
@@ -899,21 +1140,24 @@ Explanation: CPU stands for Central Processing Unit.<br>
             if(!note) return;
             document.getElementById('edit-note-id').value = note.id;
             document.getElementById('edit-note-title-input').value = note.title;
+            document.getElementById('edit-note-link-input').value = note.link || '';
             document.getElementById('edit-note-modal').classList.remove('hide');
         }
 
         function saveEditedNote() {
             const id = document.getElementById('edit-note-id').value;
             const newTitle = document.getElementById('edit-note-title-input').value.trim();
+            const newLink = document.getElementById('edit-note-link-input').value.trim();
             if(!newTitle) { showNotification("Title cannot be empty!"); return; }
 
             const note = notesList.find(n => n.id == id);
             if(note) {
                 note.title = newTitle;
+                if(newLink) note.link = newLink;
                 saveAllData();
                 renderAdminDashboard();
                 document.getElementById('edit-note-modal').classList.add('hide');
-                showNotification("Note Updated Successfully!", true);
+                showNotification("Item Updated Successfully!", true);
             }
         }
 
@@ -1118,7 +1362,6 @@ Explanation: CPU stands for Central Processing Unit.<br>
             document.getElementById('mobile-palette-overlay').classList.toggle('open');
         }
 
-        // --- STYLISH & ATTRACTIVE CATEGORY BOXES ---
         function renderCategories() {
             const grid = document.getElementById('category-grid');
             if(!grid) return;
@@ -1138,12 +1381,10 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 grid.innerHTML += `
                     <div onclick="${isLocked ? 'window.showNotification(\'This category is locked\')' : `window.openCategory(${cat.id})`}" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} ${isLocked ? 'opacity-60' : 'hover:-translate-y-1 hover:shadow-2xl cursor-pointer group'} transition-all duration-300 flex flex-col justify-between h-56 relative overflow-hidden shadow-sm">
                         <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/40 rounded-full blur-xl pointer-events-none"></div>
-                        
                         <div class="relative z-10 flex justify-between items-start">
                             <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110">📝</div>
                             ${isLocked ? '<span class="text-xs bg-rose-100 text-rose-700 font-bold px-3.5 py-1.5 rounded-full border border-rose-200 flex items-center gap-1 shadow-2xs">Locked 🔒</span>' : '<span class="text-xs bg-white text-emerald-600 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-100 shadow-2xs flex items-center gap-1">● Active Series</span>'}
                         </div>
-                        
                         <div class="relative z-10 mt-4">
                             <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight">${cat.name}</h3>
                             <div class="flex items-center justify-between text-xs font-bold text-slate-500 mt-2">
@@ -1164,7 +1405,6 @@ Explanation: CPU stands for Central Processing Unit.<br>
             renderDashboard();
         }
 
-        // --- STYLISH MOCK TEST LIST BOXES ---
         function renderDashboard() {
             const grid = document.getElementById("test-grid");
             if(!grid) return;
@@ -1244,32 +1484,51 @@ Explanation: CPU stands for Central Processing Unit.<br>
             const catList = document.getElementById('admin-cat-list');
             if(catList) {
                 catList.innerHTML = categories.map(c => `
-                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl font-bold flex justify-between items-center text-sm">
-                        <span class="truncate mr-2 text-slate-800">${c.name}</span>
-                        <button onclick="window.toggleCategoryLock(${c.id})" class="text-xs px-3 py-1.5 rounded-xl text-white shrink-0 font-bold transition ${c.locked ? 'bg-rose-500 hover:bg-rose-600' : 'bg-emerald-500 hover:bg-emerald-600'}">${c.locked ? 'Unlock 🔒' : 'Lock 🔓'}</button>
+                    <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center text-sm shadow-2xs">
+                        <span class="font-bold truncate mr-2 text-slate-800">${c.name}</span>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button onclick="window.toggleCategoryLock(${c.id})" class="px-3 py-1.5 rounded-xl text-xs font-bold text-white transition ${c.locked ? 'bg-rose-500' : 'bg-emerald-500'}">${c.locked ? 'Unlock 🔒' : 'Lock 🔓'}</button>
+                            <button onclick="window.deleteCategory(${c.id})" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">Delete</button>
+                        </div>
                     </div>
                 `).join('');
             }
 
+            const folderSel = document.getElementById('new-item-folder');
+            if(folderSel) {
+                folderSel.innerHTML = studyFolders.map(f => `<option value="${f.id}">${f.name} (${f.type.toUpperCase()})</option>`).join('');
+            }
+
+            const folderListEl = document.getElementById('admin-folder-list');
+            if(folderListEl) {
+                folderListEl.innerHTML = studyFolders.length > 0 ? studyFolders.map(f => `
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center text-xs">
+                        <span class="font-bold truncate mr-2">📁 ${f.name} <span class="text-sky-600 font-semibold">[${f.type.toUpperCase()}]</span></span>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button onclick="window.promptEditFolder('${f.id}')" class="bg-sky-500 hover:bg-sky-600 text-white px-2.5 py-1 rounded-lg font-bold">Edit</button>
+                            <button onclick="window.deleteStudyFolder('${f.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded-lg font-bold">Delete</button>
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-xs text-slate-400 italic">No study folders created yet.</p>';
+            }
+
             const select = document.getElementById('new-test-category');
-            const noteCatSelect = document.getElementById('new-note-category');
             if(select) select.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-            if(noteCatSelect) noteCatSelect.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 
             const notesListEl = document.getElementById('admin-notes-list');
             if(notesListEl) {
                 notesListEl.innerHTML = notesList.length > 0 ? notesList.map(n => {
-                    const cObj = categories.find(c => c.id == n.categoryId);
+                    const fObj = studyFolders.find(f => f.id == n.folderId);
                     return `
                         <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center text-xs">
-                            <span class="font-bold truncate mr-2">📄 ${n.title} <span class="text-slate-400 font-normal">(${cObj ? cObj.name : 'General'})</span></span>
+                            <span class="font-bold truncate mr-2">📄 ${n.title} <span class="text-slate-400 font-normal">(${fObj ? fObj.name : 'Folder'})</span></span>
                             <div class="flex gap-1.5 shrink-0">
                                 <button onclick="window.promptEditNote('${n.id}')" class="bg-sky-500 hover:bg-sky-600 text-white px-2.5 py-1 rounded-lg font-bold">Edit</button>
                                 <button onclick="window.promptDeleteNote('${n.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded-lg font-bold">Delete</button>
                             </div>
                         </div>
                     `;
-                }).join('') : '<p class="text-xs text-slate-400 italic">No notes uploaded yet.</p>';
+                }).join('') : '<p class="text-xs text-slate-400 italic">No items uploaded yet.</p>';
             }
 
             const testList = document.getElementById('admin-test-list');
@@ -1283,27 +1542,6 @@ Explanation: CPU stands for Central Processing Unit.<br>
                         </div>
                     </div>
                 `).join('');
-            }
-        }
-
-        function addCategory() {
-            const nameInput = document.getElementById('new-cat-name');
-            if(!nameInput) return;
-            const name = nameInput.value.trim();
-            if(!name) return;
-            categories.push({ id: categories.length + 1, name: name, locked: false });
-            saveAllData();
-            nameInput.value = "";
-            renderAdminDashboard();
-            showNotification("Category Added Successfully!", true);
-        }
-
-        function toggleCategoryLock(id) {
-            const cat = categories.find(c => c.id === id);
-            if(cat) {
-                cat.locked = !cat.locked;
-                saveAllData();
-                renderAdminDashboard();
             }
         }
 
@@ -1330,7 +1568,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
                     showNotification("Test Deleted Successfully!", true);
                 } else if(deleteType === 'note') {
                     notesList = notesList.filter(n => n.id != noteToDelete);
-                    showNotification("Note Deleted Successfully!", true);
+                    showNotification("Item Deleted Successfully!", true);
                 }
                 saveAllData();
                 renderAdminDashboard();
@@ -1340,6 +1578,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
             }
         }
 
+        // SAFE BULK UPLOAD WITH HTML & EXCEL SPECIAL SYMBOL SANITIZER
         function processBulkUpload() {
             const catSelect = document.getElementById('new-test-category');
             const titleInput = document.getElementById('new-test-title');
@@ -1350,7 +1589,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
             if(!catSelect || !titleInput || !timeInput || !negSelect || !qInput) return;
 
             const catId = parseInt(catSelect.value);
-            const title = titleInput.value.trim();
+            const title = sanitizeText(titleInput.value.trim());
             const timeStr = timeInput.value;
             const negVal = parseFloat(negSelect.value);
             const rawText = qInput.value.trim();
@@ -1367,12 +1606,12 @@ Explanation: CPU stands for Central Processing Unit.<br>
                 lines.forEach(l => {
                     let line = l;
                     let lower = line.toLowerCase();
-                    if(lower.startsWith('section:')) qObj.section = line.substring(8).trim();
-                    else if(lower.startsWith('question:')) qObj.q = line.substring(9).trim();
-                    else if(lower.startsWith('a)')) qObj.opts[0] = line.substring(2).trim();
-                    else if(lower.startsWith('b)')) qObj.opts[1] = line.substring(2).trim();
-                    else if(lower.startsWith('c)')) qObj.opts[2] = line.substring(2).trim();
-                    else if(lower.startsWith('d)')) qObj.opts[3] = line.substring(2).trim();
+                    if(lower.startsWith('section:')) qObj.section = sanitizeText(line.substring(8).trim());
+                    else if(lower.startsWith('question:')) qObj.q = sanitizeText(line.substring(9).trim());
+                    else if(lower.startsWith('a)')) qObj.opts[0] = sanitizeText(line.substring(2).trim());
+                    else if(lower.startsWith('b)')) qObj.opts[1] = sanitizeText(line.substring(2).trim());
+                    else if(lower.startsWith('c)')) qObj.opts[2] = sanitizeText(line.substring(2).trim());
+                    else if(lower.startsWith('d)')) qObj.opts[3] = sanitizeText(line.substring(2).trim());
                     else if(lower.startsWith('correct:')) {
                         let ans = lower.substring(8).trim();
                         if(ans === 'a') qObj.ans = 0;
@@ -1380,7 +1619,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
                         if(ans === 'c') qObj.ans = 2;
                         if(ans === 'd') qObj.ans = 3;
                     }
-                    else if(lower.startsWith('explanation:')) qObj.exp = line.substring(12).trim();
+                    else if(lower.startsWith('explanation:')) qObj.exp = sanitizeText(line.substring(12).trim());
                 });
                 if(qObj.q) {
                     qObj.hiQ = qObj.q;
@@ -1398,7 +1637,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
             saveAllData();
             titleInput.value = "";
             qInput.value = "";
-            showNotification(`Successfully added ${parsedQs.length} questions!`, true);
+            showNotification(`Successfully added ${parsedQs.length} questions safely!`, true);
             renderAdminDashboard();
         }
 
@@ -1430,7 +1669,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
         function saveTestMeta() {
             const test = catalog.find(t => t.id === editModeTestId);
             test.categoryId = parseInt(document.getElementById('edit-test-category').value);
-            test.name = document.getElementById('edit-test-title').value;
+            test.name = sanitizeText(document.getElementById('edit-test-title').value);
             test.duration = parseInt(document.getElementById('edit-test-time').value);
             test.negativeMarking = parseFloat(document.getElementById('edit-test-neg').value);
             saveAllData();
@@ -1470,23 +1709,23 @@ Explanation: CPU stands for Central Processing Unit.<br>
             const test = catalog.find(t => t.id === editModeTestId);
             const qData = {
                 originalId: currentEditQIndex === -1 ? test.data.length + 1 : test.data[currentEditQIndex].originalId,
-                section: document.getElementById('eq-section').value.trim() || "Computer",
-                q: document.getElementById('eq-q').value,
-                hiQ: document.getElementById('eq-q').value,
+                section: sanitizeText(document.getElementById('eq-section').value.trim() || "Computer"),
+                q: sanitizeText(document.getElementById('eq-q').value),
+                hiQ: sanitizeText(document.getElementById('eq-q').value),
                 opts: [
-                    document.getElementById('eq-o1').value,
-                    document.getElementById('eq-o2').value,
-                    document.getElementById('eq-o3').value,
-                    document.getElementById('eq-o4').value
+                    sanitizeText(document.getElementById('eq-o1').value),
+                    sanitizeText(document.getElementById('eq-o2').value),
+                    sanitizeText(document.getElementById('eq-o3').value),
+                    sanitizeText(document.getElementById('eq-o4').value)
                 ],
                 hiOpts: [
-                    document.getElementById('eq-o1').value,
-                    document.getElementById('eq-o2').value,
-                    document.getElementById('eq-o3').value,
-                    document.getElementById('eq-o4').value
+                    sanitizeText(document.getElementById('eq-o1').value),
+                    sanitizeText(document.getElementById('eq-o2').value),
+                    sanitizeText(document.getElementById('eq-o3').value),
+                    sanitizeText(document.getElementById('eq-o4').value)
                 ],
                 ans: parseInt(document.getElementById('eq-ans').value),
-                exp: document.getElementById('eq-exp').value,
+                exp: sanitizeText(document.getElementById('eq-exp').value),
                 selectedOption: null, status: 'not-visited'
             };
 
@@ -1596,7 +1835,7 @@ Explanation: CPU stands for Central Processing Unit.<br>
             }
 
             document.getElementById("q-number-display").innerText = q.originalId || index + 1;
-            document.getElementById("question-text").innerText = isHindiLanguage ? (q.hiQ || q.q) : q.q;
+            document.getElementById("question-text").innerHTML = isHindiLanguage ? (q.hiQ || q.q) : q.q;
             
             const optionsContainer = document.getElementById("options-container");
             optionsContainer.innerHTML = "";
@@ -1770,6 +2009,15 @@ Explanation: CPU stands for Central Processing Unit.<br>
         window.removePasscode = removePasscode;
         window.addCategory = addCategory;
         window.toggleCategoryLock = toggleCategoryLock;
+        window.deleteCategory = deleteCategory;
+        window.addStudyFolder = addStudyFolder;
+        window.promptEditFolder = promptEditFolder;
+        window.saveEditedFolder = saveEditedFolder;
+        window.deleteStudyFolder = deleteStudyFolder;
+        window.uploadStudyItem = uploadStudyItem;
+        window.promptEditNote = promptEditNote;
+        window.saveEditedNote = saveEditedNote;
+        window.promptDeleteNote = promptDeleteNote;
         window.promptDeleteTest = promptDeleteTest;
         window.closeDeleteModal = closeDeleteModal;
         window.confirmDeleteTest = confirmDeleteTest;
@@ -1780,12 +2028,9 @@ Explanation: CPU stands for Central Processing Unit.<br>
         window.openEditSingleQ = openEditSingleQ;
         window.saveQuestionEdit = saveQuestionEdit;
         window.extractTextFromPDF = extractTextFromPDF;
-        window.uploadStudyNote = uploadStudyNote;
-        window.promptEditNote = promptEditNote;
-        window.saveEditedNote = saveEditedNote;
-        window.promptDeleteNote = promptDeleteNote;
         window.renderQuestion = renderQuestion;
         window.exportToJsonFile = exportToJsonFile;
+        window.openWhatsAppInbox = openWhatsAppInbox;
     </script>
 </body>
 </html>
