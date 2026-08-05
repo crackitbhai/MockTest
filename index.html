@@ -52,7 +52,7 @@
     <header class="bg-[#0f172a] text-white px-4 md:px-6 py-3.5 flex justify-between items-center sticky top-0 z-50 border-b border-slate-800 shadow-sm">
         <div class="flex items-center gap-3 select-none cursor-pointer" onclick="window.handleSecretAdminAccess()">
             <div class="flex items-center">
-                <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="38" height="38" md:width="42" md:height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M50 10C33.43 10 20 23.43 20 40C20 50.11 25.13 58.9 32.8 64.18V74C32.8 76.21 34.59 78 36.8 78H63.2C65.41 78 67.2 76.21 67.2 74V64.18C74.87 58.9 80 50.11 80 40C80 23.43 66.57 10 50 10Z" fill="#F97316" stroke="#FFFFFF" stroke-width="2"/>
                     <path d="M42 82H58M45 86H55" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
                     <path d="M38 35C38 30 42 27 50 27C58 27 62 30 62 35C62 38 60 41 57 43V50H43V43C40 41 38 38 38 35Z" fill="#0EA5E9"/>
@@ -234,10 +234,10 @@
             <button onclick="window.showScreen('login-screen', true)" class="bg-rose-600 hover:bg-rose-700 text-white px-5 py-3 rounded-2xl font-bold text-sm transition shadow-md flex items-center gap-2">🚪 Logout Admin</button>
         </div>
 
-        <!-- JSON Backup & Download Box -->
+        <!-- GitHub Auto-Sync & JSON Backup Box -->
         <div class="bg-white p-6 rounded-3xl border border-slate-200 mb-6 shadow-sm border-l-4 border-l-purple-500">
-            <h3 class="text-lg font-black text-slate-900 mb-2">💾 Super-Fast Local Backup & JSON Sync</h3>
-            <p class="text-xs text-slate-500 mb-4">बदलाव तुरंत सेव हो रहे हैं। गिटहब पर अपडेट करने के लिए यहाँ से <code class="bg-slate-100 px-1 py-0.5 rounded text-purple-600 font-bold">exam-data.json</code> डाउनलोड करें।</p>
+            <h3 class="text-lg font-black text-slate-900 mb-2">💾 GitHub Auto-Sync & Backup</h3>
+            <p class="text-xs text-slate-500 mb-4">बदलाव सीधे आपके GitHub (<code class="bg-slate-100 px-1 py-0.5 rounded text-purple-600 font-bold">MockTest/exam-data.json</code>) पर ऑटोमैटिक सिंक हो रहे हैं।</p>
             <div class="flex gap-3 flex-wrap">
                 <button onclick="window.exportToJsonFile()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-5 py-3 rounded-xl text-sm transition shadow-sm">📥 Download exam-data.json</button>
             </div>
@@ -425,7 +425,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 </div>
                 <div class="flex gap-3 pt-2">
                     <button onclick="document.getElementById('edit-note-modal').classList.add('hide')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-xs transition">Cancel</button>
-                    <button onclick="window.saveEditedNote()" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3 rounded-xl text-xs transition">Update Item</button>
+                    <button onclick="window.saveEditedNote()" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-bold py-3 rounded-xl text-xs transition">Update Item</button>
                 </div>
             </div>
         </div>
@@ -630,6 +630,11 @@ Explanation: HTML stands for HyperText Markup Language.<br>
     </div>
 
     <script>
+        const GITHUB_TOKEN = "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";
+        const GITHUB_OWNER = "crackitbhai";
+        const GITHUB_REPO = "MockTest";
+        const GITHUB_PATH = "exam-data.json";
+
         const STORAGE_KEY_CATS = 'crackit_v121_cats';
         const STORAGE_KEY_TESTS = 'crackit_v121_tests';
         const STORAGE_KEY_PASSCODES = 'crackit_v121_passcodes';
@@ -671,6 +676,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
         let isFreeTrialEnabled = true;
         let freeTrialTestIds = [1];
 
+        // Safe HTML Sanitizer for Excel / Special Symbols
         function sanitizeText(text) {
             if(!text) return "";
             return text.replace(/&/g, "&amp;")
@@ -690,7 +696,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
         async function loadStorageData() {
             let loaded = false;
             try {
-                const response = await fetch('exam-data.json?t=' + Date.now());
+                const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/main/${GITHUB_PATH}?t=${Date.now()}`);
                 if (response.ok) {
                     const jsonData = await response.json();
                     if(jsonData.categories && jsonData.catalog) {
@@ -738,12 +744,12 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 if(savedTrialIds !== null) freeTrialTestIds = JSON.parse(savedTrialIds);
             }
 
-            saveAllData();
+            saveLocalCache();
             renderLoginScreenTrialBtn();
             showScreen('login-screen', false);
         }
 
-        function saveAllData() {
+        function saveLocalCache() {
             localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories));
             localStorage.setItem(STORAGE_KEY_TESTS, JSON.stringify(catalog));
             localStorage.setItem(STORAGE_KEY_NOTES, JSON.stringify(notesList));
@@ -751,7 +757,57 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             localStorage.setItem(STORAGE_KEY_PASSCODES, JSON.stringify(passcodes));
             localStorage.setItem(STORAGE_KEY_TRIAL, JSON.stringify(isFreeTrialEnabled));
             localStorage.setItem(STORAGE_KEY_TRIAL_IDS, JSON.stringify(freeTrialTestIds));
-            showNotification("Saved successfully locally!", true);
+        }
+
+        async function saveAllData() {
+            saveLocalCache();
+
+            try {
+                showNotification("Syncing with GitHub...", true);
+                const dataObj = {
+                    categories: categories,
+                    catalog: catalog,
+                    notes: notesList,
+                    studyFolders: studyFolders,
+                    passcodes: passcodes,
+                    freeTrialTestIds: freeTrialTestIds,
+                    isFreeTrialEnabled: isFreeTrialEnabled
+                };
+
+                const jsonString = JSON.stringify(dataObj, null, 2);
+                const contentEncoded = btoa(unescape(encodeURIComponent(jsonString)));
+
+                let sha = "";
+                const getRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`, {
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}` }
+                });
+                if(getRes.ok) {
+                    const fileData = await getRes.json();
+                    sha = fileData.sha;
+                }
+
+                const putRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `token ${GITHUB_TOKEN}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message: "Auto-sync updated from admin panel",
+                        content: contentEncoded,
+                        sha: sha
+                    })
+                });
+
+                if(putRes.ok) {
+                    showNotification("Synced to GitHub Successfully! 🚀", true);
+                } else {
+                    showNotification("Saved locally, GitHub sync failed.");
+                }
+            } catch(err) {
+                console.error(err);
+                showNotification("Saved locally (Offline mode)");
+            }
         }
 
         function exportToJsonFile() {
@@ -796,6 +852,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             saveAllData();
             renderAdminDashboard();
             renderLoginScreenTrialBtn();
+            showNotification(isFreeTrialEnabled ? "Free Trial Enabled!" : "Free Trial Disabled!", true);
         }
 
         function toggleFreeTrialTest(testId) {
@@ -807,6 +864,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             }
             saveAllData();
             renderAdminDashboard();
+            showNotification("Free Trial Access Updated!", true);
         }
 
         function openFreeTrialHub() {
@@ -966,6 +1024,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             saveAllData();
             nameInput.value = "";
             renderAdminDashboard();
+            showNotification("Category Created Successfully!", true);
         }
 
         function toggleCategoryLock(id) {
@@ -974,6 +1033,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 cat.locked = !cat.locked;
                 saveAllData();
                 renderAdminDashboard();
+                showNotification("Category Lock Updated!", true);
             }
         }
 
@@ -982,6 +1042,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             categories = categories.filter(c => c.id !== id);
             saveAllData();
             renderAdminDashboard();
+            showNotification("Category Deleted Successfully!", true);
         }
 
         function addStudyFolder() {
@@ -996,6 +1057,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             saveAllData();
             nameInput.value = "";
             renderAdminDashboard();
+            showNotification("Study Folder Created Successfully!", true);
         }
 
         function promptEditFolder(id) {
@@ -1020,6 +1082,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 saveAllData();
                 renderAdminDashboard();
                 document.getElementById('edit-folder-modal').classList.add('hide');
+                showNotification("Folder Updated Successfully!", true);
             }
         }
 
@@ -1028,6 +1091,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             notesList = notesList.filter(n => n.folderId !== id);
             saveAllData();
             renderAdminDashboard();
+            showNotification("Folder Deleted Successfully!", true);
         }
 
         function uploadStudyItem() {
@@ -1055,6 +1119,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 titleInput.value = "";
                 linkInput.value = "";
                 renderAdminDashboard();
+                showNotification("YouTube Video Saved!", true);
             } else {
                 if(!file) { showNotification("Select PDF file!"); return; }
                 const reader = new FileReader();
@@ -1064,6 +1129,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                     titleInput.value = "";
                     fileInput.value = "";
                     renderAdminDashboard();
+                    showNotification("PDF Note Uploaded!", true);
                 };
                 reader.readAsDataURL(file);
             }
@@ -1091,6 +1157,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 saveAllData();
                 renderAdminDashboard();
                 document.getElementById('edit-note-modal').classList.add('hide');
+                showNotification("Item Updated Successfully!", true);
             }
         }
 
@@ -1170,6 +1237,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             saveAllData();
             input.value = "";
             renderPasscodeList();
+            showNotification("Passcode Added Successfully!", true);
         }
 
         function removePasscode(index) {
@@ -1177,6 +1245,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             passcodes.splice(index, 1);
             saveAllData();
             renderPasscodeList();
+            showNotification("Passcode Removed!", true);
         }
 
         async function login() {
@@ -1388,6 +1457,128 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             }
         }
 
+        function renderAdminDashboard() {
+            renderPasscodeList();
+
+            const trialBtn = document.getElementById('toggle-trial-btn');
+            if(trialBtn) {
+                if(isFreeTrialEnabled) {
+                    trialBtn.innerText = "Disable Free Trial (Currently: Active)";
+                    trialBtn.className = "px-5 py-3 rounded-xl font-black text-xs bg-rose-600 hover:bg-rose-700 text-white transition shadow-sm w-full";
+                } else {
+                    trialBtn.innerText = "Enable Free Trial (Currently: Disabled)";
+                    trialBtn.className = "px-5 py-3 rounded-xl font-black text-xs bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-sm w-full";
+                }
+            }
+
+            const trialCheckboxes = document.getElementById('admin-free-trial-checkboxes');
+            if(trialCheckboxes) {
+                trialCheckboxes.innerHTML = catalog.map(t => `
+                    <label class="flex items-center gap-2.5 text-xs font-bold text-slate-700 cursor-pointer p-2 hover:bg-slate-100 rounded-xl transition">
+                        <input type="checkbox" value="${t.id}" ${freeTrialTestIds.includes(t.id) ? 'checked' : ''} onchange="window.toggleFreeTrialTest(${t.id})" class="w-4 h-4 accent-[#f97316]">
+                        <span class="truncate">${t.name}</span>
+                    </label>
+                `).join('');
+            }
+
+            const catList = document.getElementById('admin-cat-list');
+            if(catList) {
+                catList.innerHTML = categories.map(c => `
+                    <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center text-sm shadow-2xs">
+                        <span class="font-bold truncate mr-2 text-slate-800">${c.name}</span>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button onclick="window.toggleCategoryLock(${c.id})" class="px-3 py-1.5 rounded-xl text-xs font-bold text-white transition ${c.locked ? 'bg-rose-500' : 'bg-emerald-500'}">${c.locked ? 'Unlock 🔒' : 'Lock 🔓'}</button>
+                            <button onclick="window.deleteCategory(${c.id})" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const folderSel = document.getElementById('new-item-folder');
+            if(folderSel) {
+                folderSel.innerHTML = studyFolders.map(f => `<option value="${f.id}">${f.name} (${f.type.toUpperCase()})</option>`).join('');
+            }
+
+            const folderListEl = document.getElementById('admin-folder-list');
+            if(folderListEl) {
+                folderListEl.innerHTML = studyFolders.length > 0 ? studyFolders.map(f => `
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center text-xs">
+                        <span class="font-bold truncate mr-2">📁 ${f.name} <span class="text-sky-600 font-semibold">[${f.type.toUpperCase()}]</span></span>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button onclick="window.promptEditFolder('${f.id}')" class="bg-sky-500 hover:bg-sky-600 text-white px-2.5 py-1 rounded-lg font-bold">Edit</button>
+                            <button onclick="window.deleteStudyFolder('${f.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded-lg font-bold">Delete</button>
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-xs text-slate-400 italic">No study folders created yet.</p>';
+            }
+
+            const select = document.getElementById('new-test-category');
+            if(select) select.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+            const notesListEl = document.getElementById('admin-notes-list');
+            if(notesListEl) {
+                notesListEl.innerHTML = notesList.length > 0 ? notesList.map(n => {
+                    const fObj = studyFolders.find(f => f.id == n.folderId);
+                    return `
+                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center text-xs">
+                            <span class="font-bold truncate mr-2">📄 ${n.title} <span class="text-slate-400 font-normal">(${fObj ? fObj.name : 'Folder'})</span></span>
+                            <div class="flex gap-1.5 shrink-0">
+                                <button onclick="window.promptEditNote('${n.id}')" class="bg-sky-500 hover:bg-sky-600 text-white px-2.5 py-1 rounded-lg font-bold">Edit</button>
+                                <button onclick="window.promptDeleteNote('${n.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded-lg font-bold">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('') : '<p class="text-xs text-slate-400 italic">No items uploaded yet.</p>';
+            }
+
+            const testList = document.getElementById('admin-test-list');
+            if(testList) {
+                testList.innerHTML = catalog.map(t => `
+                    <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center text-sm shadow-2xs">
+                        <span class="font-bold truncate mr-2 text-slate-800">${t.name} <span class="text-xs text-slate-400 font-normal">(${t.data.length} Qs)</span></span>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button onclick="window.openEditTest(${t.id})" class="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">Edit</button>
+                            <button onclick="window.promptDeleteTest(${t.id})" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function promptDeleteTest(id) {
+            deleteType = 'test';
+            testToDelete = id;
+            const delInput = document.getElementById('delete-pass-input');
+            if(delInput) delInput.value = "";
+            document.getElementById('delete-modal').classList.remove('hide');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.add('hide');
+        }
+
+        function confirmDeleteTest() {
+            const passInput = document.getElementById('delete-pass-input');
+            if(!passInput) return;
+            const pass = passInput.value.trim();
+            
+            if(pass === "PASSWORD123@") {
+                if(deleteType === 'test') {
+                    catalog = catalog.filter(t => t.id !== testToDelete);
+                    showNotification("Test Deleted Successfully!", true);
+                } else if(deleteType === 'note') {
+                    notesList = notesList.filter(n => n.id != noteToDelete);
+                    showNotification("Item Deleted Successfully!", true);
+                }
+                saveAllData();
+                renderAdminDashboard();
+                closeDeleteModal();
+            } else {
+                showNotification("Incorrect Security Passcode!");
+            }
+        }
+
+        // SAFE BULK UPLOAD WITH HTML & EXCEL SPECIAL SYMBOL SANITIZER
         function processBulkUpload() {
             const catSelect = document.getElementById('new-test-category');
             const titleInput = document.getElementById('new-test-title');
@@ -1446,6 +1637,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             saveAllData();
             titleInput.value = "";
             qInput.value = "";
+            showNotification(`Successfully added ${parsedQs.length} questions safely!`, true);
             renderAdminDashboard();
         }
 
@@ -1482,6 +1674,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             test.negativeMarking = parseFloat(document.getElementById('edit-test-neg').value);
             saveAllData();
             renderAdminDashboard();
+            showNotification("Test settings updated successfully!", true);
         }
 
         function closeEditModal() { document.getElementById('edit-test-modal').classList.add('hide'); }
@@ -1542,6 +1735,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             saveAllData();
             renderEditQuestionsList(test);
             document.getElementById('edit-q-modal').classList.add('hide');
+            showNotification("Question saved successfully!", true);
         }
 
         function showInstructions(id) {
@@ -1780,6 +1974,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             if (logoClickCount >= 5) {
                 logoClickCount = 0;
                 showScreen('admin-login-screen', true);
+                showNotification("Secret Admin Portal Unlocked!", true);
             } else {
                 logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2000);
             }
