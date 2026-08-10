@@ -1704,6 +1704,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             }
             document.getElementById('edit-q-modal').classList.remove('hide');
         }
+        
 
         function saveQuestionEdit() {
             const test = catalog.find(t => t.id === editModeTestId);
@@ -1978,6 +1979,13 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             } else {
                 logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2000);
             }
+
+            function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([new Date(), data.name, data.testName, data.score, data.correct, data.wrong]);
+  return ContentService.createTextOutput(JSON.stringify({"status": "success"})).setMimeType(ContentService.MimeType.JSON);
+                                }
         }
 
         // Global Window bindings
