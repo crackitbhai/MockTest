@@ -630,6 +630,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
     </div>
 
     <script>
+        const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwRp2RQ2VbT_QUtESibq1uBQCVuD_OkKtdKorAxzPmEbePNecLc5xr3ET_LrWrROvwp/exec";
         const GITHUB_TOKEN = "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";
         const GITHUB_OWNER = "crackitbhai";
         const GITHUB_REPO = "MockTest";
@@ -1965,6 +1966,92 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             const btns = document.querySelectorAll('.hide-on-pdf');
             btns.forEach(btn => btn.style.display = 'none');
             html2pdf().from(document.getElementById('pdf-content')).save().then(() => btns.forEach(btn => btn.style.display = 'flex'));
+        }
+        function submitExam() {
+            clearInterval(timerInterval);
+            const testMeta = catalog.find(t => t.id === currentTestId);
+            let testNeg = testMeta && testMeta.negativeMarking !== undefined ? testMeta.negativeMarking : 0.25;
+
+            let correct = 0, wrong = 0, skipped = 0;
+            let reportHTML = "";
+
+            testData.forEach((q, idx) => {
+                let studentAns = q.selectedOption !== null ? (isHindiLanguage ? q.hiOpts[q.selectedOption] : q.opts[q.selectedOption]) : "Not Attempted";
+                let correctAns = isHindiLanguage ? q.hiOpts[q.ans] : q.opts[q.ans];
+                let statusText, statusColor, bgColor;
+
+                if (q.selectedOption === q.ans) {
+                    correct++;
+                    statusText = "Correct ✓"; statusColor = "color: #10b981;"; bgColor = "background: #f0fdf4; border: 1px solid #dcfce7;";
+                } else if (q.selectedOption !== null) {
+                    wrong++;
+                    statusText = "Wrong ✗"; statusColor = "color: #f43f5e;"; bgColor = "background: #fff1f2; border: 1px solid #ffe4e6;";
+                } else {
+                    skipped++;
+                    statusText = "Skipped"; statusColor = "color: #64748b;"; bgColor = "background: #f8fafc; border: 1px solid #e2e8f0;";
+                }
+
+                reportHTML += `
+                    <div style="${bgColor} padding: 14px; margin-bottom: 12px; border-radius: 10px; font-size: 13px;">
+                        <div style="font-weight: bold; margin-bottom: 4px; color: #0f172a;">Q${q.originalId || idx+1}. <span style="float: right; ${statusColor}">${statusText}</span></div>
+                        <div style="margin-bottom: 8px; color: #334155;">${isHindiLanguage ? q.hiQ : q.q}</div>
+                        <div style="color: #475569;">Your Answer: <b>${studentAns}</b> | Correct Answer: <b style="color: #10b981;">${correctAns}</b></div>
+                        <div style="font-size: 11px; margin-top: 6px; color: #64748b; background: rgba(255,255,255,0.6); padding: 6px; border-radius: 4px;"><b>Explanation:</b> ${q.exp || "N/A"}</div>
+                    </div>
+                `;
+            });
+
+            const totalScore = (correct * 1) - (wrong * testNeg);
+            
+            // --- YE HAI GOOGLE SHEET WALA CODE (ISE DALNA HAI) ---
+            if (typeof GOOGLE_SHEET_URL !== 'undefined') {
+                const payload = {
+                    name: currentStudent || "Student",
+                    testName: testMeta ? testMeta.name : "Mock Test",
+                    score: totalScore.toFixed(2),
+                    correct: correct,
+                    wrong: wrong
+                };
+                fetch(GOOGLE_SHEET_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                }).catch(err => console.log("Google sheet sync error:", err));
+            }
+            // ---------------------------------------------------
+
+            let secondsSpent = totalTestDurationSeconds - timeRemaining;
+            let minsTaken = Math.floor(secondsSpent / 60);
+            let secsTaken = secondsSpent % 60;
+            let timeTakenFormatted = `${minsTaken} mins ${secsTaken} secs`;
+
+            let now = new Date();
+            let dateFormatted = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            document.getElementById("report-student-name").innerText = currentStudent || "Student";
+            document.getElementById("report-test-name").innerText = testMeta ? testMeta.name : "Mock Test";
+            document.getElementById("report-date").innerText = dateFormatted;
+            document.getElementById("report-time-taken").innerText = timeTakenFormatted;
+
+            document.getElementById("correct-count").innerText = correct;
+            document.getElementById("wrong-count").innerText = `${wrong} (Penalty: -${(wrong * testNeg).toFixed(2)})`;
+            document.getElementById("final-score").innerText = totalScore.toFixed(2);
+
+            let focusText = "";
+            if (wrong > 0 && skipped > 0) {
+                focusText = `You had ${wrong} incorrect answers and left ${skipped} questions unattempted. Focus on revising core conceptual topics to eliminate negative marking and improve speed on skipped items.`;
+            } else if (wrong > 0) {
+                focusText = `You faced challenges with ${wrong} incorrect answers. Review the explanations carefully for questions answered incorrectly to avoid similar mistakes in future tests.`;
+            } else if (skipped > 0) {
+                focusText = `You skipped ${skipped} questions. Try to practice time management and attempt more questions within the time limit.`;
+            } else {
+                focusText = `Excellent performance! You answered all attempted questions correctly. Maintain this consistency and focus on advanced speed drills.`;
+            }
+            document.getElementById("focus-area-text").innerText = focusText;
+
+            document.getElementById("report-container").innerHTML = reportHTML;
+            showScreen("result-screen");
         }
 
         let logoClickCount = 0;
