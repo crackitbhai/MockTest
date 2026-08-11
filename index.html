@@ -1866,11 +1866,21 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             updatePalette();
         }
 
-        function saveAndNext() {
-            if (currentQuestionIndex < testData.length - 1) renderQuestion(currentQuestionIndex + 1);
-            else updatePalette();
-        }
+      function saveAndNext() {
+    // अगर कोई ऑप्शन सेलेक्ट किया गया है, तो पक्का करें कि उसका स्टेटस 'answered' हो जाए
+    const currentQ = testData[currentQuestionIndex];
+    if (currentQ.selectedOption !== null && currentQ.selectedOption !== undefined) {
+        currentQ.status = 'answered';
+    }
 
+    // अगर आखिरी सवाल नहीं है, तो अगले सवाल पर जाओ
+    if (currentQuestionIndex < testData.length - 1) {
+        renderQuestion(currentQuestionIndex + 1);
+    } else {
+        // अगर आखिरी सवाल है, तो सिर्फ पैलेट अपडेट कर दो ताकि वो हरा (Green) हो जाए
+        updatePalette();
+    }
+    }
         function markForReview() {
             testData[currentQuestionIndex].status = 'review';
             saveAndNext();
