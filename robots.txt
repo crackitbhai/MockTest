@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://crackitbhai.github.io/MockTest/sitemap.xml
