@@ -3,16 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="vMPiDVxGN7wHgJjJSvH6EDrOAtBuiQMZkIWxAy0xLSU" />
-    <title>Crackit Bhai - Mock Test Platform | TCS Pattern Online Test - JOAIT </title>
-
-<meta name="description" content="HP JOA IT ke liye Free Mock Test practice karein. TCS Pattern based questions, online tests aur exam preparation ke liye Crackit Bhai Mock Test.">
-
-<meta name="keywords" content="HP JOA IT Mock Test, JOA IT Free Mock Test, HP JOA IT Online Test, JOA IT TCS Pattern Mock Test, Himachal JOA IT, Crackit Bhai">
-    <meta name="description" content="Crackit Bhai Mock Test - JOA IT ke online mock tests, hpjoait free mock test, crackit bhai, crackit bhai mocktest,hpjoait, practice tests aur exam preparation ke liye free mock tests.">
-
-<meta name="robots" content="index, follow">
-    
+    <title>Crackit Bhai - Mock Test Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -81,72 +72,155 @@
             </div>
         </div>
         
-        <div id="user-profile-nav" class="hide relative">
+       <div class="flex items-center gap-3">
+    <!-- 👇 अपना "Toppers & Scores" वाला बटन यहाँ रख दें -->
+  <button id="toppers-btn" onclick="window.openScoresModal()" class="bg-slate-800 hover:bg-slate-700 text-white px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 border border-slate-700">
+    🏆 Toppers
+</button>
+
+    <!-- यह रहा आपका पुराना यूजर प्रोफाइल वाला नेविगेशन -->
+      <div id="user-profile-nav" class="hide relative">
+
             <button onclick="window.toggleDropdown()" class="flex items-center space-x-2.5 focus:outline-none bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-full transition">
+
                 <span id="nav-user-name" class="hidden md:block font-semibold text-sm text-slate-200">Student</span>
+
                 <div id="nav-avatar" class="w-7 h-7 bg-[#f97316] text-white rounded-full flex items-center justify-center font-bold text-xs">S</div>
+
             </button>
+
             <div id="dropdown-menu" class="hide absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-xl shadow-xl py-1 text-slate-700 z-50">
+
                 <a href="#" onclick="window.signOut()" class="block px-4 py-2.5 text-sm hover:bg-slate-50 text-rose-600 font-bold transition">Sign Out</a>
+
+            </div>
+
+        </div> 
+
+
+</div>
+
+<!-- Scores & Toppers Modal -->
+<div id="scores-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hide">
+    <div class="bg-white rounded-[2.5rem] max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+            <div>
+                <span class="bg-orange-100 text-[#f97316] text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">Leaderboard</span>
+                <h2 class="text-xl md:text-2xl font-black text-slate-900 mt-1">🏆 Weekly Toppers & Scores</h2>
+            </div>
+            <button onclick="window.closeScoresModal()" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold flex items-center justify-center transition">✕</button>
+        </div>
+
+        <!-- Top 3 Toppers Podium Area -->
+        <div id="top-3-container" class="grid grid-cols-3 gap-3 mb-6">
+            <!-- JavaScript यहाँ टॉप 3 टूचर्स को सजाकर दिखाएगा -->
+        </div>
+
+        <!-- All Candidates List (Descending Order) -->
+        <div>
+            <h3 class="font-black text-sm text-slate-800 mb-3">All Candidates Scoreboard</h3>
+            <div id="all-scores-list" class="space-y-2.5">
+                <p class="text-xs text-slate-400 text-center py-4">Loading scores...</p>
             </div>
         </div>
+    </div>
+</div>
+
     </header>
 
     <!-- Student Login Screen -->
-    <div id="login-screen" class="flex flex-col md:flex-row h-[calc(100vh-65px)] w-full overflow-y-auto bg-[#0b1221]">
-        <div class="hidden md:flex md:w-1/2 bg-[#0b1221] text-white flex-col justify-center items-center p-8 md:p-16 relative overflow-hidden shrink-0 border-r border-slate-800">
-            <div class="z-10 w-full max-w-lg mx-auto flex flex-col items-center text-center">
-                <div class="w-32 h-32 bg-[#0f172a] border border-slate-800 rounded-3xl flex items-center justify-center mb-6 p-4 shadow-md">
-                    <svg width="90" height="90" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M50 10C33.43 10 20 23.43 20 40C20 50.11 25.13 58.9 32.8 64.18V74C32.8 76.21 34.59 78 36.8 78H63.2C65.41 78 67.2 76.21 67.2 74V64.18C74.87 58.9 80 50.11 80 40C80 23.43 66.57 10 50 10Z" fill="#F97316" stroke="#FFFFFF" stroke-width="2"/>
-                        <path d="M42 82H58M45 86H55" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
-                        <path d="M38 35C38 30 42 27 50 27C58 27 62 30 62 35C62 38 60 41 57 43V50H43V43C40 41 38 38 38 35Z" fill="#0EA5E9"/>
-                        <path d="M44 33C46 33 47 35 47 37C47 39 46 41 44 41" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M56 33C54 33 53 35 53 37C53 39 54 41 56 41" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
+ <!-- Student Login Screen -->
+    <div id="login-screen" class="w-full min-h-[calc(100vh-65px)] overflow-y-auto bg-[#0b1221]">
+        
+        <!-- 1. ऊपर वाला हिस्सा: लोगो और लॉगिन फॉर्म -->
+        <div class="flex flex-col md:flex-row w-full min-h-[calc(100vh-65px)] items-center justify-center">
+            
+            <!-- Left Side: Logo & Quote -->
+            <div class="hidden md:flex md:w-1/2 bg-[#0b1221] text-white flex-col justify-center items-center p-8 md:p-16 border-r border-slate-800">
+                <div class="z-10 w-full max-w-lg mx-auto flex flex-col items-center text-center">
+                    <div class="w-32 h-32 bg-[#0f172a] border border-slate-800 rounded-3xl flex items-center justify-center mb-6 p-4 shadow-md">
+                        <svg width="90" height="90" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 10C33.43 10 20 23.43 20 40C20 50.11 25.13 58.9 32.8 64.18V74C32.8 76.21 34.59 78 36.8 78H63.2C65.41 78 67.2 76.21 67.2 74V64.18C74.87 58.9 80 50.11 80 40C80 23.43 66.57 10 50 10Z" fill="#F97316" stroke="#FFFFFF" stroke-width="2"/>
+                            <path d="M42 82H58M45 86H55" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M38 35C38 30 42 27 50 27C58 27 62 30 62 35C62 38 60 41 57 43V50H43V43C40 41 38 38 38 35Z" fill="#0EA5E9"/>
+                            <path d="M44 33C46 33 47 35 47 37C47 39 46 41 44 41" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M56 33C54 33 53 35 53 37C53 39 54 41 56 41" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="flex items-center justify-center gap-3 mb-2 flex-wrap">
+                        <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight">CRACKIT <span class="text-[#f97316]">BHAI</span></h1>
+                    </div>
+                    <p class="text-xs md:text-sm font-semibold text-slate-300 mt-1">Unlock Your Knowledge. Ace Every Exam.</p>
+                    <p class="text-xs italic font-semibold text-orange-400 mt-3 bg-slate-900 px-4 py-1.5 rounded-full border border-slate-800">"Consistency se hi safalta milti hai, rukna nahi."</p>
                 </div>
-                <div class="flex items-center justify-center gap-3 mb-2 flex-wrap">
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight">CRACKIT <span class="text-[#f97316]">BHAI</span></h1>
-                    <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-arrow shrink-0">
-                        <path d="M15 72L44 40L65 61L90 26" stroke="#0EA5E9" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M66 26H90V50" stroke="#0EA5E9" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <p class="text-xs md:text-sm font-semibold text-slate-300 mt-1">Unlock Your Knowledge. Ace Every Exam.</p>
-                <p class="text-xs italic font-semibold text-orange-400 mt-3 bg-slate-900 px-4 py-1.5 rounded-full border border-slate-800">"Consistency se hi safalta milti hai, rukna nahi."</p>
             </div>
-        </div>
-        <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-4 md:p-12 relative bg-[#0b1221] my-auto">
-            <div class="bg-white p-6 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md">
-                <div class="text-center mb-6">
-                    <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-1">Student Login</h2>
-                    <p class="text-slate-500 font-medium text-xs md:text-sm">Enter your name and Access Code.</p>
-                </div>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Candidate Name</label>
-                        <input type="text" id="student-name" placeholder="Enter your name" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-sm text-slate-800 focus:bg-white focus:border-[#f97316] transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Access Code (Passcode)</label>
-                        <input type="password" id="student-passcode" placeholder="Enter test access code" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-sm text-slate-800 focus:bg-white focus:border-[#f97316] transition" onkeypress="if(event.key === 'Enter') login();">
-                    </div>
-                    <button onclick="window.login()" class="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3.5 rounded-xl transition text-base shadow-sm flex items-center justify-center gap-2 mt-2">Start Learning →</button>
-                    
-                    <!-- WhatsApp Button -->
-                    <div class="pt-2">
-                        <button onclick="window.openWhatsAppInbox()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black py-3 rounded-xl transition text-sm flex items-center justify-center gap-2.5 shadow-sm hover:shadow-emerald-500/20">
-                            <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                            <span>Get ID and Password</span>
-                        </button>
-                    </div>
 
-                    <div id="free-trial-container" class="pt-1">
-                        <button onclick="window.openFreeTrialHub()" class="w-full bg-slate-900 hover:bg-slate-800 text-sky-400 font-extrabold py-3 rounded-xl transition text-sm border border-slate-800 flex items-center justify-center gap-2 shadow-xs">🚀 Start Free Trial</button>
+            <!-- Right Side: Login Form -->
+            <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-4 md:p-12 relative bg-[#0b1221]">
+                <div class="bg-white p-6 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md text-slate-900">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-1">Student Login</h2>
+                        <p class="text-slate-500 font-medium text-xs md:text-sm">Enter your name and Access Code.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Candidate Name</label>
+                            <input type="text" id="student-name" placeholder="Enter your name" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-sm text-slate-800 focus:bg-white focus:border-[#f97316] transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Access Code (Passcode)</label>
+                            <input type="password" id="student-passcode" placeholder="Enter test access code" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-sm text-slate-800 focus:bg-white focus:border-[#f97316] transition" onkeypress="if(event.key === 'Enter') login();">
+                        </div>
+                        <button onclick="window.login()" class="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3.5 rounded-xl transition text-base shadow-sm flex items-center justify-center gap-2 mt-2">Start Learning →</button>
+                        
+                        <div class="pt-2">
+                            <button onclick="window.openWhatsAppInbox()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl transition text-sm flex items-center justify-center gap-2 shadow-sm">Get ID and Password</button>
+                        </div>
+
+                        <div id="free-trial-container" class="pt-1">
+                            <button onclick="window.openFreeTrialHub()" class="w-full bg-slate-900 hover:bg-slate-800 text-sky-400 font-extrabold py-3 rounded-xl transition text-sm border border-slate-800 flex items-center justify-center gap-2 shadow-xs">🚀 Start Free Trial</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- 2. हल्की सी हॉरिजॉन्टल लाइन -->
+        <div class="w-full px-6">
+            <hr class="border-t border-slate-700/40 max-w-5xl mx-auto opacity-50">
+        </div>
+
+        <!-- 3. नीचे एकदम चौड़ा (Wider) और सुपर-अट्रैक्टिव Review Board -->
+        <div class="w-full px-4 py-12 flex justify-center bg-[#0b1221]">
+            <div id="review-board-section" class="bg-white text-slate-900 p-8 md:p-12 rounded-[2.5rem] max-w-5xl w-full border border-slate-200 shadow-2xl">
+                <div class="text-center mb-8">
+                    <span class="bg-orange-100 text-[#f97316] text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">Student Community</span>
+                    <h3 class="text-3xl font-black text-slate-900 mt-3">⭐ Student Reviews & Experience Board</h3>
+                    <p class="text-slate-500 text-sm mt-1">देखिए हमारे स्टूडेंट्स क्या कहते हैं Crackit Bhai प्लेटफॉर्म के बारे में।</p>
+                </div>
+
+                <!-- Review Submit Form (Centered & Elegant) -->
+                <div class="bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-200 mb-10 max-w-2xl mx-auto shadow-inner">
+                    <h4 class="font-extrabold text-sm text-slate-800 mb-3 text-center">Share Your Experience</h4>
+                    <div class="space-y-3.5">
+                        <input type="text" id="review-name" placeholder="Your Name" class="w-full p-3.5 bg-white border border-slate-200 rounded-xl text-xs font-bold outline-none text-slate-900 focus:border-[#f97316] transition">
+                        <select id="review-rating" class="w-full p-3.5 bg-white border border-slate-200 rounded-xl text-xs font-bold outline-none text-slate-900 focus:border-[#f97316] transition">
+                            <option value="5">⭐⭐⭐⭐⭐ (5/5 Excellent)</option>
+                            <option value="4">⭐⭐⭐⭐ (4/5 Very Good)</option>
+                            <option value="3">⭐⭐⭐ (3/5 Good)</option>
+                        </select>
+                        <textarea id="review-text" rows="3" placeholder="Write your review here..." class="w-full p-3.5 bg-white border border-slate-200 rounded-xl text-xs font-bold outline-none text-slate-900 focus:border-[#f97316] transition"></textarea>
+                        <button onclick="window.submitStudentReview()" class="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3.5 rounded-xl text-xs transition shadow-md">Submit Review</button>
+                    </div>
+                </div>
+
+                <!-- Live Reviews Grid Container (3 Columns for Wide Look) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="reviews-container">
+                    <p class="text-xs text-slate-400 text-center col-span-full py-6">Loading reviews...</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Free Trial Hub Screen -->
@@ -636,6 +710,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             <h3 style="font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 15px; color: #0b1221;">Detailed Question Analysis</h3>
             <div id="report-container"></div>
         </div>
+        
     </div>
 
     <script>
@@ -1259,6 +1334,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
         }
 
         async function login() {
+            document.getElementById('toppers-btn').classList.add('hide');
             const nameEl = document.getElementById("student-name");
             const passEl = document.getElementById("student-passcode");
             if(!nameEl || !passEl) return;
@@ -1372,7 +1448,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             document.getElementById('mobile-palette-overlay').classList.toggle('open');
         }
 
-        function renderCategories() {
+       function renderCategories() {
             const grid = document.getElementById('category-grid');
             if(!grid) return;
             grid.innerHTML = '';
@@ -1387,26 +1463,57 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             categories.forEach((cat, index) => {
                 const isLocked = cat.locked;
                 const theme = themes[index % themes.length];
+                const hasPassword = cat.password && cat.password.trim() !== "";
                 
+                // 💡 यहाँ लॉजिक सेट किया है:
+                // 1. अगर Locked है -> तो लॉक का नोटिफिकेशन दिखाओ
+                // 2. अगर Password है -> तो क्लिक करने पर पासवर्ड बॉक्स पर फोकस जाए
+                // 3. अगर फ्री/ओपन है -> तो पूरे कार्ड पर क्लिक करने से सीधा 'window.openCategory(${cat.id})' चल पड़े
+                let cardClickAction = "";
+                if (isLocked) {
+                    cardClickAction = "window.showNotification('This category is locked')";
+                } else if (hasPassword) {
+                    cardClickAction = `document.getElementById('cat-pass-${cat.id}').focus()`;
+                } else {
+                    cardClickAction = `window.openCategory(${cat.id})`;
+                }
+
                 grid.innerHTML += `
-                    <div onclick="${isLocked ? 'window.showNotification(\'This category is locked\')' : `window.openCategory(${cat.id})`}" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} ${isLocked ? 'opacity-60' : 'hover:-translate-y-1 hover:shadow-2xl cursor-pointer group'} transition-all duration-300 flex flex-col justify-between h-56 relative overflow-hidden shadow-sm">
+                    <div onclick="${cardClickAction}" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} ${isLocked ? 'opacity-60' : 'hover:-translate-y-1 hover:shadow-2xl group'} cursor-pointer transition-all duration-300 flex flex-col justify-between h-auto min-h-[16rem] relative overflow-hidden shadow-sm">
                         <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/40 rounded-full blur-xl pointer-events-none"></div>
-                        <div class="relative z-10 flex justify-between items-start">
-                            <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110">📝</div>
-                            ${isLocked ? '<span class="text-xs bg-rose-100 text-rose-700 font-bold px-3.5 py-1.5 rounded-full border border-rose-200 flex items-center gap-1 shadow-2xs">Locked 🔒</span>' : '<span class="text-xs bg-white text-emerald-600 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-100 shadow-2xs flex items-center gap-1">● Active Series</span>'}
-                        </div>
-                        <div class="relative z-10 mt-4">
-                            <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight">${cat.name}</h3>
-                            <div class="flex items-center justify-between text-xs font-bold text-slate-500 mt-2">
-                                <span>${isLocked ? 'Contact admin to unlock' : 'Explore Tests & Quizzes'}</span>
-                                <span class="text-[#f97316] font-black group-hover:translate-x-1 transition-transform">→</span>
+                        
+                        <div>
+                            <div class="relative z-10 flex justify-between items-start mb-4">
+                                <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110">📝</div>
+                                ${isLocked ? '<span class="text-xs bg-rose-100 text-rose-700 font-bold px-3.5 py-1.5 rounded-full border border-rose-200 flex items-center gap-1 shadow-2xs">Locked 🔒</span>' : '<span class="text-xs bg-white text-emerald-600 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-100 shadow-2xs flex items-center gap-1">● Active Series</span>'}
                             </div>
+                            
+                            <div class="relative z-10">
+                                <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight">${cat.name}</h3>
+                            </div>
+                        </div>
+
+                        <!-- नीचे का हिस्सा -->
+                        <div class="relative z-10 mt-4 pt-3 border-t border-slate-200/60">
+                            ${hasPassword ? `
+                                <div class="space-y-2" onclick="event.stopPropagation()">
+                                    <div class="flex gap-2">
+                                        <input type="password" id="cat-pass-${cat.id}" placeholder="Enter Password" class="flex-1 bg-white border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold outline-none focus:border-[#f97316]">
+                                        <button onclick="window.verifyCategoryPassword(${cat.id})" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow-xs">Unlock</button>
+                                    </div>
+                                    <p id="cat-err-${cat.id}" class="text-[11px] font-bold text-rose-600 hide">❌ Wrong Passcode!</p>
+                                </div>
+                            ` : `
+                                <div class="flex items-center justify-between text-xs font-bold text-slate-500">
+                                    <span>Explore Tests & Quizzes</span>
+                                    <span class="text-[#f97316] font-black group-hover:translate-x-1 transition-transform">→</span>
+                                </div>
+                            `}
                         </div>
                     </div>
                 `;
             });
         }
-
         function openCategory(catId) {
             currentCategory = catId;
             const cat = categories.find(c => c.id === catId);
@@ -1491,12 +1598,15 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 `).join('');
             }
 
-            const catList = document.getElementById('admin-cat-list');
+           const catList = document.getElementById('admin-cat-list');
             if(catList) {
                 catList.innerHTML = categories.map(c => `
-                    <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center text-sm shadow-2xs">
+                    <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center text-sm shadow-2xs flex-wrap gap-2">
                         <span class="font-bold truncate mr-2 text-slate-800">${c.name}</span>
-                        <div class="flex gap-1.5 shrink-0">
+                        <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
+                            <!-- 👇 यह रहा नया पासवर्ड इनपुट बॉक्स जो आपको जोड़ना है -->
+                            <input type="text" placeholder="Set Password" onchange="window.updateCategoryPassword(${c.id}, this.value)" value="${c.password || ''}" class="border border-slate-300 p-1.5 text-xs rounded-xl w-24 font-bold outline-none bg-white">
+                            
                             <button onclick="window.toggleCategoryLock(${c.id})" class="px-3 py-1.5 rounded-xl text-xs font-bold text-white transition ${c.locked ? 'bg-rose-500' : 'bg-emerald-500'}">${c.locked ? 'Unlock 🔒' : 'Lock 🔓'}</button>
                             <button onclick="window.deleteCategory(${c.id})" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">Delete</button>
                         </div>
@@ -1875,7 +1985,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             updatePalette();
         }
 
-      function saveAndNext() {
+       function saveAndNext() {
     // अगर कोई ऑप्शन सेलेक्ट किया गया है, तो पक्का करें कि उसका स्टेटस 'answered' हो जाए
     const currentQ = testData[currentQuestionIndex];
     if (currentQ.selectedOption !== null && currentQ.selectedOption !== undefined) {
@@ -1890,6 +2000,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
         updatePalette();
     }
     }
+
         function markForReview() {
             testData[currentQuestionIndex].status = 'review';
             saveAndNext();
@@ -2087,6 +2198,216 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             }
 
         }
+        function updateCategoryPassword(catId, pass) {
+    const cat = categories.find(c => c.id === catId);
+    if(cat) {
+        cat.password = pass.trim();
+        saveAllData();
+        showNotification("Category password updated successfully!", true);
+    }
+    }
+    function openCategory(catId) {
+    const cat = categories.find(c => c.id === catId);
+    
+    // अगर इस कैटेगरी पर पासवर्ड सेट है, तो यूजर से पूछो
+    if (cat && cat.password && cat.password !== "") {
+        let userPass = prompt(`Enter password to open "${cat.name}":`);
+        if (userPass !== cat.password) {
+            showNotification("Incorrect Password! Access Denied.");
+            return; // गलत पासवर्ड होने पर आगे नहीं जाने देगा
+        }
+    }
+
+    // अगर पासवर्ड सही है या पासवर्ड नहीं लगा है, तो टेस्ट डैशबोर्ड खोल दो
+    currentCategory = catId;
+    document.getElementById('dash-cat-title').innerText = cat ? cat.name : "Mock Tests";
+    showScreen('dashboard-screen');
+    renderDashboard();
+    }
+    function verifyCategoryPassword(catId) {
+    const cat = categories.find(c => c.id === catId);
+    const passInput = document.getElementById(`cat-pass-${catId}`);
+    const errText = document.getElementById(`cat-err-${catId}`);
+    
+    if(!cat || !passInput) return;
+
+    if (passInput.value.trim() === cat.password) {
+        // पासवर्ड सही है, अब आगे स्क्रीन खोल दो
+        errText.classList.add("hide");
+        currentCategory = catId;
+        document.getElementById('dash-cat-title').innerText = cat.name;
+        showScreen('dashboard-screen');
+        renderDashboard();
+    } else {
+        // पासवर्ड गलत है, लाल रंग से एरर दिखाओ
+        errText.classList.remove("hide");
+        passInput.classList.add("border-rose-500");
+        setTimeout(() => passInput.classList.remove("border-rose-500"), 2000);
+    }
+}
+// आपका गूगल शीट का यूआरएल
+const REVIEW_SHEET_URL = "https://script.google.com/macros/s/AKfycbwOOCyu0eaOzvFgM_R9lE-iDIqy71yIgJMXmGhwkYTFjQW1M5aPZQiAYo5msoIJDwWn/exec";
+
+// 1. वेबसाइट खुलते ही गूगल शीट से सारे रिव्यूज लोड करना
+async function loadStudentReviews() {
+    const container = document.getElementById('reviews-container');
+    if(!container) return;
+    
+    try {
+        const response = await fetch(REVIEW_SHEET_URL + "?action=reviews");
+        const data = await response.json();
+        
+        if(data && data.length > 0) {
+            container.innerHTML = "";
+            data.reverse().forEach(item => {
+                // अगर रिव्यू टेक्स्ट या नाम मौजूद है तभी कार्ड दिखाएं (undefined से बचने के लिए)
+                if(item.review && item.review !== "undefined") {
+                    let stars = "⭐".repeat(parseInt(item.rating) || 5);
+                    container.innerHTML += `
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <div class="text-amber-400 text-xs mb-1">${stars}</div>
+                                <p class="text-xs text-slate-700 font-medium mb-4 leading-relaxed">"${item.review}"</p>
+                            </div>
+                            <div class="flex justify-between items-center pt-3 border-t border-slate-100 text-[11px]">
+                                <span class="font-black text-slate-900">👤 ${item.name || 'Student'}</span>
+                                <span class="text-slate-400">${item.date ? new Date(item.date).toLocaleDateString() : ''}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        } else {
+            container.innerHTML = `<p class="text-xs text-slate-400 text-center col-span-full">No reviews yet. Be the first to share your experience!</p>`;
+        }
+    } catch(err) {
+        container.innerHTML = `<p class="text-xs text-rose-500 text-center col-span-full">Failed to load reviews.</p>`;
+    }
+}
+// 2. नया रिव्यू सबमिट करना (टाइप 'review' के साथ ताकि पुराना स्कोर सिस्टम भी सेफ रहे)
+async function submitStudentReview() {
+    const name = document.getElementById('review-name').value.trim();
+    const rating = document.getElementById('review-rating').value;
+    const review = document.getElementById('review-text').value.trim();
+
+    if(!name || !review) {
+        showNotification("Please fill in your name and review!");
+        return;
+    }
+
+    showNotification("Submitting review...", true);
+
+    try {
+        await fetch(REVIEW_SHEET_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ type: "review", name, review, rating })
+        });
+
+        showNotification("Review submitted successfully! ✨", true);
+        document.getElementById('review-name').value = "";
+        document.getElementById('review-text').value = "";
+        
+        // थोड़ा सा इंतज़ार करके रिव्यूज रिफ्रेश करें ताकि शीट में डेटा सेव हो जाए
+        setTimeout(() => {
+            loadStudentReviews();
+        }, 1500);
+        
+    } catch(err) {
+        showNotification("Failed to submit review.");
+    }
+}
+
+// 3. पेज लोड होते ही रिव्यूज अपने आप लोड हो जाएं
+document.addEventListener("DOMContentLoaded", function() {
+    loadStudentReviews();
+});
+
+// 1. Scores Modal खोलने और बंद करने के फंक्शन्स
+function openScoresModal() {
+    document.getElementById('scores-modal').classList.remove('hide');
+    loadAndDisplayScores();
+}
+
+function closeScoresModal() {
+    document.getElementById('scores-modal').classList.add('hide');
+}
+
+// 2. गूगल शीट से स्कोर फेच करके प्रोसेस करना
+async function loadAndDisplayScores() {
+    const top3Container = document.getElementById('top-3-container');
+    const allScoresList = document.getElementById('all-scores-list');
+    
+    if(!top3Container || !allScoresList) return;
+
+    try {
+        // चूंकि आपका स्कोर वाला यूआरएल वही है, हम डेटा फेच करेंगे
+        const response = await fetch(REVIEW_SHEET_URL);
+        const data = await response.json();
+        
+        // मान लेते हैं डेटा एरे फॉर्म में आ रहा है [Timestamp, Name, TestName, Score, Correct, Wrong]
+        if(data && data.length > 0) {
+            
+            // डेटा को स्कोर के हिसाब से घटते क्रम (Descending: सबसे ज्यादा स्कोर वाला ऊपर) में सॉर्ट करें
+            // (इंडेक्स चेक कर लें: अगर स्कोर तीसरे कॉलम में है तो item[3], नाम item[1], टेस्ट नाम item[2])
+            let validScores = data.filter(item => item[3] !== undefined && !isNaN(item[3]));
+            
+            validScores.sort((a, b) => Number(b[3]) - Number(a[3]));
+
+            // टॉप 3 कैंडिडेट्स अलग करना
+            let top3 = validScores.slice(0, 3);
+            
+            // --- टॉप 3 पोडियम रेंडर करना ---
+            top3Container.innerHTML = "";
+            const medals = ["🥇", "🥈", "🥉"];
+            const bgColors = ["bg-amber-50 border-amber-200 text-amber-900", "bg-slate-50 border-slate-200 text-slate-800", "bg-orange-50 border-orange-200 text-orange-900"];
+
+            top3.forEach((item, index) => {
+                top3Container.innerHTML += `
+                    <div class="${bgColors[index]} p-4 rounded-2xl border text-center flex flex-col justify-between shadow-2xs">
+                        <div class="text-2xl mb-1">${medals[index]}</div>
+                        <div>
+                            <h4 class="font-black text-xs truncate">${item[1] || 'Student'}</h4>
+                            <p class="text-[10px] opacity-75 truncate">${item[2] || 'Test'}</p>
+                        </div>
+                        <div class="mt-2 font-black text-sm bg-white/60 py-1 rounded-xl">Score: ${item[3]}</div>
+                    </div>
+                `;
+            });
+
+            // --- बाकी सभी की लिस्ट (घटते हुए क्रम में) रेंडर करना ---
+            allScoresList.innerHTML = "";
+            validScores.forEach((item, index) => {
+                allScoresList.innerHTML += `
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
+                        <div class="flex items-center gap-3">
+                            <span class="font-black text-slate-400 w-5">#${index + 1}</span>
+                            <div>
+                                <span class="font-black text-slate-900 block">${item[1] || 'Student'}</span>
+                                <span class="text-[10px] text-slate-500">${item[2] || 'Test Name'}</span>
+                            </div>
+                        </div>
+                        <div class="font-black text-[#f97316] bg-orange-50 px-3 py-1.5 rounded-lg border border-orange-100">
+                            Score: ${item[3]}
+                        </div>
+                    </div>
+                `;
+            });
+
+        } else {
+            top3Container.innerHTML = `<p class="text-xs text-slate-400 col-span-full text-center">No scores found yet.</p>`;
+            allScoresList.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No records available.</p>`;
+        }
+    } catch(err) {
+        allScoresList.innerHTML = `<p class="text-xs text-rose-500 text-center py-4">Failed to load scores.</p>`;
+    }
+}
+document.getElementById('review-board-section').classList.add('hide');
+document.getElementById('review-board-section').classList.remove('hide');
+document.getElementById('toppers-btn').classList.add('hide');
+document.getElementById('toppers-btn').classList.remove('hide');
+
 
         // Global Window bindings
         window.login = login;
