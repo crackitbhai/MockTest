@@ -8,7 +8,8 @@
     {
       "id": 2,
       "name": "HP Patwari Mock Tests",
-      "locked": true
+      "locked": false,
+      "password": "tg2026"
     },
     {
       "id": 3,
