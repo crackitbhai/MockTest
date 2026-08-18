@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crackit Bhai - Mock Test Platform</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -185,28 +186,37 @@
         }
     }
 
-    window.loadStorageDataFromFirebase = async function() {
-        try {
-            const docRef = doc(db, "appData", "mainContent");
-            const docSnap = await getDoc(docRef);
+ window.loadStorageDataFromFirebase = async function() {
+    try {
+        const docRef = doc(db, "appData", "mainContent");
+        const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                const serverData = docSnap.data();
-                categories = serverData.categories || categories;
-                catalog = serverData.catalog || catalog;
-                notesList = serverData.notes || notesList;
-                studyFolders = serverData.studyFolders || studyFolders;
-                passcodes = serverData.passcodes || passcodes;
-                isFreeTrialEnabled = serverData.isFreeTrialEnabled !== undefined ? serverData.isFreeTrialEnabled : true;
-                freeTrialTestIds = serverData.freeTrialTestIds || freeTrialTestIds;
+        if (docSnap.exists()) {
+            const serverData = docSnap.data();
+            
+            // यह चेक करने के लिए कि डेटा आ रहा है या नहीं:
+            console.log("Data fetched from Firebase:", serverData); 
+
+            categories = serverData.categories || []; // खाली एरे डिफ़ॉल्ट रखें
+            catalog = serverData.catalog || [];
+            notesList = serverData.notes || [];
+            studyFolders = serverData.studyFolders || [];
+            passcodes = serverData.passcodes || [];
+            
+            isFreeTrialEnabled = serverData.isFreeTrialEnabled !== undefined ? serverData.isFreeTrialEnabled : true;
+            freeTrialTestIds = serverData.freeTrialTestIds || [];
+            
+            // डेटा लोड होने के बाद एक बार रेंडर फंक्शन को कॉल करना जरूरी है ताकि स्क्रीन पर दिखे
+            if(window.renderAdminDashboard) {
+                renderAdminDashboard(); 
             }
-        } catch (error) {
-            console.error("Error loading data from Firebase:", error);
         }
-        showScreen('login-screen', false);
+    } catch (error) {
+        console.error("Error loading data from Firebase:", error);
     }
-
-    window.saveAllData = async function(){
+    showScreen('login-screen', false);
+}
+ window.saveAllData = async function(){
         try {
             showNotification("Saving to Firebase Database...", true);
             
@@ -804,15 +814,26 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <!-- EXAM CATEGORIES CRUD MANAGER -->
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 mb-6 shadow-sm border-t-4 border-t-emerald-500">
-            <h3 class="text-lg font-black text-slate-900 mb-2">📁 Exam Categories CRUD Manager (Create, Edit, Lock, Delete)</h3>
-            <p class="text-xs text-slate-500 mb-4">Create or modify exam categories dynamically.</p>
-            <div class="flex gap-2 mb-4 max-w-lg">
-                <input type="text" id="new-cat-name" placeholder="Category Name (e.g. HP Police)" class="border border-slate-200 p-3 rounded-xl flex-1 outline-none text-sm bg-slate-50 font-bold text-slate-800 focus:bg-white focus:border-[#f97316] transition">
-                <button onclick="window.addCategory()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-black px-6 py-3 rounded-xl text-sm transition shadow-sm shrink-0">Add Category</button>
-            </div>
-            <div id="admin-cat-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
-        </div>
+       <div class="bg-white p-6 rounded-3xl border border-slate-200 mb-6 shadow-sm border-t-4 border-t-emerald-500">
+    <h3 class="text-lg font-black text-slate-900 mb-2">📁 Exam Categories CRUD Manager (Create, Edit, Lock, Delete)</h3>
+    <p class="text-xs text-slate-500 mb-4">Create or modify exam categories dynamically with pricing.</p>
+    
+    <!-- 👇 यहाँ प्राइस और पेड चेकबॉक्स जोड़ दिया है -->
+    <div class="flex gap-2 mb-4 flex-wrap">
+        <input type="text" id="new-cat-name" placeholder="Category Name (e.g. HP Police)" class="border border-slate-200 p-3 rounded-xl flex-1 min-w-[200px] outline-none text-sm bg-slate-50 font-bold text-slate-800 focus:bg-white focus:border-[#f97316] transition">
+        
+        <input type="number" id="new-cat-price" placeholder="Price (₹)" class="border border-slate-200 p-3 rounded-xl w-28 outline-none text-sm bg-slate-50 font-bold text-slate-800 focus:bg-white focus:border-[#f97316] transition">
+        
+        <label class="flex items-center gap-2 px-4 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer">
+            <input type="checkbox" id="new-cat-is-paid" class="w-4 h-4 accent-[#f97316]">
+            <span class="text-xs font-bold text-slate-700">Paid Course</span>
+        </label>
+
+        <button onclick="window.addCategory()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-black px-6 py-3 rounded-xl text-sm transition shadow-sm shrink-0">Add Category</button>
+    </div>
+    
+    <div id="admin-cat-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+</div>
 
         <!-- STUDY FOLDERS & ITEMS CRUD MANAGER -->
         <div class="bg-white p-6 rounded-3xl border border-slate-200 mb-6 shadow-sm border-t-4 border-t-sky-500">
@@ -1486,31 +1507,46 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             a.remove();
             showNotification("Downloading PDF...", true);
         }
-
 async function addCategory() {
-            const nameInput = document.getElementById('new-cat-name');
-            if(!nameInput) return;
-            const name = nameInput.value.trim();
-            if(!name) { showNotification("Enter category name!"); return; }
-            
-            categories.push({ id: Date.now(), name: name, locked: false });
-            nameInput.value = "";
+    const nameInput = document.getElementById('new-cat-name');
+    const priceInput = document.getElementById('new-cat-price');
+    const isPaidInput = document.getElementById('new-cat-is-paid');
 
-            const indicator = document.getElementById('saving-indicator');
-            if(indicator) indicator.classList.remove('hide');
+    if(!nameInput) return;
+    const name = nameInput.value.trim();
+    if(!name) { showNotification("Enter category name!"); return; }
+    
+    // 👇 यहाँ से प्राइस और पेड चेकबॉक्स की वैल्यू पकड़ी जा रही है
+    const price = priceInput && priceInput.value ? parseFloat(priceInput.value) : 199;
+    const isPaid = isPaidInput ? isPaidInput.checked : false;
 
-            try {
-                await window.saveAllData();
-                renderAdminDashboard();
-                showNotification("Category Created Successfully!", true);
-            } catch (err) {
-                console.error("Error adding category:", err);
-                showNotification("Failed to save category.", false);
-            } finally {
-                if(indicator) indicator.classList.add('hide');
-            }
-        }   
-      async function toggleCategoryLock(id) {
+    categories.push({ 
+        id: Date.now(), 
+        name: name, 
+        locked: false,
+        isPaid: isPaid,  // 👈 डेटाबेस में सेव होगा
+        price: price     // 👈 प्राइस सेव होगा
+    });
+
+    nameInput.value = "";
+    if(priceInput) priceInput.value = "";
+    if(isPaidInput) isPaidInput.checked = false;
+
+    const indicator = document.getElementById('saving-indicator');
+    if(indicator) indicator.classList.remove('hide');
+
+    try {
+        await window.saveAllData();
+        renderAdminDashboard();
+        showNotification("Category Created Successfully with Pricing! 🚀", true);
+    } catch (err) {
+        console.error("Error adding category:", err);
+        showNotification("Failed to save category.", false);
+    } finally {
+        if(indicator) indicator.classList.add('hide');
+    }
+}
+ async function toggleCategoryLock(id) {
             const cat = categories.find(c => c.id === id);
             if(cat) {
                 cat.locked = !cat.locked;
@@ -1876,73 +1912,91 @@ async function addCategory() {
             document.getElementById('mobile-palette-overlay').classList.toggle('open');
         }
 
-       function renderCategories() {
-            const grid = document.getElementById('category-grid');
-            if(!grid) return;
-            grid.innerHTML = '';
+function renderCategories() {
+        const grid = document.getElementById('category-grid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        
+        const themes = [
+            { bg: "bg-gradient-to-br from-orange-50 via-amber-50 to-white", border: "border-orange-200 hover:border-orange-400", iconBg: "bg-orange-500 text-white shadow-md shadow-orange-500/20", textHover: "group-hover:text-orange-600" },
+            { bg: "bg-gradient-to-br from-sky-50 via-blue-50 to-white", border: "border-sky-200 hover:border-sky-400", iconBg: "bg-sky-500 text-white shadow-md shadow-sky-500/20", textHover: "group-hover:text-sky-600" },
+            { bg: "bg-gradient-to-br from-emerald-50 via-teal-50 to-white", border: "border-emerald-200 hover:border-emerald-400", iconBg: "bg-emerald-500 text-white shadow-md shadow-emerald-500/20", textHover: "group-hover:text-emerald-600" },
+            { bg: "bg-gradient-to-br from-purple-50 via-fuchsia-50 to-white", border: "border-purple-200 hover:border-purple-400", iconBg: "bg-purple-500 text-white shadow-md shadow-purple-500/20", textHover: "group-hover:text-purple-600" }
+        ];
+
+        categories.forEach((cat, index) => {
+            const isLocked = cat.locked;
+            const theme = themes[index % themes.length];
+            const hasPassword = cat.password && cat.password.trim() !== "";
             
-            const themes = [
-                { bg: "bg-gradient-to-br from-orange-50 via-amber-50 to-white", border: "border-orange-200 hover:border-orange-400", iconBg: "bg-orange-500 text-white shadow-md shadow-orange-500/20", textHover: "group-hover:text-orange-600" },
-                { bg: "bg-gradient-to-br from-sky-50 via-blue-50 to-white", border: "border-sky-200 hover:border-sky-400", iconBg: "bg-sky-500 text-white shadow-md shadow-sky-500/20", textHover: "group-hover:text-sky-600" },
-                { bg: "bg-gradient-to-br from-emerald-50 via-teal-50 to-white", border: "border-emerald-200 hover:border-emerald-400", iconBg: "bg-emerald-500 text-white shadow-md shadow-emerald-500/20", textHover: "group-hover:text-emerald-600" },
-                { bg: "bg-gradient-to-br from-purple-50 via-fuchsia-50 to-white", border: "border-purple-200 hover:border-purple-400", iconBg: "bg-purple-500 text-white shadow-md shadow-purple-500/20", textHover: "group-hover:text-purple-600" }
-            ];
+            const isPaid = cat.isPaid === true;
+            const price = cat.price || 199;
+            
+            let cardClickAction = "";
+            if (isLocked) {
+                cardClickAction = "window.showNotification('This category is locked')";
+            } else if (hasPassword) {
+                cardClickAction = `document.getElementById('cat-pass-${cat.id}').focus()`;
+            } else if (isPaid) {
+                cardClickAction = `window.handlePaidCategoryClick(${cat.id}, ${price})`;
+            } else {
+                cardClickAction = `window.openCategory(${cat.id})`;
+            }
 
-            categories.forEach((cat, index) => {
-                const isLocked = cat.locked;
-                const theme = themes[index % themes.length];
-                const hasPassword = cat.password && cat.password.trim() !== "";
-                
-                // 💡 यहाँ लॉजिक सेट किया है:
-                // 1. अगर Locked है -> तो लॉक का नोटिफिकेशन दिखाओ
-                // 2. अगर Password है -> तो क्लिक करने पर पासवर्ड बॉक्स पर फोकस जाए
-                // 3. अगर फ्री/ओपन है -> तो पूरे कार्ड पर क्लिक करने से सीधा 'window.openCategory(${cat.id})' चल पड़े
-                let cardClickAction = "";
-                if (isLocked) {
-                    cardClickAction = "window.showNotification('This category is locked')";
-                } else if (hasPassword) {
-                    cardClickAction = `document.getElementById('cat-pass-${cat.id}').focus()`;
-                } else {
-                    cardClickAction = `window.openCategory(${cat.id})`;
-                }
+            const badgeHtml = isLocked 
+                ? '<span class="text-xs bg-rose-100 text-rose-700 font-bold px-3.5 py-1.5 rounded-full border border-rose-200 flex items-center gap-1 shadow-2xs">Locked 🔒</span>' 
+                : isPaid 
+                    ? `<span class="text-xs bg-amber-100 text-amber-800 font-extrabold px-3.5 py-1.5 rounded-full border border-amber-200 shadow-2xs flex items-center gap-1">₹${price} 💳</span>`
+                    : '<span class="text-xs bg-emerald-100 text-emerald-700 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1">Free 🚀</span>';
 
-                grid.innerHTML += `
-                    <div onclick="${cardClickAction}" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} ${isLocked ? 'opacity-60' : 'hover:-translate-y-1 hover:shadow-2xl group'} cursor-pointer transition-all duration-300 flex flex-col justify-between h-auto min-h-[16rem] relative overflow-hidden shadow-sm">
-                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/40 rounded-full blur-xl pointer-events-none"></div>
-                        
-                        <div>
-                            <div class="relative z-10 flex justify-between items-start mb-4">
-                                <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110">📝</div>
-                                ${isLocked ? '<span class="text-xs bg-rose-100 text-rose-700 font-bold px-3.5 py-1.5 rounded-full border border-rose-200 flex items-center gap-1 shadow-2xs">Locked 🔒</span>' : '<span class="text-xs bg-white text-emerald-600 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-100 shadow-2xs flex items-center gap-1">● Active Series</span>'}
-                            </div>
-                            
-                            <div class="relative z-10">
-                                <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight">${cat.name}</h3>
-                            </div>
+            const waMessage = encodeURIComponent(`Hello Crackit Bhai, I want to know about ${cat.name}`);
+
+            grid.innerHTML += `
+                <div onclick="${cardClickAction}" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} ${isLocked ? 'opacity-60' : 'hover:-translate-y-1 hover:shadow-2xl group'} cursor-pointer transition-all duration-300 flex flex-col justify-between h-auto min-h-[16rem] relative overflow-hidden shadow-sm">
+                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/40 rounded-full blur-xl pointer-events-none"></div>
+                    
+                    <div>
+                        <div class="relative z-10 flex justify-between items-start mb-4">
+                            <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110">📝</div>
+                            ${badgeHtml}
                         </div>
-
-                        <!-- नीचे का हिस्सा -->
-                        <div class="relative z-10 mt-4 pt-3 border-t border-slate-200/60">
-                            ${hasPassword ? `
-                                <div class="space-y-2" onclick="event.stopPropagation()">
-                                    <div class="flex gap-2">
-                                        <input type="password" id="cat-pass-${cat.id}" placeholder="Enter Password" class="flex-1 bg-white border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold outline-none focus:border-[#f97316]">
-                                        <button onclick="window.verifyCategoryPassword(${cat.id})" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow-xs">Unlock</button>
-                                    </div>
-                                    <p id="cat-err-${cat.id}" class="text-[11px] font-bold text-rose-600 hide">❌ Wrong Passcode!</p>
-                                </div>
-                            ` : `
-                                <div class="flex items-center justify-between text-xs font-bold text-slate-500">
-                                    <span>Explore Tests & Quizzes</span>
-                                    <span class="text-[#f97316] font-black group-hover:translate-x-1 transition-transform">→</span>
-                                </div>
-                            `}
+                        
+                        <div class="relative z-10">
+                            <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight">${cat.name}</h3>
                         </div>
                     </div>
-                `;
-            });
-        }
-        function openCategory(catId) {
+
+                    <!-- नीचे का हिस्सा -->
+                    <div class="relative z-10 mt-4 pt-3 border-t border-slate-200/60">
+                        ${hasPassword ? `
+                            <div class="space-y-2" onclick="event.stopPropagation()">
+                                <div class="flex gap-2">
+                                    <input type="password" id="cat-pass-${cat.id}" placeholder="Enter Password" class="flex-1 bg-white border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold outline-none focus:border-[#f97316]">
+                                    <button onclick="window.verifyCategoryPassword(${cat.id})" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow-xs">Unlock</button>
+                                </div>
+                                <p id="cat-err-${cat.id}" class="text-[11px] font-bold text-rose-600 hide">❌ Wrong Passcode!</p>
+                            </div>
+                        ` : isPaid ? `
+                            <!-- 👇 Buy Now और WhatsApp Logo बटन -->
+                            <div class="flex items-center gap-2" onclick="event.stopPropagation()">
+                                <button onclick="window.handlePaidCategoryClick(${cat.id}, ${price})" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-2.5 px-3 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5">
+                                    🛒 Buy Now (₹${price})
+                                </button>
+                                <a href="https://wa.me/918219256192?text=${waMessage}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl transition shadow-sm flex items-center justify-center shrink-0" title="WhatsApp Help">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                </a>
+                            </div>
+                        ` : `
+                            <div class="flex items-center justify-between text-xs font-bold text-slate-500">
+                                <span>Explore Tests & Quizzes</span>
+                                <span class="text-[#f97316] font-black group-hover:translate-x-1 transition-transform">→</span>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        });
+    }  function openCategory(catId) {
             currentCategory = catId;
             const cat = categories.find(c => c.id === catId);
             document.getElementById('dash-cat-title').innerText = cat ? cat.name : "Mock Tests";
@@ -2010,23 +2064,47 @@ async function addCategory() {
                 `).join('');
             }
 
-           const catList = document.getElementById('admin-cat-list');
+       const catList = document.getElementById('admin-cat-list');
             if(catList) {
-                catList.innerHTML = categories.map(c => `
-                    <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center text-sm shadow-2xs flex-wrap gap-2">
-                        <span class="font-bold truncate mr-2 text-slate-800">${c.name}</span>
-                        <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
-                            <!-- 👇 यह रहा नया पासवर्ड इनपुट बॉक्स जो आपको जोड़ना है -->
-                            <input type="text" placeholder="Set Password" onchange="window.updateCategoryPassword(${c.id}, this.value)" value="${c.password || ''}" class="border border-slate-300 p-1.5 text-xs rounded-xl w-24 font-bold outline-none bg-white">
-                            
-                            <button onclick="window.toggleCategoryLock(${c.id})" class="px-3 py-1.5 rounded-xl text-xs font-bold text-white transition ${c.locked ? 'bg-rose-500' : 'bg-emerald-500'}">${c.locked ? 'Unlock 🔒' : 'Lock 🔓'}</button>
-                            <button onclick="window.deleteCategory(${c.id})" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
+                catList.innerHTML = categories.map(c => {
+                    const isPaid = c.isPaid === true;
+                    const price = c.price || 199;
 
-            const folderSel = document.getElementById('new-item-folder');
+                    return `
+                        <div class="bg-white border border-slate-200 p-5 rounded-3xl shadow-xs flex flex-col justify-between gap-4">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-black text-slate-900 text-base">${c.name}</h4>
+                                    <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${isPaid ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200'}">
+                                        ${isPaid ? `Paid (₹${price})` : 'Free'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-3">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <input type="number" id="admin-price-${c.id}" value="${price}" placeholder="Price (₹)" class="w-24 bg-white border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold outline-none focus:border-[#f97316]">
+                                    
+                                    <label class="flex items-center gap-2 px-3 py-2 bg-white border border-slate-300 rounded-xl cursor-pointer text-xs font-bold text-slate-700 select-none">
+                                        <input type="checkbox" id="admin-paid-${c.id}" ${isPaid ? 'checked' : ''} class="w-4 h-4 accent-[#f97316]">
+                                        Paid Course
+                                    </label>
+                                    
+                                    <button onclick="window.updateCategoryPricing(${c.id})" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-2 px-3 rounded-xl text-xs transition shadow-sm">Save</button>
+                                </div>
+
+                                <div class="flex items-center justify-between gap-1 pt-2 border-t border-slate-200">
+                                    <input type="text" placeholder="Set Pass" onchange="window.updateCategoryPassword(${c.id}, this.value)" value="${c.password || ''}" class="border border-slate-300 p-1.5 text-xs rounded-xl w-24 font-bold outline-none bg-white">
+                                    <button onclick="window.toggleCategoryLock(${c.id})" class="${c.locked ? 'bg-rose-100 text-rose-700 border border-rose-200' : 'bg-emerald-100 text-emerald-700 border border-emerald-200'} text-xs font-bold px-3 py-1.5 rounded-xl transition">
+                                        ${c.locked ? 'Unlock 🔓' : 'Lock 🔒'}
+                                    </button>
+                                    <button onclick="window.deleteCategory(${c.id})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-xl transition">Delete 🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } const folderSel = document.getElementById('new-item-folder');
             if(folderSel) {
                 folderSel.innerHTML = studyFolders.map(f => `<option value="${f.id}">${f.name} (${f.type.toUpperCase()})</option>`).join('');
             }
@@ -2349,18 +2427,66 @@ async function confirmDeleteTest() {
             renderQuestion(0);
         }
 
-        function toggleTranslation() {
-            isHindiLanguage = !isHindiLanguage;
-            const btn = document.getElementById('translate-btn');
-            if(isHindiLanguage) {
-                btn.innerHTML = "🌐 English";
-                btn.className = "bg-[#0ea5e9] hover:bg-cyan-600 text-white text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5";
-            } else {
-                btn.innerHTML = "🌐 हिंदी";
-                btn.className = "bg-[#f97316] hover:bg-[#ea580c] text-white text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5";
-            }
-            renderQuestion(currentQuestionIndex);
+ // ग्लोबल ट्रांसलेशन कैशे ताकि बार-बार इंटरनेट की जरूरत न पड़े
+const translationCache = {};
+
+window.toggleTranslation = async function() {
+    isHindiLanguage = !isHindiLanguage;
+    const btn = document.getElementById('translate-btn');
+    
+    if(isHindiLanguage) {
+        btn.innerHTML = "⌛ Translating...";
+        btn.className = "bg-yellow-500 text-white text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5";
+        
+        // करंट सवाल और ऑप्शन्स को हिंदी में ट्रांसलेट करें
+        await translateCurrentQuestionToHindi();
+        
+        btn.innerHTML = "🌐 English";
+        btn.className = "bg-[#0ea5e9] hover:bg-cyan-600 text-white text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5";
+    } else {
+        btn.innerHTML = "🌐 हिंदी";
+        btn.className = "bg-[#f97316] hover:bg-[#ea580c] text-white text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5";
+    }
+    
+    if(typeof renderQuestion === 'function' && testData.length > 0) {
+        renderQuestion(currentQuestionIndex);
+    }
+}
+
+// ऑटोमैटिक ट्रांसलेशन फंक्शन (फ्री और फास्ट)
+async function translateCurrentQuestionToHindi() {
+    if (!testData || testData.length === 0) return;
+    const currentQ = testData[currentQuestionIndex];
+    
+    // अगर पहले से हिंदी मौजूद है या ट्रांसलेट हो चुका है तो दोबारा नहीं करेंगे
+    if (currentQ.hiQ && currentQ.hiQ !== currentQ.q) return;
+
+    try {
+        // सवाल का ट्रांसलेशन
+        const qRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(currentQ.q)}&langpair=en|hi`);
+        const qData = await qRes.json();
+        if (qData && qData.responseData) {
+            currentQ.hiQ = qData.responseData.translatedText;
         }
+
+        // चारों ऑप्शन्स का ट्रांसलेशन
+        currentQ.hiOpts = [];
+        for (let opt of currentQ.opts) {
+            const optRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(opt)}&langpair=en|hi`);
+            const optData = await optRes.json();
+            if (optData && optData.responseData) {
+                currentQ.hiOpts.push(optData.responseData.translatedText);
+            } else {
+                currentQ.hiOpts.push(opt);
+            }
+        }
+    } catch (err) {
+        console.error("Translation error:", err);
+        // अगर नेट या एपीआई में कोई दिक्कत आए तो इंग्लिश वाला ही बैकअप रख लेगा
+        currentQ.hiQ = currentQ.q;
+        currentQ.hiOpts = [...currentQ.opts];
+    }
+}
 
         function buildSectionsAndPalette() {
             const sections = [...new Set(testData.map(q => q.section))];
@@ -2406,35 +2532,36 @@ async function confirmDeleteTest() {
             });
         }
 
-        function renderQuestion(index) {
-            currentQuestionIndex = index;
-            const q = testData[currentQuestionIndex];
-            if(q.status === 'not-visited') q.status = 'not-answered';
+    function renderQuestion(index) {
+    currentQuestionIndex = index;
+    const q = testData[currentQuestionIndex];
+    if(q.status === 'not-visited') q.status = 'not-answered';
 
-            if(window.innerWidth <= 768) {
-                document.getElementById('palette-section').classList.remove('open');
-                document.getElementById('mobile-palette-overlay').classList.remove('open');
-            }
+    if(window.innerWidth <= 768) {
+        document.getElementById('palette-section').classList.remove('open');
+        document.getElementById('mobile-palette-overlay').classList.remove('open');
+    }
 
-            document.getElementById("q-number-display").innerText = q.originalId || index + 1;
-            document.getElementById("question-text").innerHTML = isHindiLanguage ? (q.hiQ || q.q) : q.q;
-            
-            const optionsContainer = document.getElementById("options-container");
-            optionsContainer.innerHTML = "";
-            let currentOptions = isHindiLanguage ? (q.hiOpts || q.opts) : q.opts;
+    document.getElementById("q-number-display").innerText = q.originalId || index + 1;
+    
+    // 👇 यहाँ यह चेक कर रहा है कि भाषा कौन सी है (हिंदी या इंग्लिश)
+    document.getElementById("question-text").innerHTML = isHindiLanguage ? (q.hiQ || q.q) : q.q;
+    
+    const optionsContainer = document.getElementById("options-container");
+    optionsContainer.innerHTML = "";
+    let currentOptions = isHindiLanguage ? (q.hiOpts || q.opts) : q.opts;
 
-            currentOptions.forEach((opt, i) => {
-                const isChecked = q.selectedOption === i ? "checked" : "";
-                optionsContainer.innerHTML += `
-                    <label class="option-label group text-sm md:text-base border border-slate-200">
-                        <input type="radio" name="option" class="option-input mr-3 h-4 w-4 shrink-0" value="${i}" ${isChecked} onchange="window.selectOption(${i})">
-                        <span class="option-text font-medium text-slate-700">${opt}</span>
-                    </label>
-                `;
-            });
-            updatePalette();
-        }
-
+    currentOptions.forEach((opt, i) => {
+        const isChecked = q.selectedOption === i ? "checked" : "";
+        optionsContainer.innerHTML += `
+            <label class="option-label group text-sm md:text-base border border-slate-200">
+                <input type="radio" name="option" class="option-input mr-3 h-4 w-4 shrink-0" value="${i}" ${isChecked} onchange="window.selectOption(${i})">
+                <span class="option-text font-medium text-slate-700">${opt}</span>
+            </label>
+        `;
+    });
+    updatePalette();
+}
         function jumpToSection(sectionName) {
             const firstIndex = testData.findIndex(q => q.section === sectionName);
             if(firstIndex !== -1) renderQuestion(firstIndex);
@@ -2446,22 +2573,30 @@ async function confirmDeleteTest() {
             updatePalette();
         }
 
-       function saveAndNext() {
-    // अगर कोई ऑप्शन सेलेक्ट किया गया है, तो पक्का करें कि उसका स्टेटस 'answered' हो जाए
-    const currentQ = testData[currentQuestionIndex];
-    if (currentQ.selectedOption !== null && currentQ.selectedOption !== undefined) {
-        currentQ.status = 'answered';
-    }
+    async function saveAndNext() {
+        // अगर कोई ऑप्शन सेलेक्ट किया गया है, तो पक्का करें कि उसका स्टेटस 'answered' हो जाए
+        const currentQ = testData[currentQuestionIndex];
+        if (currentQ.selectedOption !== null && currentQ.selectedOption !== undefined) {
+            currentQ.status = 'answered';
+        }
 
-    // अगर आखिरी सवाल नहीं है, तो अगले सवाल पर जाओ
-    if (currentQuestionIndex < testData.length - 1) {
-        renderQuestion(currentQuestionIndex + 1);
-    } else {
-        // अगर आखिरी सवाल है, तो सिर्फ पैलेट अपडेट कर दो ताकि वो हरा (Green) हो जाए
-        updatePalette();
+        // अगर आखिरी सवाल नहीं है, तो अगले सवाल पर जाओ
+        if (currentQuestionIndex < testData.length - 1) {
+            let nextIndex = currentQuestionIndex + 1;
+            
+            // 👇 अगर हिंदी ऑन है, तो अगले सवाल को रेंडर करने से पहले उसे हिंदी में ट्रांसलेट करें
+            if (isHindiLanguage) {
+                currentQuestionIndex = nextIndex; // अस्थायी रूप से इंडेक्स सेट करें ताकि ट्रांसलेशन सही सवाल पर चले
+                await translateCurrentQuestionToHindi();
+                currentQuestionIndex--; // वापस सही जगह पर लाकर renderQuestion के हवाले करें
+            }
+            
+            renderQuestion(nextIndex);
+        } else {
+            // अगर आखिरी सवाल है, तो सिर्फ पैलेट अपडेट कर दो ताकि वो हरा (Green) हो जाए
+            updatePalette();
+        }
     }
-    }
-
         function markForReview() {
             testData[currentQuestionIndex].status = 'review';
             saveAndNext();
@@ -2982,6 +3117,145 @@ window.addEventListener('click', function(e) {
     }
 });
 
+window.updateCategoryPricing = async function(catId) {
+    const priceInput = document.getElementById(`admin-price-${catId}`);
+    const paidCheckbox = document.getElementById(`admin-paid-${catId}`);
+
+    const cat = categories.find(c => c.id === catId);
+    if(!cat) return;
+
+    cat.price = priceInput ? parseFloat(priceInput.value) || 199 : 199;
+    cat.isPaid = paidCheckbox ? paidCheckbox.checked : false;
+
+    const indicator = document.getElementById('saving-indicator');
+    if(indicator) indicator.classList.remove('hide');
+
+    try {
+        await window.saveAllData();
+        renderAdminCategories();
+        renderCategories(); 
+        showNotification("Category Pricing Updated Successfully! 🚀", true);
+    } catch (err) {
+        console.error("Error updating pricing:", err);
+        showNotification("Failed to update pricing.", false);
+    } finally {
+        if(indicator) indicator.classList.add('hide');
+    }
+}
+
+window.handlePaidCategoryClick = function(catId, price) {
+    const cat = categories.find(c => c.id === catId);
+    if (!cat) return;
+
+    // 1. पहले चेक करें कि क्या यूजर ने पहले से कोर्स खरीद रखा है (Step 3)
+    const hasPurchased = window.currentStudentPurchased && 
+                         window.currentStudentPurchased.includes(catId);
+
+    if (hasPurchased) {
+        showNotification("Access Granted! Welcome to your course 🚀", true);
+        window.openCategory(catId);
+        return;
+    }
+
+    // 2. अगर नहीं खरीदा है, तो Razorpay पेमेंट गेटवे चालू करें (Step 4)
+    const options = {
+        "key": "YOUR_RAZORPAY_KEY_ID", // यहाँ अपनी Razorpay की Key ID डालें (जैसे rzp_live_xxxx या rzp_test_xxxx)
+        "amount": price * 100, // Razorpay पैसे को पैसे (Paise) में गिनता है, इसलिए ₹199 मतलब 19900 पैसे
+        "currency": "INR",
+        "name": "Crackit Bhai",
+        "description": `Purchase ${cat.name} Course`,
+        "image": "https://your-logo-url.com/logo.png", // अपना लोगो लगा सकते हैं
+        "handler": async function (response){
+            // 3. पेमेंट सफल होने पर यह फंक्शन चलेगा!
+            showNotification("Payment Successful! Unlocking course... 🎉", true);
+            
+            // यहाँ हम डेटाबेस में सेव करेंगे कि इस यूजर ने यह कोर्स खरीद लिया है
+            await window.unlockCourseForStudent(catId);
+        },
+        "prefill": {
+            "name": currentStudent || "Student",
+            "email": "student@crackitbhai.com"
+        },
+        "theme": {
+            "color": "#f97316" // आपके ब्रांड का ऑरेंज कलर
+        }
+    };
+
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+}
+
+// पेमेंट सफल होने के बाद कोर्स को तुरंत डेटाबेस में अनलॉक करने वाला फंक्शन
+window.unlockCourseForSystem = async function(catId) {
+    if (!window.currentStudentPurchased) {
+        window.currentStudentPurchased = [];
+    }
+    window.currentStudentPurchased.push(catId);
+
+    // फायरबेस डेटाबेस में यूजर का परचेज रिकॉर्ड सेव करें
+    try {
+        const userId = auth.currentUser ? auth.currentUser.uid : null;
+        if (userId) {
+            const studentRef = doc(db, "students", userId);
+            await setDoc(studentRef, {
+                purchasedCategories: window.currentStudentPurchased
+            }, { merge: true });
+        }
+        
+        // कोर्स खुलने के बाद सीधे अंदर भेज दें
+        window.openCategory(catId);
+    } catch (err) {
+        console.error("Error saving purchase to database:", err);
+        showNotification("Course unlocked locally, but saving to DB failed.", false);
+        window.openCategory(catId);
+    }
+}
+function renderAdminCategories() {
+    const listContainer = document.getElementById('admin-cat-list');
+    if(!listContainer) return;
+    listContainer.innerHTML = '';
+
+    categories.forEach(cat => {
+        const isPaid = cat.isPaid === true;
+        const price = cat.price || 199;
+
+        listContainer.innerHTML += `
+            <div class="bg-white border border-slate-200 p-5 rounded-3xl shadow-xs flex flex-col justify-between gap-4">
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-black text-slate-900 text-base">${cat.name}</h4>
+                        <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${isPaid ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200'}">
+                            ${isPaid ? `Paid (₹${price})` : 'Free'}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 👇 यहाँ बिल्कुल ऊपर वाले फॉर्म जैसे प्राइस और Paid चेकबॉक्स जोड़ दिए हैं -->
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input type="number" id="admin-price-${cat.id}" value="${price}" placeholder="Price (₹)" class="w-24 bg-white border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold outline-none focus:border-[#f97316]">
+                        
+                        <label class="flex items-center gap-2 px-3 py-2 bg-white border border-slate-300 rounded-xl cursor-pointer text-xs font-bold text-slate-700 select-none">
+                            <input type="checkbox" id="admin-paid-${cat.id}" ${isPaid ? 'checked' : ''} class="w-4 h-4 accent-[#f97316]">
+                            Paid Course
+                        </label>
+                        
+                        <button onclick="window.updateCategoryPricing(${cat.id})" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-2 px-3 rounded-xl text-xs transition shadow-sm">Save</button>
+                    </div>
+
+                    <!-- आपके पुराने पासवर्ड, लॉक और डिलीट वाले बटन -->
+                    <div class="flex items-center justify-between gap-1 pt-2 border-t border-slate-200">
+                        <button onclick="window.setCategoryPasswordModal(${cat.id})" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-3 py-1.5 rounded-xl transition">Set Pass</button>
+                        <button onclick="window.toggleCategoryLock(${cat.id})" class="${cat.locked ? 'bg-rose-100 text-rose-700 border border-rose-200' : 'bg-emerald-100 text-emerald-700 border border-emerald-200'} text-xs font-bold px-3 py-1.5 rounded-xl transition">
+                            ${cat.locked ? 'Unlock 🔓' : 'Lock 🔒'}
+                        </button>
+                        <button onclick="window.deleteCategory(${cat.id})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 text-xs font-bold px-3 py-1.5 rounded-xl transition">Delete 🗑️</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
 
 window.toggleAuthMode = toggleAuthMode;
 window.firebaseSignup = window.firebaseSignup;
