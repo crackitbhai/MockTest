@@ -8,8 +8,9 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    
+    import { getFirestore, doc, getDoc,deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
     const firebaseConfig = {
         apiKey: "AIzaSyBSCqL4gv0USxuZeGlllYCegrpP5Ag4YAA",
         authDomain: "crackitbhai-app.firebaseapp.com",
@@ -26,6 +27,204 @@
 
     window.auth = auth;
     window.db = db;
+
+
+
+// --- Question Editor & Save Handler (Module ke andar) ---
+    window.openEditSingleQ = function(qIndex) {
+        currentEditQIndex = qIndex;
+        window.currentEditingTestId = editModeTestId;
+        window.currentEditingQuestionIndex = qIndex;
+
+        const test = catalog.find(t => t.id === editModeTestId);
+        if(!test) return;
+
+        if(qIndex === -1) {
+            document.getElementById('eq-section').value = "Computer";
+            document.getElementById('eq-q').value = "";
+            document.getElementById('eq-o1').value = "";
+            document.getElementById('eq-o2').value = "";
+            document.getElementById('eq-o3').value = "";
+            document.getElementById('eq-o4').value = "";
+            document.getElementById('eq-ans').value = "0";
+            document.getElementById('eq-exp').value = "";
+        } else {
+            const q = test.data[qIndex];
+            document.getElementById('eq-section').value = q.section || "Computer";
+            document.getElementById('eq-q').value = q.q || "";
+            document.getElementById('eq-o1').value = q.opts[0] || "";
+            document.getElementById('eq-o2').value = q.opts[1] || "";
+            document.getElementById('eq-o3').value = q.opts[2] || "";
+            document.getElementById('eq-o4').value = q.opts[3] || "";
+            document.getElementById('eq-ans').value = q.ans !== undefined ? q.ans : 0;
+            document.getElementById('eq-exp').value = q.exp || "";
+        }
+        document.getElementById('edit-q-modal').classList.remove('hide');
+    };
+
+    window.saveQuestionEdit = async function() {
+        const tId = window.currentEditingTestId || window.editModeTestId;
+        const qIdx = window.currentEditingQuestionIndex;
+
+        if (tId === undefined || qIdx === undefined) {
+            showNotification("Error: Test ID or Question Index is missing!");
+            return;
+        }
+
+        const test = catalog.find(t => String(t.id) === String(tId));
+        if (!test || !test.data) {
+            showNotification("Error: Test not found in catalog!");
+            return;
+        }
+
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
+        const ansEl = document.getElementById('eq-ans');
+        const selectedAns = ansEl ? parseInt(ansEl.value) || 0 : 0;
+
+        const questionData = {
+            section: getVal('eq-section') || "Computer",
+            q: getVal('eq-q'),
+            opts: [
+                getVal('eq-o1'),
+                getVal('eq-o2'),
+                getVal('eq-o3'),
+                getVal('eq-o4')
+            ],
+            ans: selectedAns,
+            exp: getVal('eq-exp'),
+            selectedOption: null,
+            status: 'not-visited'
+        };
+
+        if(!questionData.q) {
+            showNotification("Question text cannot be empty!");
+            return;
+        }
+
+        if (qIdx === -1) {
+            questionData.originalId = test.data.length + 1;
+            test.data.push(questionData);
+        } else {
+            const existingQ = test.data[qIdx];
+            questionData.originalId = existingQ ? existingQ.originalId : qIdx + 1;
+            test.data[qIdx] = questionData;
+        }
+
+        const indicator = document.getElementById('saving-indicator');
+        if (indicator) indicator.classList.remove('hide');
+
+        try {
+            await saveTestToFirebaseSeparately(test.id, test);
+
+            const modal = document.getElementById('edit-q-modal');
+            if (modal) modal.classList.add('hide');
+
+            if (typeof renderEditQuestionsList === 'function') renderEditQuestionsList(test);
+            if (typeof openEditTest === 'function') openEditTest(test.id); 
+            if (typeof renderAdminDashboard === 'function') renderAdminDashboard();
+
+            showNotification("Question saved & synced successfully! 🚀", true);
+        } catch (err) {
+            console.error("Error saving question in Firebase:", err);
+            showNotification("Failed to save question to database.", false);
+        } finally {
+            if (indicator) indicator.classList.add('hide');
+        }
+    };
+
+
+window.saveTestMeta = async function() {
+    const test = catalog.find(t => t.id === editModeTestId);
+    if(!test) return;
+
+    // पुरानी आईडी को सुरक्षित रखें ताकि नया डॉक्यूमेंट न बने
+    const originalId = test.id;
+
+    test.categoryId = parseInt(document.getElementById('edit-test-category').value);
+    test.name = sanitizeText(document.getElementById('edit-test-title').value);
+    test.duration = parseInt(document.getElementById('edit-test-time').value);
+    test.negativeMarking = parseFloat(document.getElementById('edit-test-neg').value);
+
+    const indicator = document.getElementById('saving-indicator');
+    if(indicator) indicator.classList.remove('hide');
+
+    try {
+        // 1. उसी पुरानी आईडी वाले डॉक्यूमेंट को फायरबेस में ओवरराइट (अपडेट) करें
+        await saveTestToFirebaseSeparately(originalId, test);
+        
+        if(typeof renderAdminDashboard === 'function') renderAdminDashboard();
+        showNotification("Test updated successfully! 🚀", true);
+    } catch (err) {
+        console.error("Save test meta error:", err);
+        showNotification("Failed to update test in database.", false);
+    } finally {
+        if(indicator) indicator.classList.add('hide');
+    }
+};
+
+
+
+
+    // सही स्पेलिंग 'async' के साथ और window पर बाइंड किया हुआ ताकि बटन से सीधे चल सके
+window.confirmDeleteTest = async function() {
+    const passInput = document.getElementById('delete-pass-input');
+    if(!passInput) return;
+    const pass = passInput.value.trim();
+    
+    if(pass === "PASSWORD123@") {
+        closeDeleteModal();
+        passInput.value = "";
+
+        const indicator = document.getElementById('saving-indicator');
+        if(indicator) indicator.classList.remove('hide');
+
+        try {
+            if(deleteType === 'test') {
+                const testObj = catalog.find(t => t.id === testToDelete);
+                if(testObj) {
+                    // फायरबेस के 'tests' कलेक्शन से उस यूनिक टेस्ट डॉक्यूमेंट को डिलीट करें
+                    await deleteDoc(doc(db, "tests", "test_" + testToDelete));
+                    
+                    // लोकल कैटलॉग से हटाएं
+                    catalog = catalog.filter(t => t.id !== testToDelete);
+                    showNotification("Test Deleted Successfully! 🚀", true);
+                }
+            } else if(deleteType === 'note') {
+                notesList = notesList.filter(n => n.id != noteToDelete);
+                await window.saveAllData();
+                showNotification("Item Deleted Successfully! 🚀", true);
+            }
+
+            renderAdminDashboard();
+        } catch (err) {
+            console.error("Delete error:", err);
+            showNotification("Failed to delete from database.", false);
+        } finally {
+            if(indicator) indicator.classList.add('hide');
+        }
+    } else {
+        showNotification("Incorrect Security Passcode!");
+    }
+}
+
+
+
+
+    // --- 1. अलग डॉक्यूमेंट में सुरक्षित सेव करने वाला फंक्शन (मॉड्यूल के अंदर) ---
+    window.saveTestToFirebaseSeparately = async function(testId, testData) {
+        try {
+            const testRef = doc(db, "tests", "test_" + testId);
+            await setDoc(testRef, testData);
+            console.log(`Test ${testId} saved successfully in Firebase 'tests' collection!`);
+        } catch (err) {
+            console.error("Error saving individual test to Firebase:", err);
+            throw err;
+        }
+    };
 
     // --- Admin Login Function ---
     window.adminLogin = async function() {
@@ -62,6 +261,9 @@
             showNotification("Invalid Admin Credentials!");
         }
     }
+
+
+
 
     // --- Signup Function ---
     window.firebaseSignup = async function() {
@@ -186,37 +388,41 @@
         }
     }
 
- window.loadStorageDataFromFirebase = async function() {
+window.loadStorageDataFromFirebase = async function() {
     try {
         const docRef = doc(db, "appData", "mainContent");
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             const serverData = docSnap.data();
-            
-            // यह चेक करने के लिए कि डेटा आ रहा है या नहीं:
-            console.log("Data fetched from Firebase:", serverData); 
-
-            categories = serverData.categories || []; // खाली एरे डिफ़ॉल्ट रखें
-            catalog = serverData.catalog || [];
+            categories = serverData.categories || [];
             notesList = serverData.notes || [];
             studyFolders = serverData.studyFolders || [];
             passcodes = serverData.passcodes || [];
-            
             isFreeTrialEnabled = serverData.isFreeTrialEnabled !== undefined ? serverData.isFreeTrialEnabled : true;
             freeTrialTestIds = serverData.freeTrialTestIds || [];
-            
-            // डेटा लोड होने के बाद एक बार रेंडर फंक्शन को कॉल करना जरूरी है ताकि स्क्रीन पर दिखे
-            if(window.renderAdminDashboard) {
-                renderAdminDashboard(); 
-            }
+        }
+
+        // 'tests' कलेक्शन से सारे टेस्ट्स खींचकर लाएं
+        catalog = [];
+        const testsSnapshot = await getDocs(collection(db, "tests"));
+        testsSnapshot.forEach((document) => {
+            catalog.push(document.data());
+        });
+
+        console.log("Loaded tests from Firebase collection:", catalog.length);
+
+        if(window.renderAdminDashboard) {
+            renderAdminDashboard(); 
         }
     } catch (error) {
         console.error("Error loading data from Firebase:", error);
     }
     showScreen('login-screen', false);
 }
- window.saveAllData = async function(){
+
+
+window.saveAllData = async function(){
         try {
             showNotification("Saving to Firebase Database...", true);
             
@@ -237,7 +443,9 @@
             showNotification("Failed to save data to database.");
         }
     }
-// यह कोड अपने आप बटन को ढूंढकर डेटाबेस वाले लॉगिन से जोड़ देगा
+
+
+    // यह कोड अपने आप बटन को ढूंढकर डेटाबेस वाले लॉगिन से जोड़ देगा
 document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('admin-btn');
     if (btn) {
@@ -2167,123 +2375,106 @@ function renderCategories() {
             document.getElementById('delete-modal').classList.add('hide');
         }
 
-async function confirmDeleteTest() {
-            const passInput = document.getElementById('delete-pass-input');
-            if(!passInput) return;
-            const pass = passInput.value.trim();
-            
-            if(pass === "PASSWORD123@") {
-                // 1. पासवर्ड सही मिलते ही तुरंत इस डिलीट वाले मॉडल/डायलॉग बॉक्स को बंद कर दें!
-                closeDeleteModal();
-                passInput.value = ""; // पासवर्ड बॉक्स साफ़ कर दें
+async function processBulkUpload() {
+    const catSelect = document.getElementById('new-test-category');
+    const titleInput = document.getElementById('new-test-title');
+    const timeInput = document.getElementById('new-test-time');
+    const negSelect = document.getElementById('new-test-neg');
+    const qInput = document.getElementById('bulk-questions-input');
 
-                // 2. कोने वाला छोटा इंडिकेटर ऑन करें ताकि पता चले बैकग्राउंड में डिलीট हो रहा है
-                const indicator = document.getElementById('saving-indicator');
-                if(indicator) indicator.classList.remove('hide');
+    if(!catSelect || !titleInput || !timeInput || !negSelect || !qInput) return;
 
-                try {
-                    if(deleteType === 'test') {
-                        catalog = catalog.filter(t => t.id !== testToDelete);
-                        showNotification("Test Deleted Successfully!", true);
-                    } else if(deleteType === 'note') {
-                        notesList = notesList.filter(n => n.id != noteToDelete);
-                        showNotification("Item Deleted Successfully!", true);
-                    } else if(deleteType === 'folder') {
-                        studyFolders = studyFolders.filter(f => f.id != folderToDelete);
-                        showNotification("Folder Deleted Successfully!", true);
-                    }
+    const catId = parseInt(catSelect.value);
+    const title = sanitizeText(titleInput.value.trim());
+    const timeStr = timeInput.value;
+    const negVal = parseFloat(negSelect.value);
+    const rawText = qInput.value.trim();
 
-                    // 3. अब चुपचाप बैकग्राउंड में डेटाबेस पर सेव करें
-                    await window.saveAllData();
-                    renderAdminDashboard();
-                } catch (err) {
-                    console.error("Delete save error:", err);
-                    showNotification("Failed to delete from database.", false);
-                } finally {
-                    // 4. इंडिकेटर बंद करें
-                    if(indicator) indicator.classList.add('hide');
-                }
-            } else {
-                showNotification("Incorrect Security Passcode!");
+    if(!title || !timeStr || !rawText) { showNotification("Fill all fields"); return; }
+    
+    const blocks = rawText.split(/\n\s*\n/).map(b => b.trim()).filter(b => b.length > 0);
+    let parsedQs = [];
+    
+    blocks.forEach((block, idx) => {
+        const lines = block.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        let qObj = { originalId: idx + 1, section: 'Computer', q: '', opts: [], ans: 0, exp: '', selectedOption: null, status: 'not-visited' };
+        
+        lines.forEach(l => {
+            let line = l;
+            let lower = line.toLowerCase();
+            if(lower.startsWith('section:')) qObj.section = sanitizeText(line.substring(8).trim());
+            else if(lower.startsWith('question:')) qObj.q = sanitizeText(line.substring(9).trim());
+            else if(lower.startsWith('a)')) qObj.opts[0] = sanitizeText(line.substring(2).trim());
+            else if(lower.startsWith('b)')) qObj.opts[1] = sanitizeText(line.substring(2).trim());
+            else if(lower.startsWith('c)')) qObj.opts[2] = sanitizeText(line.substring(2).trim());
+            else if(lower.startsWith('d)')) qObj.opts[3] = sanitizeText(line.substring(2).trim());
+            else if(lower.startsWith('correct:')) {
+                let ans = lower.substring(8).trim();
+                if(ans === 'a') qObj.ans = 0;
+                if(ans === 'b') qObj.ans = 1;
+                if(ans === 'c') qObj.ans = 2;
+                if(ans === 'd') qObj.ans = 3;
             }
-        } 
-        async function processBulkUpload() {
-            const catSelect = document.getElementById('new-test-category');
-            const titleInput = document.getElementById('new-test-title');
-            const timeInput = document.getElementById('new-test-time');
-            const negSelect = document.getElementById('new-test-neg');
-            const qInput = document.getElementById('bulk-questions-input');
-
-            if(!catSelect || !titleInput || !timeInput || !negSelect || !qInput) return;
-
-            const catId = parseInt(catSelect.value);
-            const title = sanitizeText(titleInput.value.trim());
-            const timeStr = timeInput.value;
-            const negVal = parseFloat(negSelect.value);
-            const rawText = qInput.value.trim();
-
-            if(!title || !timeStr || !rawText) { showNotification("Fill all fields"); return; }
-            
-            const blocks = rawText.split(/\n\s*\n/).map(b => b.trim()).filter(b => b.length > 0);
-            let parsedQs = [];
-            
-            blocks.forEach((block, idx) => {
-                const lines = block.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-                let qObj = { originalId: idx + 1, section: 'Computer', q: '', opts: [], ans: 0, exp: '', selectedOption: null, status: 'not-visited' };
-                
-                lines.forEach(l => {
-                    let line = l;
-                    let lower = line.toLowerCase();
-                    if(lower.startsWith('section:')) qObj.section = sanitizeText(line.substring(8).trim());
-                    else if(lower.startsWith('question:')) qObj.q = sanitizeText(line.substring(9).trim());
-                    else if(lower.startsWith('a)')) qObj.opts[0] = sanitizeText(line.substring(2).trim());
-                    else if(lower.startsWith('b)')) qObj.opts[1] = sanitizeText(line.substring(2).trim());
-                    else if(lower.startsWith('c)')) qObj.opts[2] = sanitizeText(line.substring(2).trim());
-                    else if(lower.startsWith('d)')) qObj.opts[3] = sanitizeText(line.substring(2).trim());
-                    else if(lower.startsWith('correct:')) {
-                        let ans = lower.substring(8).trim();
-                        if(ans === 'a') qObj.ans = 0;
-                        if(ans === 'b') qObj.ans = 1;
-                        if(ans === 'c') qObj.ans = 2;
-                        if(ans === 'd') qObj.ans = 3;
-                    }
-                    else if(lower.startsWith('explanation:')) qObj.exp = sanitizeText(line.substring(12).trim());
-                });
-                if(qObj.q) {
-                    qObj.hiQ = qObj.q;
-                    qObj.hiOpts = [...qObj.opts];
-                    parsedQs.push(qObj);
-                }
-            });
-
-            if(parsedQs.length === 0) {
-                showNotification("Error: No questions found. Check format!");
-                return;
-            }
-
-            catalog.push({ id: catalog.length + 1, categoryId: catId, name: title, duration: parseInt(timeStr), negativeMarking: negVal, data: parsedQs });
-
-            // 1. कोने वाला छोटा इंडिकेटर ऑन करें
-            const indicator = document.getElementById('saving-indicator');
-            if(indicator) indicator.classList.remove('hide');
-
-            try {
-                // 2. सबसे ज़रूरी: डेटाबेस पर सेव होने का इंतज़ार करें
-                await saveAllData();
-                
-                titleInput.value = "";
-                qInput.value = "";
-                showNotification(`Successfully added ${parsedQs.length} questions to Database! 🚀`, true);
-                renderAdminDashboard();
-            } catch (err) {
-                console.error("Bulk upload save error:", err);
-                showNotification("Failed to save test to database.", false);
-            } finally {
-                // 3. काम पूरा होते ही इंडिकेटर हटा दें
-                if(indicator) indicator.classList.add('hide');
-            }
+            else if(lower.startsWith('explanation:')) qObj.exp = sanitizeText(line.substring(12).trim());
+        });
+        if(qObj.q) {
+            qObj.hiQ = qObj.q;
+            qObj.hiOpts = [...qObj.opts];
+            parsedQs.push(qObj);
         }
-        function openEditTest(id) {
+    });
+
+    if(parsedQs.length === 0) {
+        showNotification("Error: No questions found. Check format!");
+        return;
+    }
+
+    // नई यूनिक आईडी जेनरेट करें (टाइमस्टैम्प या कैटलॉग लंबाई के आधार पर ताकि ओवरलैप न हो)
+    const uniqueTestId = Date.now();
+
+    const newTestObj = { 
+        id: uniqueTestId, 
+        categoryId: catId, 
+        name: title, 
+        duration: parseInt(timeStr), 
+        negativeMarking: negVal, 
+        data: parsedQs 
+    };
+
+    const indicator = document.getElementById('saving-indicator');
+    if(indicator) indicator.classList.remove('hide');
+
+    try {
+        // फायरबेस के अलग कलेक्शन में सेव करें
+        await saveTestToFirebaseSeparately(uniqueTestId, newTestObj);
+        
+        // लोकल कैटलॉग में जोड़ें
+        catalog.push(newTestObj);
+        
+        titleInput.value = "";
+        qInput.value = "";
+        showNotification(`Successfully saved ${parsedQs.length} questions to Firebase! 🚀`, true);
+        renderAdminDashboard();
+    } catch (err) {
+        console.error("Bulk upload save error:", err);
+        showNotification("Failed to save test to database.", false);
+    } finally {
+        if(indicator) indicator.classList.add('hide');
+    }
+}
+        // हर नए टेस्ट को अलग डॉक्यूमेंट में अलग से सेव करने वाला नया फंक्शन
+async function saveTestToFirebaseSeparately(testId, testData) {
+    try {
+        // 'tests' कलेक्शन के अंदर हर टेस्ट की यूनिक आईडी (जैसे test_1, test_2) से डॉक्यूमेंट बनेगा
+        const testRef = doc(db, "tests", "test_" + testId);
+        await setDoc(testRef, testData);
+        console.log(`Test ${testId} saved successfully in Firebase 'tests' collection!`);
+    } catch (err) {
+        console.error("Error saving individual test to Firebase:", err);
+        throw err;
+    }
+}
+          function openEditTest(id) {
             editModeTestId = id;
             const test = catalog.find(t => t.id === id);
             document.getElementById('edit-test-title').value = test.name;
@@ -2308,96 +2499,9 @@ async function confirmDeleteTest() {
             `).join('');
         }
 
-  async function saveTestMeta() {
-            const test = catalog.find(t => t.id === editModeTestId);
-            if(!test) return;
-
-            test.categoryId = parseInt(document.getElementById('edit-test-category').value);
-            test.name = sanitizeText(document.getElementById('edit-test-title').value);
-            test.duration = parseInt(document.getElementById('edit-test-time').value);
-            test.negativeMarking = parseFloat(document.getElementById('edit-test-neg').value);
-
-            // 1. कोने वाला छोटा इंडिकेटर ऑन करें
-            const indicator = document.getElementById('saving-indicator');
-            if(indicator) indicator.classList.remove('hide');
-
-            try {
-                // 2. सबसे ज़रूरी: डेटाबेस पर सेव होने का इंतज़ार करें
-                await saveAllData();
-                
-                renderAdminDashboard();
-                showNotification("Test settings updated & saved to Database successfully! 🚀", true);
-            } catch (err) {
-                console.error("Save test meta error:", err);
-                showNotification("Failed to save settings to database.", false);
-            } finally {
-                // 3. काम पूरा होते ही इंडिकेटर हटा दें
-                if(indicator) indicator.classList.add('hide');
-            }
-        }
 
         function closeEditModal() { document.getElementById('edit-test-modal').classList.add('hide'); }
-
-        function openEditSingleQ(qIndex) {
-            currentEditQIndex = qIndex;
-            const test = catalog.find(t => t.id === editModeTestId);
-            if(qIndex === -1) {
-                document.getElementById('eq-section').value = "Computer";
-                document.getElementById('eq-q').value = "";
-                document.getElementById('eq-o1').value = "";
-                document.getElementById('eq-o2').value = "";
-                document.getElementById('eq-o3').value = "";
-                document.getElementById('eq-o4').value = "";
-                document.getElementById('eq-ans').value = "0";
-                document.getElementById('eq-exp').value = "";
-            } else {
-                const q = test.data[qIndex];
-                document.getElementById('eq-section').value = q.section || "Computer";
-                document.getElementById('eq-q').value = q.q;
-                document.getElementById('eq-o1').value = q.opts[0];
-                document.getElementById('eq-o2').value = q.opts[1];
-                document.getElementById('eq-o3').value = q.opts[2];
-                document.getElementById('eq-o4').value = q.opts[3];
-                document.getElementById('eq-ans').value = q.ans;
-                document.getElementById('eq-exp').value = q.exp || "";
-            }
-            document.getElementById('edit-q-modal').classList.remove('hide');
-        }
-        
-
-        function saveQuestionEdit() {
-            const test = catalog.find(t => t.id === editModeTestId);
-            const qData = {
-                originalId: currentEditQIndex === -1 ? test.data.length + 1 : test.data[currentEditQIndex].originalId,
-                section: sanitizeText(document.getElementById('eq-section').value.trim() || "Computer"),
-                q: sanitizeText(document.getElementById('eq-q').value),
-                hiQ: sanitizeText(document.getElementById('eq-q').value),
-                opts: [
-                    sanitizeText(document.getElementById('eq-o1').value),
-                    sanitizeText(document.getElementById('eq-o2').value),
-                    sanitizeText(document.getElementById('eq-o3').value),
-                    sanitizeText(document.getElementById('eq-o4').value)
-                ],
-                hiOpts: [
-                    sanitizeText(document.getElementById('eq-o1').value),
-                    sanitizeText(document.getElementById('eq-o2').value),
-                    sanitizeText(document.getElementById('eq-o3').value),
-                    sanitizeText(document.getElementById('eq-o4').value)
-                ],
-                ans: parseInt(document.getElementById('eq-ans').value),
-                exp: sanitizeText(document.getElementById('eq-exp').value),
-                selectedOption: null, status: 'not-visited'
-            };
-
-            if(currentEditQIndex === -1) test.data.push(qData);
-            else test.data[currentEditQIndex] = qData;
-
-            saveAllData();
-            renderEditQuestionsList(test);
-            document.getElementById('edit-q-modal').classList.add('hide');
-            showNotification("Question saved successfully!", true);
-        }
-
+   
         function showInstructions(id) {
             currentTestId = id;
             const testMeta = catalog.find(t => t.id === id);
@@ -3257,6 +3361,7 @@ function renderAdminCategories() {
     });
 }
 
+
 window.toggleAuthMode = toggleAuthMode;
 window.firebaseSignup = window.firebaseSignup;
 window.firebaseLogin = window.firebaseLogin;
@@ -3309,13 +3414,13 @@ document.getElementById('toppers-btn').classList.remove('hide');
         window.promptDeleteNote = promptDeleteNote;
         window.promptDeleteTest = promptDeleteTest;
         window.closeDeleteModal = closeDeleteModal;
-        window.confirmDeleteTest = confirmDeleteTest;
+        window.confirmDeleteTest = window.confirmDeleteTest;
         window.processBulkUpload = processBulkUpload;
         window.openEditTest = openEditTest;
         window.closeEditModal = closeEditModal;
-        window.saveTestMeta = saveTestMeta;
-        window.openEditSingleQ = openEditSingleQ;
-        window.saveQuestionEdit = saveQuestionEdit;
+        window.saveTestMeta = window.saveTestMeta;
+        window.openEditSingleQ = window.openEditSingleQ;
+        window.saveQuestionEdit = window.saveQuestionEdit;
         window.extractTextFromPDF = extractTextFromPDF;
         window.renderQuestion = renderQuestion;
         window.exportToJsonFile = exportToJsonFile;
@@ -3327,3 +3432,4 @@ document.getElementById('toppers-btn').classList.remove('hide');
     </script>
 </body>
 </html>
+
