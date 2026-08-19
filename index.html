@@ -30,6 +30,129 @@
 
 
 
+window.updateCategoryPricing = async function(catId) {
+    const priceInput = document.getElementById(`admin-price-${catId}`);
+    const paidCheckbox = document.getElementById(`admin-paid-${catId}`);
+
+    const cat = categories.find(c => String(c.id) === String(catId));
+    if(!cat) return;
+
+    cat.price = priceInput ? parseFloat(priceInput.value) || 199 : 199;
+    cat.isPaid = paidCheckbox ? paidCheckbox.checked : false;
+
+    const indicator = document.getElementById('saving-indicator');
+    if(indicator) indicator.classList.remove('hide');
+
+    try {
+        // 🔥 हम सिर्फ कैटेगरीज की बेसिक और हल्की लिस्ट सेव करेंगे ताकि 1MB की साइज लिमिट पार न हो
+        const lightweightCategories = categories.map(c => ({
+            id: c.id,
+            name: c.name,
+            price: c.price || 199,
+            isPaid: c.isPaid || false,
+            locked: c.locked || false,
+            passcode: c.passcode || ""
+        }));
+
+        const docRef = doc(db, "appData", "mainContent");
+        await setDoc(docRef, { categories: lightweightCategories }, { merge: true });
+
+        renderAdminCategories();
+        if (typeof renderCategories === 'function') renderCategories(); 
+        
+        showNotification("Category Pricing Updated Successfully! 🚀", true);
+    } catch (err) {
+        console.error("Error updating pricing:", err);
+        showNotification("Failed to update pricing (Size limit error).", false);
+    } finally {
+        if(indicator) indicator.classList.add('hide');
+    }
+}
+
+window.handlePaidCategoryClick = function(catId, price) {
+    const cat = categories.find(c => c.id === catId);
+    if (!cat) return;
+
+    // 1. पहले चेक करें कि क्या यूजर ने पहले से कोर्स खरीद रखा है
+    const hasPurchased = window.currentStudentPurchased && 
+                         window.currentStudentPurchased.includes(catId);
+
+    if (hasPurchased) {
+        showNotification("Access Granted! Welcome to your course 🚀", true);
+        window.openCategory(catId);
+        return;
+    }
+
+    // 2. अगर नहीं खरीदा है, तो Razorpay पेमेंट गेटवे चालू करें
+    const options = {
+        "key": "rzp_test_TRJLcp050xM27n", // अपनी Razorpay की Key ID यहाँ डालें
+        "amount": price * 100, // पैसे (Paise) में कन्वर्ट करने के लिए
+        "currency": "INR",
+        "name": "Crackit Bhai",
+        "description": `Purchase ${cat.name} Course`,
+        "image": "https://your-logo-url.com/logo.png",
+        "handler": async function (response){
+            // 3. पेमेंट सफल होने पर यह फंक्शन चलेगा!
+            showNotification("Payment Successful! Unlocking course... 🎉", true);
+            
+            // 🔥 यहाँ सही नाम वाला फंक्शन कॉल हो रहा है
+            await window.unlockCourseForStudent(catId);
+        },
+        "prefill": {
+            "name": window.currentStudent || "Student",
+            "email": "student@crackitbhai.com"
+        },
+        "theme": {
+            "color": "#f97316"
+        }
+    };
+
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+}
+
+// 👉 पेमेंट सफल होने के बाद कोर्स को डेटाबेस में अनलॉक करने वाला सही फंक्शन
+window.unlockCourseForStudent = async function(catId) {
+    if (!window.currentStudentPurchased) {
+        window.currentStudentPurchased = [];
+    }
+    if (!window.currentStudentPurchased.includes(catId)) {
+        window.currentStudentPurchased.push(catId);
+    }
+
+    try {
+        // 🔥 पक्का करें कि हमारे पास करंट यूजर की UID है
+        const currentUser = window.auth ? window.auth.currentUser : null;
+        
+        if (currentUser) {
+            // ईमेल की जगह 'currentUser.uid' का इस्तेमाल करें ताकि डेटा सही जगह सेव हो
+            const studentRef = doc(db, "students", currentUser.uid);
+            await setDoc(studentRef, { 
+                email: currentUser.email, // ईमेल सिर्फ पहचान के लिए अंदर सेव रख सकते हैं
+                purchasedCourses: window.currentStudentPurchased 
+            }, { merge: true });
+            
+            console.log("Saved successfully to UID:", currentUser.uid);
+        } else {
+            console.error("No authenticated user found during unlock!");
+        }
+
+        showNotification("Course unlocked and saved successfully! 🎉", true);
+        
+        // यूज़र इंटरफेस को अपडेट करें
+        if (typeof renderCategories === 'function') {
+            renderCategories();
+        }
+        
+        if (typeof window.openCategory === 'function') {
+            window.openCategory(catId);
+        }
+    } catch (err) {
+        console.error("Error unlocking course in database:", err);
+        showNotification("Failed to save purchase to database.", false);
+    }
+}
+
 // --- Question Editor & Save Handler (Module ke andar) ---
     window.openEditSingleQ = function(qIndex) {
         currentEditQIndex = qIndex;
@@ -309,71 +432,88 @@ window.confirmDeleteTest = async function() {
     }
 
     // --- Student Login Function ---
-    window.firebaseLogin = async function() {
-        const emailInput = document.getElementById('login-email');
-        const passwordInput = document.getElementById('login-password');
+  window.firebaseLogin = async function() {
+    const emailInput = document.getElementById('login-email');
+    const passwordInput = document.getElementById('login-password');
 
-        if(!emailInput || !passwordInput) return;
+    if(!emailInput || !passwordInput) return;
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
-        if(!email || !password) {
-            showNotification("Please enter email and password!");
-            return;
-        }
-
-        const loadingText = document.getElementById('loading-text');
-        if(loadingText) loadingText.innerText = "Logging in, Please wait...";
-
-        const loadingModal = document.getElementById('loading-modal');
-        if(loadingModal) loadingModal.classList.remove('hide');
-
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            
-            const studentFullName = user.displayName || email.split('@')[0];
-            currentStudent = studentFullName;
-            const firstLetter = currentStudent.charAt(0).toUpperCase();
-
-            if (typeof window.loadStorageDataFromFirebase === 'function') {
-                await window.loadStorageDataFromFirebase();
-            }
-
-            const loggedBox = document.getElementById('logged-in-user-box');
-            const mobileLoggedBox = document.getElementById('mobile-logged-in-box');
-            if(loggedBox) loggedBox.classList.remove('hide');
-            if(mobileLoggedBox) mobileLoggedBox.classList.remove('hide');
-
-            ['box-user-name', 'mobile-box-user-name', 'nav-user-name', 'palette-name', 'dash-user-display', 'header-student-name'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.innerText = currentStudent;
-            });
-
-            ['box-avatar', 'mobile-box-avatar', 'nav-avatar', 'palette-avatar'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.innerText = firstLetter;
-            });
-
-            const loginScreen = document.getElementById('login-screen');
-            if(loginScreen) loginScreen.classList.add('hide');
-
-            const toppersBtn = document.getElementById('toppers-btn');
-            if(toppersBtn) toppersBtn.classList.add('hide');
-
-            showNotification("Logged in successfully! 🚀", true);
-            showScreen("category-screen");
-            renderCategories();
-
-        } catch (error) {
-            console.error("Firebase Login Error:", error);
-            showNotification("Invalid email or password!");
-        } finally {
-            if(loadingModal) loadingModal.classList.add('hide');
-        }
+    if(!email || !password) {
+        showNotification("Please enter email and password!");
+        return;
     }
 
+    const loadingText = document.getElementById('loading-text');
+    if(loadingText) loadingText.innerText = "Logging in, Please wait...";
+
+    const loadingModal = document.getElementById('loading-modal');
+    if(loadingModal) loadingModal.classList.remove('hide');
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // 🌟 सबसे ज़रूरी लाइन: लॉगिन होते ही इस स्टूडेंट का ईमेल और परचेस्ड कोर्सेज लोड करें!
+        window.currentStudentEmail = user.email;
+        if (typeof window.loadStudentPurchases === 'function') {
+            await window.loadStudentPurchases(user.uid);
+        } else {
+            // अगर फंक्शन अलग से नहीं है, तो डायरेक्ट फायरबेस से यहाँ भी लोड कर सकते हैं:
+            const studentRef = doc(db, "students", user.uid);
+            const docSnap = await getDoc(studentRef);
+            if (docSnap.exists()) {
+                window.currentStudentPurchased = docSnap.data().purchasedCourses || [];
+            } else {
+                window.currentStudentPurchased = [];
+            }
+        }
+
+        const studentFullName = user.displayName || email.split('@')[0];
+        currentStudent = studentFullName;
+        const firstLetter = currentStudent.charAt(0).toUpperCase();
+
+        if (typeof window.loadStorageDataFromFirebase === 'function') {
+            await window.loadStorageDataFromFirebase();
+        }
+
+        const loggedBox = document.getElementById('logged-in-user-box');
+        const mobileLoggedBox = document.getElementById('mobile-logged-in-box');
+        if(loggedBox) loggedBox.classList.remove('hide');
+        if(mobileLoggedBox) mobileLoggedBox.classList.remove('hide');
+
+        ['box-user-name', 'mobile-box-user-name', 'nav-user-name', 'palette-name', 'dash-user-display', 'header-student-name'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.innerText = currentStudent;
+        });
+
+        ['box-avatar', 'mobile-box-avatar', 'nav-avatar', 'palette-avatar'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.innerText = firstLetter;
+        });
+
+        const loginScreen = document.getElementById('login-screen');
+        if(loginScreen) loginScreen.classList.add('hide');
+
+        const toppersBtn = document.getElementById('toppers-btn');
+        if(toppersBtn) toppersBtn.classList.add('hide');
+
+        showNotification("Logged in successfully! 🚀", true);
+        showScreen("category-screen");
+        renderCategories(); // 👈 यह अब सही परचेस डेटा के साथ कैटेगरी रेंडर करेगा!
+
+    } catch (error) {
+        console.error("Firebase Login Error:", error);
+        showNotification("Invalid email or password!");
+    } finally {
+        if(loadingModal) loadingModal.classList.add('hide');
+    }
+}
+
+
+    
     window.toggleAuthMode = function(mode) {
         const loginBox = document.getElementById('login-box');
         const signupBox = document.getElementById('signup-box');
@@ -422,28 +562,31 @@ window.loadStorageDataFromFirebase = async function() {
 }
 
 
-window.saveAllData = async function(){
-        try {
-            showNotification("Saving to Firebase Database...", true);
-            
-            const dataObj = {
-                categories: categories,
-                catalog: catalog,
-                notes: notesList,
-                studyFolders: studyFolders,
-                passcodes: passcodes,
-                freeTrialTestIds: freeTrialTestIds,
-                isFreeTrialEnabled: isFreeTrialEnabled
-            };
+window.saveAllData = async function() {
+    const overlay = document.getElementById('saving-overlay');
+    if(overlay) overlay.classList.remove('hide');
 
-            await setDoc(doc(db, "appData", "mainContent"), dataObj);
-            showNotification("Saved to Firebase Successfully! 🚀", true);
-        } catch(err) {
-            console.error(err);
-            showNotification("Failed to save data to database.");
-        }
+    try {
+        const dataObj = {
+            categories: categories,
+            // catalog: catalog,  <-- इसे हटा दिया है (यही एरर की जड़ है)
+            notes: notesList,
+            studyFolders: studyFolders,
+            passcodes: passcodes,
+            isFreeTrialEnabled: isFreeTrialEnabled,
+            freeTrialTestIds: freeTrialTestIds,
+            updatedAt: new Date().toISOString()
+        };
+
+        await setDoc(doc(db, "appData", "mainContent"), dataObj);
+        window.showNotification("Saved to Firebase Successfully! 🚀", true);
+    } catch (err) {
+        console.error("Save error:", err);
+        window.showNotification("Failed to save data to database.", false);
+    } finally {
+        if(overlay) overlay.classList.add('hide');
     }
-
+}
 
     // यह कोड अपने आप बटन को ढूंढकर डेटाबेस वाले लॉगिन से जोड़ देगा
 document.addEventListener('DOMContentLoaded', () => {
@@ -2677,31 +2820,38 @@ async function translateCurrentQuestionToHindi() {
             updatePalette();
         }
 
-    async function saveAndNext() {
-        // अगर कोई ऑप्शन सेलेक्ट किया गया है, तो पक्का करें कि उसका स्टेटस 'answered' हो जाए
-        const currentQ = testData[currentQuestionIndex];
-        if (currentQ.selectedOption !== null && currentQ.selectedOption !== undefined) {
-            currentQ.status = 'answered';
-        }
-
-        // अगर आखिरी सवाल नहीं है, तो अगले सवाल पर जाओ
-        if (currentQuestionIndex < testData.length - 1) {
-            let nextIndex = currentQuestionIndex + 1;
-            
-            // 👇 अगर हिंदी ऑन है, तो अगले सवाल को रेंडर करने से पहले उसे हिंदी में ट्रांसलेट करें
-            if (isHindiLanguage) {
-                currentQuestionIndex = nextIndex; // अस्थायी रूप से इंडेक्स सेट करें ताकि ट्रांसलेशन सही सवाल पर चले
-                await translateCurrentQuestionToHindi();
-                currentQuestionIndex--; // वापस सही जगह पर लाकर renderQuestion के हवाले करें
-            }
-            
-            renderQuestion(nextIndex);
-        } else {
-            // अगर आखिरी सवाल है, तो सिर्फ पैलेट अपडेट कर दो ताकि वो हरा (Green) हो जाए
-            updatePalette();
-        }
+async function saveAndNext() {
+    // 1. अगर कोई ऑप्शन सेलेक्ट किया गया है, तो पक्का करें कि उसका स्टेटस 'answered' हो जाए
+    const currentQ = testData[currentQuestionIndex];
+    if (currentQ.selectedOption !== null && currentQ.selectedOption !== undefined) {
+        currentQ.status = 'answered';
     }
-        function markForReview() {
+
+    // 2. अगर आखिरी सवाल नहीं है, तो अगले सवाल पर जाओ
+    if (currentQuestionIndex < testData.length - 1) {
+        let nextIndex = currentQuestionIndex + 1;
+        
+        // अगर हिंदी ऑन है, तो अगले सवाल को रेंडर करने से पहले उसे हिंदी में ट्रांसलेट करें
+        if (isHindiLanguage) {
+            currentQuestionIndex = nextIndex; 
+            await translateCurrentQuestionToHindi();
+            currentQuestionIndex--; 
+        }
+        
+        renderQuestion(nextIndex);
+    } else {
+        // 🚀 3. यहाँ बदलाव किया है: अगर यह आखिरी सवाल है, तो वापस पहले सवाल (Index 0) पर भेज दें!
+        currentQ.status = 'answered'; // आखिरी सवाल का जवाब भी सेव रखें
+        currentQuestionIndex = 0;     // इंडेक्स को वापस 0 पर सेट करें
+        
+        updatePalette();              // पैलेट अपडेट करें
+        renderQuestion(0);            // पहले सवाल को स्क्रीन पर रेंडर करें
+        
+        showNotification("Reached the last question. Switched back to Question 1!", true);
+    }
+}
+
+function markForReview() {
             testData[currentQuestionIndex].status = 'review';
             saveAndNext();
         }
@@ -3148,9 +3298,9 @@ window.saveAllData = async function() {
     if(overlay) overlay.classList.remove('hide'); // प्रोग्रेस बार दिखाएं
 
     try {
+        // 🔥 यहाँ से catalog को हटा दिया है क्योंकि सारे टेस्ट्स अलग से 'tests' कलेक्शन में सेव होते हैं
         const dataObj = {
             categories: categories,
-            catalog: catalog,
             notes: notesList,
             studyFolders: studyFolders,
             passcodes: passcodes,
@@ -3159,7 +3309,7 @@ window.saveAllData = async function() {
             updatedAt: new Date().toISOString()
         };
 
-        // Firebase Firestore पर सेव करें
+        // Firebase Firestore पर सेव करें (अब साइज 1MB से कम रहेगा)
         await setDoc(doc(db, "appData", "mainContent"), dataObj);
         
         window.showNotification("Saved to Firebase Successfully! 🚀", true);
@@ -3167,7 +3317,6 @@ window.saveAllData = async function() {
         console.error("Save error:", err);
         window.showNotification("Failed to save changes!", false);
     } finally {
-        // चाहे डेटा सेव हो या एरर आए, प्रोग्रेस बार को हटाना ज़रूरी है
         if(overlay) overlay.classList.add('hide');
     }
 }
@@ -3177,6 +3326,11 @@ window.signOut = async function() {
             await window.auth.signOut();
         }
         
+        // 🌟 सुरक्षा के लिए सारे ग्लोबल वैरिएबल्स और परचेस लिस्ट साफ़ करें
+        currentStudent = "";
+        window.currentStudentEmail = "";
+        window.currentStudentPurchased = []; 
+
         // 1. Desktop aur Mobile dono profile boxes chhupa dein
         const loggedBox = document.getElementById('logged-in-user-box');
         const mobileLoggedBox = document.getElementById('mobile-logged-in-box');
@@ -3195,8 +3349,7 @@ window.signOut = async function() {
         const toppersBtn = document.getElementById('toppers-btn');
         if(toppersBtn) toppersBtn.classList.remove('hide');
 
-        // 5. Global variable clear karein aur login screen par aayein
-        currentStudent = "";
+        // 5. Login screen par aayein
         showNotification("Signed out successfully!", true);
         showScreen("login-screen");
     } catch(error) {
@@ -3204,7 +3357,7 @@ window.signOut = async function() {
         showNotification("Failed to sign out.");
     }
 }
-// Profile Dropdown Toggle Function
+
 window.toggleProfileDropdown = function() {
     const menu = document.getElementById('profile-dropdown-menu');
     if(menu) {
@@ -3221,99 +3374,7 @@ window.addEventListener('click', function(e) {
     }
 });
 
-window.updateCategoryPricing = async function(catId) {
-    const priceInput = document.getElementById(`admin-price-${catId}`);
-    const paidCheckbox = document.getElementById(`admin-paid-${catId}`);
 
-    const cat = categories.find(c => c.id === catId);
-    if(!cat) return;
-
-    cat.price = priceInput ? parseFloat(priceInput.value) || 199 : 199;
-    cat.isPaid = paidCheckbox ? paidCheckbox.checked : false;
-
-    const indicator = document.getElementById('saving-indicator');
-    if(indicator) indicator.classList.remove('hide');
-
-    try {
-        await window.saveAllData();
-        renderAdminCategories();
-        renderCategories(); 
-        showNotification("Category Pricing Updated Successfully! 🚀", true);
-    } catch (err) {
-        console.error("Error updating pricing:", err);
-        showNotification("Failed to update pricing.", false);
-    } finally {
-        if(indicator) indicator.classList.add('hide');
-    }
-}
-
-window.handlePaidCategoryClick = function(catId, price) {
-    const cat = categories.find(c => c.id === catId);
-    if (!cat) return;
-
-    // 1. पहले चेक करें कि क्या यूजर ने पहले से कोर्स खरीद रखा है (Step 3)
-    const hasPurchased = window.currentStudentPurchased && 
-                         window.currentStudentPurchased.includes(catId);
-
-    if (hasPurchased) {
-        showNotification("Access Granted! Welcome to your course 🚀", true);
-        window.openCategory(catId);
-        return;
-    }
-
-    // 2. अगर नहीं खरीदा है, तो Razorpay पेमेंट गेटवे चालू करें (Step 4)
-    const options = {
-        "key": "YOUR_RAZORPAY_KEY_ID", // यहाँ अपनी Razorpay की Key ID डालें (जैसे rzp_live_xxxx या rzp_test_xxxx)
-        "amount": price * 100, // Razorpay पैसे को पैसे (Paise) में गिनता है, इसलिए ₹199 मतलब 19900 पैसे
-        "currency": "INR",
-        "name": "Crackit Bhai",
-        "description": `Purchase ${cat.name} Course`,
-        "image": "https://your-logo-url.com/logo.png", // अपना लोगो लगा सकते हैं
-        "handler": async function (response){
-            // 3. पेमेंट सफल होने पर यह फंक्शन चलेगा!
-            showNotification("Payment Successful! Unlocking course... 🎉", true);
-            
-            // यहाँ हम डेटाबेस में सेव करेंगे कि इस यूजर ने यह कोर्स खरीद लिया है
-            await window.unlockCourseForStudent(catId);
-        },
-        "prefill": {
-            "name": currentStudent || "Student",
-            "email": "student@crackitbhai.com"
-        },
-        "theme": {
-            "color": "#f97316" // आपके ब्रांड का ऑरेंज कलर
-        }
-    };
-
-    const rzp1 = new Razorpay(options);
-    rzp1.open();
-}
-
-// पेमेंट सफल होने के बाद कोर्स को तुरंत डेटाबेस में अनलॉक करने वाला फंक्शन
-window.unlockCourseForSystem = async function(catId) {
-    if (!window.currentStudentPurchased) {
-        window.currentStudentPurchased = [];
-    }
-    window.currentStudentPurchased.push(catId);
-
-    // फायरबेस डेटाबेस में यूजर का परचेज रिकॉर्ड सेव करें
-    try {
-        const userId = auth.currentUser ? auth.currentUser.uid : null;
-        if (userId) {
-            const studentRef = doc(db, "students", userId);
-            await setDoc(studentRef, {
-                purchasedCategories: window.currentStudentPurchased
-            }, { merge: true });
-        }
-        
-        // कोर्स खुलने के बाद सीधे अंदर भेज दें
-        window.openCategory(catId);
-    } catch (err) {
-        console.error("Error saving purchase to database:", err);
-        showNotification("Course unlocked locally, but saving to DB failed.", false);
-        window.openCategory(catId);
-    }
-}
 function renderAdminCategories() {
     const listContainer = document.getElementById('admin-cat-list');
     if(!listContainer) return;
@@ -3427,7 +3488,7 @@ document.getElementById('toppers-btn').classList.remove('hide');
         window.openWhatsAppInbox = openWhatsAppInbox;
         // बटन और एचटीएमएल के लिए ग्लोबल बाइंडिंग
     window.firebaseSignup = firebaseSignup;
-    window.firebaseLogin = firebaseLogin;
+    window.firebaseLogin = window.firebaseLogin;
     window.toggleAuthMode = toggleAuthMode;
     </script>
 </body>
