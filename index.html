@@ -27,6 +27,76 @@
 
     window.auth = auth;
     window.db = db;
+    // यह लाइन्स मॉड्यूल के अंदर जोड़ दें
+    window.db = db;
+    window.getDocs = getDocs;
+    window.collection = collection;
+    window.doc = doc;
+    window.setDoc = setDoc;
+    
+
+async function loadAdminCategories() {
+    const selectBox = document.getElementById('adminCourseSelect');
+    if (!selectBox) return;
+    
+    // 1. ड्रॉपडाउन को बिल्कुल साफ़ करें और डुप्लीकेट रोकने के लिए एक एरे/सेट बनाएं
+    selectBox.innerHTML = '<option value="">Select a paid category</option>';
+
+    // अगर categories एरे खाली है तो थोड़ा इंतज़ार करें
+    let attempts = 0;
+    while ((typeof categories === 'undefined' || categories.length === 0) && attempts < 10) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        attempts++;
+    }
+
+    if (typeof categories !== 'undefined' && categories.length > 0) {
+        let count = 0;
+        let addedNames = new Set();
+
+        categories.forEach((cat) => {
+            let isPaid = cat.isPaid === true && cat.price && Number(cat.price) > 0;
+            if (!isPaid) return;
+
+            let rawName = cat.name ? cat.name.trim() : "";
+            // नाम को पूरी तरह से क्लीन कर लें (सारे एक्सट्रा स्पेसेस हटाकर लोअरकेस बना दें)
+            let cleanName = rawName.toLowerCase().replace(/\s+/g, ' ');
+
+            // ⚡ सबसे पक्की शर्त: चेक करो कि क्या यह नाम HTML DOM में पहले से मौजूद है या Set में है!
+            let alreadyExists = false;
+            for (let i = 0; i < selectBox.options.length; i++) {
+                if (selectBox.options[i].textContent.toLowerCase().includes(cleanName)) {
+                    alreadyExists = true;
+                    break;
+                }
+            }
+
+            if (cleanName && !alreadyExists && !addedNames.has(cleanName)) {
+                addedNames.add(cleanName);
+
+                let opt = document.createElement('option');
+                opt.value = cat.id; 
+                opt.textContent = `${rawName} (₹${cat.price})`;
+                selectBox.appendChild(opt);
+                count++;
+            }
+        });
+        console.log(`Loaded ${count} unique paid categories.`);
+    } else {
+        console.warn("Categories list is empty.");
+    }
+}
+
+// पेज लोड होने पर सिर्फ एक बार चले
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(loadAdminCategories, 1000);
+});
+
+
+
+
+
+window.addEventListener('DOMContentLoaded', loadAdminCategories);
+
 
 
 
@@ -1231,6 +1301,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div id="admin-notes-list" class="space-y-2 max-h-56 overflow-y-auto"></div>
             </div>
         </div>
+
+        <!-- 🎨 1. Admin Unlock Form Design (HTML) -->
+<!-- Admin Course Unlock Panel -->
+<div style="max-width: 450px; margin: 30px auto; padding: 25px; background: #ffffff; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); font-family: 'Segoe UI', sans-serif;">
+    <h3 style="margin-top: 0; color: #333; text-align: center; margin-bottom: 20px;">🛡️ Admin Course Unlock Panel</h3>
+    
+    <!-- Student Email Input -->
+    <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">Student Email:</label>
+        <input type="email" id="adminStudentEmail" placeholder="student@gmail.com" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px;">
+    </div>
+
+    <!-- ⚡ Dynamic Category / Course Select Dropdown -->
+    <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">Select Course / Category:</label>
+        <select id="adminCourseSelect" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; background: white;">
+            <option value="">-- Loading Categories --</option>
+        </select>
+    </div>
+
+    <!-- Unlock Button -->
+    <button onclick="adminUnlockCourse()" style="width: 100%; background: linear-gradient(135deg, #007bff, #0056b3); color: white; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer;">
+        🔓 Unlock Course for Student
+    </button>
+</div>
+
 
         <!-- Tests & Bulk Upload Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -3423,6 +3519,74 @@ function renderAdminCategories() {
 }
 
 
+async function adminUnlockCourse() {
+    const emailInput = document.getElementById('adminStudentEmail').value.trim();
+    const courseId = document.getElementById('adminCourseSelect').value;
+
+    if (!emailInput) {
+        alert("Please enter a student email!");
+        return;
+    }
+    if (!courseId) {
+        alert("Please select a course/category!");
+        return;
+    }
+
+    try {
+        console.log("Unlocking course for email:", emailInput);
+
+        // 1. सीधे 'students' कलेक्शन के सारे डॉक्यूमेंट्स ले आओ
+        const querySnapshot = await getDocs(collection(db, "students"));
+        
+        let studentDocRef = null;
+        let studentData = null;
+        let foundDocId = null;
+
+        // 2. लूप चलाकर मैच करो कि किस स्टूडेंट का ईमेल इनपुट से मैच हो रहा है
+        querySnapshot.forEach((docSnap) => {
+            let data = docSnap.data();
+            if (data.email && data.email.toLowerCase() === emailInput.toLowerCase()) {
+                foundDocId = docSnap.id;
+                studentData = data;
+            }
+        });
+
+        if (!foundDocId) {
+            alert("No student found with this email in database!");
+            return;
+        }
+
+        studentDocRef = doc(db, "students", foundDocId);
+
+        // 3. कोर्स आईडी को नंबर या स्ट्रिंग फॉर्मेट में सेट करें
+        let purchased = studentData.purchasedCourses || [];
+        
+        // डुप्लीकेट से बचने के लिए चेक करें
+        if (!purchased.includes(courseId) && !purchased.includes(Number(courseId))) {
+            purchased.push(isNaN(courseId) ? courseId : Number(courseId));
+        } else {
+            alert("This student already has access to this course!");
+            return;
+        }
+
+        // 4. फायरबेस में डेटा सेव करें
+        await setDoc(studentDocRef, {
+            purchasedCourses: purchased
+        }, { merge: true });
+
+        alert(`Success! Course unlocked for ${emailInput} 🎉`);
+        document.getElementById('adminStudentEmail').value = ''; // इनपुट साफ़ कर दें
+
+    } catch (err) {
+        console.error("Error unlocking course by admin:", err);
+        alert("Failed to unlock course. Check console for details.");
+    }
+}
+
+// पक्का कर लें कि यह विंडो पर बाइंड हो ताकि बटन से क्लिक करने पर चले
+window.adminUnlockCourse = adminUnlockCourse;
+
+
 window.toggleAuthMode = toggleAuthMode;
 window.firebaseSignup = window.firebaseSignup;
 window.firebaseLogin = window.firebaseLogin;
@@ -3486,6 +3650,7 @@ document.getElementById('toppers-btn').classList.remove('hide');
         window.renderQuestion = renderQuestion;
         window.exportToJsonFile = exportToJsonFile;
         window.openWhatsAppInbox = openWhatsAppInbox;
+        window.adminUnlockCourse = adminUnlockCourse;
         // बटन और एचटीएमएल के लिए ग्लोबल बाइंडिंग
     window.firebaseSignup = firebaseSignup;
     window.firebaseLogin = window.firebaseLogin;
