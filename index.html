@@ -697,6 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .option-input { accent-color: #f97316; }
 
         .cbt-container { height: calc(100vh - 65px); overflow: hidden; }
+
         @media (max-width: 768px) {
             .palette-section { position: fixed; top: 65px; right: -100%; width: 85%; height: calc(100vh - 65px); z-index: 50; transition: right 0.3s ease-in-out; background: #ffffff; border-left: 1px solid #cbd5e1; }
             .palette-section.open { right: 0; }
@@ -1579,11 +1580,25 @@ Explanation: HTML stands for HyperText Markup Language.<br>
 </div>
             </div>
 
-            <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-100 p-3.5 md:p-4 flex justify-between items-center z-10 gap-2 shadow-sm">
-                <button onclick="window.markForReview()" class="bg-[#0ea5e9] hover:bg-cyan-600 text-white py-2.5 px-3 md:px-6 rounded-xl font-bold text-xs md:text-sm transition">Mark Review</button>
-                <button onclick="window.clearResponse()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 px-3 md:px-6 rounded-xl font-bold text-xs md:text-sm transition">Clear</button>
-                <button onclick="window.saveAndNext()" class="bg-[#f97316] hover:bg-[#ea580c] text-white py-2.5 px-5 md:px-10 rounded-xl font-black text-xs md:text-base transition">Save & Next →</button>
-            </div>
+
+<!-- Bottom Navigation Area -->
+<!-- Bottom Navigation Area -->
+<div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-100 p-3 md:p-4 flex flex-col md:flex-row justify-between items-center z-10 gap-3 shadow-sm">
+    
+    <!-- ऊपर वाले 3 एक्शन बटन्स: Desktop पर एक लाइन में प्रॉपर और बराबर स्पेसिंग के साथ -->
+    <div class="flex justify-between items-center w-full md:w-auto gap-3 md:gap-6">
+        <button onclick="window.markForReview()" class="bg-[#0ea5e9] hover:bg-cyan-600 text-white py-2.5 px-3 md:px-6 rounded-xl font-bold text-xs md:text-sm transition flex-1 md:flex-none">Mark Review</button>
+        <button onclick="window.clearResponse()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 px-3 md:px-6 rounded-xl font-bold text-xs md:text-sm transition flex-1 md:flex-none">Clear</button>
+        <button onclick="window.saveAndNext()" class="bg-[#f97316] hover:bg-[#ea580c] text-white py-2.5 px-5 md:px-10 rounded-xl font-black text-xs md:text-base transition flex-1 md:flex-none">Save & Next →</button>
+    </div>
+
+    <!-- Submit Exam बटन: Desktop पर साइड में और Mobile पर तीनों के ठीक नीचे -->
+    <button onclick="window.submitExam()" class="w-full md:w-auto bg-[#0b1221] hover:bg-slate-900 text-white font-black py-2.5 md:py-3 px-6 rounded-xl text-xs md:text-sm transition shadow-sm">
+        Submit Exam
+    </button>
+</div>
+
+
         </div>
         
         <!-- Right Palette Area -->
@@ -1612,10 +1627,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             <div class="p-4 flex-1 overflow-y-auto bg-slate-50/50">
                 <div id="question-palette" class="flex flex-wrap gap-2"></div>
             </div>
-
-            <div class="p-4 border-t border-slate-100 bg-white shrink-0">
-                <button onclick="window.submitExam()" class="w-full bg-[#0b1221] hover:bg-slate-900 text-white font-black py-3 rounded-xl text-sm transition">Submit Exam</button>
-            </div>
+</div>
         </div>
     </div>
 
@@ -3044,6 +3056,11 @@ function markForReview() {
             html2pdf().from(document.getElementById('pdf-content')).save().then(() => btns.forEach(btn => btn.style.display = 'flex'));
         }
         function submitExam() {
+            let userConfirmed = confirm("Are you sure you want to submit the exam? Once submitted, you cannot change your answers.");
+            
+            if (!userConfirmed) {
+                return; // अगर स्टूडेंट 'Cancel' दबाएगा, तो टेस्ट बंद नहीं होगा और यहीं रुक जाएगा
+            }
             clearInterval(timerInterval);
             const testMeta = catalog.find(t => t.id === currentTestId);
             let testNeg = testMeta && testMeta.negativeMarking !== undefined ? testMeta.negativeMarking : 0.25;
