@@ -1,0 +1,27 @@
+{
+  "background_color": "#ffffff",
+  "description": "HP JOA IT mock tests,Free joa it mock,hp police mock,study material hp police,hp joait,patwari, HP Constable practice sets, TGT Arts, and study notes for Himachal Pradesh government exams. Ace your exam with Crackit Bhai.",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "crackitbhai",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "crackitbhai",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "https://crackitbhai.in/logo.png",
+      "type": "image/png",
+      "sizes": "1254x1254",
+      "isSquare": true,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 1254,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ]
+}
