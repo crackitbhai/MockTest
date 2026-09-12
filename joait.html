@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HP JOA-IT Complete Mock Test & Syllabus - Crackit Bhai</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Answer toggle karne ka function
+        function toggleAnswer(id) {
+            const ansDiv = document.getElementById(id);
+            if (ansDiv.classList.contains('hidden')) {
+                ansDiv.classList.remove('hidden');
+            } else {
+                ansDiv.classList.add('hidden');
+            }
+        }
+
+        // Custom Popup Modal aur 8 to 1 Countdown Timer
+        function handleBuyNow(event) {
+            event.preventDefault();
+            
+            // Popup Modal ko show karein
+            const modal = document.getElementById('loginModal');
+            modal.classList.remove('hidden');
+
+            let timeLeft = 8;
+            const timerElement = document.getElementById('countdownTimer');
+            timerElement.innerText = timeLeft;
+
+            // Har 1 second mein countdown kam hoga
+            const countdownInterval = setInterval(function() {
+                timeLeft--;
+                timerElement.innerText = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = "ofc.html"; // Login/Home page par redirect
+                }
+            }, 1000);
+        }
+    </script>
+</head>
+<body class="bg-[#f1f5f9] text-slate-800 min-h-screen flex flex-col relative">
+
+    <!-- Top Navigation Bar with Home Page Link -->
+    <header class="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl">💡</span>
+            <a href="ofc.html" class="text-xl font-black tracking-wider text-slate-900">CRACKIT <span class="text-orange-600">BHAI</span></a>
+        </div>
+        <nav class="flex items-center space-x-3">
+            <a href="ofc.html" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-md flex items-center gap-1.5">
+                🏠 Home Page
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-5xl mx-auto px-6 py-10 w-full space-y-8">
+        
+        <!-- 1. Course Header & Pricing Section -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl p-8 lg:p-12 shadow-xl flex flex-col lg:flex-row gap-8 items-center justify-between">
+            <div class="space-y-4 max-w-xl">
+                <span class="bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1.5 rounded-full border border-orange-200 inline-block">
+                    💻 HP JOA-IT Special Batch
+                </span>
+                <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900">
+                    HP JOA-IT Complete Mock Test Series & Syllabus
+                </h1>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Designed strictly according to the latest Himachal Pradesh Subordinate Services Selection Board (HPRCA) standards[cite: 1].
+                </p>
+                
+                <!-- Official Syllabus PDF Download Link -->
+                <div class="pt-2">
+                    <a href="16c57bf0-e13d-4774-b29f-8461130936e5.pdf" target="_blank" class="inline-flex items-center gap-2 bg-[#f8fafc] hover:bg-slate-100 text-orange-600 border border-orange-200 text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm">
+                        📥 Download Official JOA-IT Syllabus (PDF)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Action Box -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-6 rounded-2xl w-full lg:w-80 text-center shadow-lg shrink-0">
+                <div class="text-xs text-slate-500 mb-2">Special Offer Price</div>
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <span class="text-3xl font-black text-orange-600">₹190</span>
+                    <span class="line-through text-slate-400 text-sm">₹499</span>
+                </div>
+                <!-- Buy Now Button with Custom Popup Trigger -->
+                <button onclick="handleBuyNow(event)" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg text-sm mb-3">
+                    Enroll Now →
+                </button>
+                <p class="text-[11px] text-slate-500">🔒 Login required before purchase</p>
+            </div>
+        </div>
+
+        <!-- Detailed Package Features -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl">
+            <h2 class="text-xl font-extrabold text-slate-900 mb-6 flex items-center gap-2">
+                <span class="text-orange-600">✨</span> What's Included in this ₹190 Package?
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
+                <div class="bg-[#f8fafc] border border-slate-200 p-4 rounded-xl flex items-start gap-3">
+                    <span class="text-orange-600 text-lg">🎯</span>
+                    <div>
+                        <strong class="text-slate-900 block mb-0.5">20+ Full Mock Tests</strong>
+                        <p class="text-xs text-slate-500">Exams pattern based comprehensive tests with live rank performance.</p>
+                    </div>
+                </div>
+                <div class="bg-[#f8fafc] border border-slate-200 p-4 rounded-xl flex items-start gap-3">
+                    <span class="text-orange-600 text-lg">💡</span>
+                    <div>
+                        <strong class="text-slate-900 block mb-0.5">Advanced PHP & DB MCQs</strong>
+                        <p class="text-xs text-slate-500">Deep technical questions covering SQL queries, normalization, and PHP scripting.</p>
+                    </div>
+                </div>
+                <div class="bg-[#f8fafc] border border-slate-200 p-4 rounded-xl flex items-start gap-3">
+                    <span class="text-orange-600 text-lg">🤝</span>
+                    <div>
+                        <strong class="text-slate-900 block mb-0.5">Full Guidance & Support</strong>
+                        <p class="text-xs text-slate-500">Dedicated expert assistance throughout your exam preparation journey.</p>
+                    </div>
+                </div>
+                <div class="bg-[#f8fafc] border border-slate-200 p-4 rounded-xl flex items-start gap-3">
+                    <span class="text-orange-600 text-lg">📚</span>
+                    <div>
+                        <strong class="text-slate-900 block mb-0.5">Chapter-wise Study Notes</strong>
+                        <p class="text-xs text-slate-500">Quick revision PDFs for DBMS, PHP, Networking, and HP GK.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OFFICIAL SYLLABUS TABLE SECTION -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl space-y-6">
+            <div class="border-b border-slate-200 pb-4">
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <span class="text-orange-600">📋</span> Official HPRCA JOA-IT Syllabus Breakdown
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">Complete subject-wise topic list as prescribed for the competitive examination[cite: 1].</p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs md:text-sm">
+                    <thead>
+                        <tr class="bg-orange-600 text-white">
+                            <th class="p-3.5 rounded-l-xl font-bold">Module / Section</th>
+                            <th class="p-3.5 rounded-r-xl font-bold">Covered Topics & Sub-topics</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">1. Computer Fundamentals</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• Definition, Characteristics, History & Generation of Computers[cite: 1].</p>
+                                <p>• Types of Computers (Analog, Digital, Hybrid) & Size Classification (Micro, Mini, Mainframe, Super)[cite: 1].</p>
+                                <p>• Block Diagram (Input → Process → Output) & Basic Architecture[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">2. Computer Hardware</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• Input Devices (Keyboard, Mouse, Scanner, Webcam, Light Pen)[cite: 1].</p>
+                                <p>• Output Devices (Monitors, Printers, Speakers, Projectors) & Printer Types[cite: 1].</p>
+                                <p>• CPU Components (ALU, CU, Registers), Primary Memory (RAM/ROM) & Secondary Storage[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">3. Computer Software</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• System Software, Application Software, and Programming Languages[cite: 1].</p>
+                                <p>• High-Level, Assembly, and Machine Level Languages[cite: 1].</p>
+                                <p>• Freeware, Shareware, Open Source Software & Licensing basics[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">4. Operating System</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• Functions & Types of OS (Single/Multi-user, Multitasking, Time-sharing)[cite: 1].</p>
+                                <p>• Windows Basics, File & Folder Management, Control Panel, Shortcut Keys[cite: 1].</p>
+                                <p>• Booting Process (Cold & Warm) and Basic DOS Commands (Internal & External)[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">5. Microsoft Office</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• <strong>MS Word:</strong> Formatting, Tables, Mail Merge, Macros, Page Setup[cite: 1].</p>
+                                <p>• <strong>MS Excel:</strong> Worksheets, Mathematical/Logical Functions, Charts, Pivot Tables[cite: 1].</p>
+                                <p>• <strong>MS PowerPoint:</strong> Presentations, Slide Layout, Transitions, Animations[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">6. Internet & Networking</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• WWW, Web Browsers, URLs, HTTP/HTTPS, IP Address, Domain Names[cite: 1].</p>
+                                <p>• Network Types (LAN, MAN, WAN) & Devices (Router, Modem, Switch, Hub)[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">7. Cyber Security</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• Viruses, Worms, Trojans, Antivirus, Firewalls, Cyber Crimes[cite: 1].</p>
+                                <p>• Digital Payments (UPI, Net Banking), e-Governance & Cloud Computing Basics[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">8. Number System</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• Decimal, Binary, Octal, and Hexadecimal Number Systems & Conversions[cite: 1].</p>
+                                <p>• ASCII Code and Basic Logic Gates[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">9. DBMS & MySQL</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• DBMS Architecture, Data Independence, Entities, Attributes, Keys[cite: 1].</p>
+                                <p>• MySQL Database Creation, SELECT statements, WHERE clause, ORDER BY, DISTINCT[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">10. Web Tech (HTML & PHP)</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• <strong>HTML:</strong> Structure, Lists, Tables, Links, Form Tags[cite: 1].</p>
+                                <p>• <strong>PHP:</strong> Syntax, Variables, Control Statements, Form Handling, Functions, Arrays[cite: 1].</p>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-orange-50/50 transition">
+                            <td class="p-3.5 font-bold text-slate-900 align-top">11. General Awareness</td>
+                            <td class="p-3.5 space-y-1">
+                                <p>• Himachal Pradesh GK, Current Affairs, Everyday Science[cite: 1].</p>
+                                <p>• Logical Reasoning, English Grammar & Hindi Vyakaran[cite: 1].</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 3-Step Selection Process -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl">
+            <h2 class="text-xl font-extrabold text-slate-900 mb-6 flex items-center gap-2">
+                <span class="text-orange-600">📌</span> JOA-IT Selection Process (3 Steps)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl">
+                    <div class="text-orange-600 font-black text-lg mb-1">Step 01</div>
+                    <h3 class="font-bold text-base mb-2 text-slate-900">Screening Test</h3>
+                    <p class="text-xs text-slate-500">Objective type written exam covering Computer Science fundamentals, IT tools, and HP GK.</p>
+                </div>
+                <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl">
+                    <div class="text-orange-600 font-black text-lg mb-1">Step 02</div>
+                    <h3 class="font-bold text-base mb-2 text-slate-900">Typing Test</h3>
+                    <p class="text-xs text-slate-500">Qualifying speed test in English (30 WPM) or Hindi (25 WPM) on computers.</p>
+                </div>
+                <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl">
+                    <div class="text-orange-600 font-black text-lg mb-1">Step 03</div>
+                    <h3 class="font-bold text-base mb-2 text-slate-900">Document Verification</h3>
+                    <p class="text-xs text-slate-500">Final evaluation of academic certificates, category documents, and credentials.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Practice Questions Section (20 Questions for Page 1) -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <span class="text-orange-600">📝</span> Advanced Practice Questions (PHP & Database) - Page 1
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">Showing questions 1 to 20 of high-level competitive standards.</p>
+                </div>
+            </div>
+
+            <!-- Q1: PHP Superglobal -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q1. Which of the following PHP superglobal variables is used to collect data sent via both HTTP GET and POST methods?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) $_GET</div>
+                    <div>B) $_POST</div>
+                    <div>C) $_REQUEST</div>
+                    <div>D) $_SERVER</div>
+                </div>
+                <button onclick="toggleAnswer('ans1')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans1" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: C) $_REQUEST</p>
+                    <p class="text-slate-600">Explanation: $_REQUEST is a PHP super global variable which contains submitted data via GET, POST, and COOKIE mechanisms.</p>
+                </div>
+            </div>
+
+            <!-- Q2: SQL Normalization -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q2. Which normal form deals specifically with removing Transitive Functional Dependencies in a relational database?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) First Normal Form (1NF)</div>
+                    <div>B) Second Normal Form (2NF)</div>
+                    <div>C) Third Normal Form (3NF)</div>
+                    <div>D) Boyce-Codd Normal Form (BCNF)</div>
+                </div>
+                <button onclick="toggleAnswer('ans2')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans2" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: C) Third Normal Form (3NF)</p>
+                    <p class="text-slate-600">Explanation: A relation is in 3NF if it is in 2NF and every non-prime attribute is non-transitively dependent on primary key.</p>
+                </div>
+            </div>
+
+            <!-- Q3: PHP Session -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q3. Which function must be called at the very beginning of a PHP script before accessing any session variables?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) session_start()</div>
+                    <div>B) start_session()</div>
+                    <div>C) init_session()</div>
+                    <div>D) session_begin()</div>
+                </div>
+                <button onclick="toggleAnswer('ans3')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans3" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: A) session_start()</p>
+                    <p class="text-slate-600">Explanation: session_start() creates a session or resumes the current one based on a session identifier passed via a GET or POST request, or passed via a cookie.</p>
+                </div>
+            </div>
+
+            <!-- Q4: Database Index -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q4. What is the primary performance benefit of creating an Index on a database table column?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) It speeds up data insertion (INSERT operations)</div>
+                    <div>B) It speeds up data retrieval (SELECT queries)</div>
+                    <div>C) It reduces the physical storage size of the table</div>
+                    <div>D) It automatically encrypts the sensitive column data</div>
+                </div>
+                <button onclick="toggleAnswer('ans4')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans4" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) It speeds up data retrieval (SELECT queries)</p>
+                    <p class="text-slate-600">Explanation: Indexes allow the database engine to find data without scanning the entire table, drastically improving SELECT query performance.</p>
+                </div>
+            </div>
+
+            <!-- Q5: PHP Error Handling -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q5. In PHP, what does the null coalescing operator (`??`) do?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) Checks if a variable is strictly equal to boolean false</div>
+                    <div>B) Returns its first operand if it exists and is not null; otherwise returns second operand</div>
+                    <div>C) Compares two expressions and returns 0 if they are identical</div>
+                    <div>D) Converts any object string into a null pointer safely</div>
+                </div>
+                <button onclick="toggleAnswer('ans5')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans5" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) Returns its first operand if it exists and is not null; otherwise returns second operand</p>
+                    <p class="text-slate-600">Explanation: The ?? operator is syntactic sugar for checking if a variable exists and is not null before assigning a default value.</p>
+                </div>
+            </div>
+
+            <!-- Q6: SQL JOIN -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q6. Which SQL JOIN returns all records when there is a match in either the left or the right table records?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) INNER JOIN</div>
+                    <div>B) LEFT JOIN</div>
+                    <div>C) FULL OUTER JOIN</div>
+                    <div>D) CROSS JOIN</div>
+                </div>
+                <button onclick="toggleAnswer('ans6')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans6" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: C) FULL OUTER JOIN</p>
+                    <p class="text-slate-600">Explanation: FULL OUTER JOIN combines the results of both left and right outer joins, returning all records from both tables.</p>
+                </div>
+            </div>
+
+            <!-- Q7: PHP PDO -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q7. Why is PHP Data Objects (PDO) preferred over the legacy `mysql_*` functions for database connection?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) PDO supports prepared statements which prevent SQL injection</div>
+                    <div>B) PDO is database-agnostic supporting multiple database systems</div>
+                    <div>C) Legacy mysql functions are deprecated and removed in modern PHP versions</div>
+                    <div>D) All of the above</div>
+                </div>
+                <button onclick="toggleAnswer('ans7')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans7" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: D) All of the above</p>
+                    <p class="text-slate-600">Explanation: PDO provides an abstraction layer, security via prepared statements, and is standard modern practice as old mysql extensions were dropped in PHP 7.</p>
+                </div>
+            </div>
+
+            <!-- Q8: Database Transaction -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q8. Which of the following acronyms represents the four key properties of a reliable database transaction?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) SPEED</div>
+                    <div>B) ACID</div>
+                    <div>C) BASE</div>
+                    <div>D) SAFE</div>
+                </div>
+                <button onclick="toggleAnswer('ans8')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans8" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) ACID</p>
+                    <p class="text-slate-600">Explanation: ACID stands for Atomicity, Consistency, Isolation, and Durability, ensuring safe transaction processing in DBMS.</p>
+                </div>
+            </div>
+
+            <!-- Q9: PHP Output Buffering -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q9. Which function starts output buffering in PHP, allowing header() modifications later in the script?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) ob_start()</div>
+                    <div>B) buffer_init()</div>
+                    <div>C) start_buffer()</div>
+                    <div>D) php_buffer_on()</div>
+                </div>
+                <button onclick="toggleAnswer('ans9')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans9" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: A) ob_start()</p>
+                    <p class="text-slate-600">Explanation: ob_start() turns on output buffering. While output buffering is active, no output is sent from the script; instead the output is stored in an internal buffer.</p>
+                </div>
+            </div>
+
+            <!-- Q10: SQL Constraint -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q10. Which SQL constraint ensures that all values in a column are different and does not allow any NULL values?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) UNIQUE</div>
+                    <div>B) CHECK</div>
+                    <div>C) PRIMARY KEY</div>
+                    <div>D) FOREIGN KEY</div>
+                </div>
+                <button onclick="toggleAnswer('ans10')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans10" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: C) PRIMARY KEY</p>
+                    <p class="text-slate-600">Explanation: A primary key uniquely identifies each record in a table and inherently enforces both UNIQUE and NOT NULL constraints.</p>
+                </div>
+            </div>
+
+            <!-- Q11: PHP Type Hinting -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q11. What is the purpose of scalar type declarations like `declare(strict_types=1);` in PHP?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) It converts all strings to uppercase automatically</div>
+                    <div>B) It forces strict data type matching for function arguments and return types</div>
+                    <div>C) It disables all database error warnings in production</div>
+                    <div>D) It increases execution speed by caching PHP opcodes</div>
+                </div>
+                <button onclick="toggleAnswer('ans11')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans11" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) It forces strict data type matching for function arguments and return types</p>
+                    <p class="text-slate-600">Explanation: strict_types=1 ensures that if a function expects an integer, passing a string representation of a number throws a TypeError instead of coercing it.</p>
+                </div>
+            </div>
+
+            <!-- Q12: Database View -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q12. What is a Database View?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) A physical backup table stored on hard disk</div>
+                    <div>B) A virtual table based on the result-set of an SQL statement</div>
+                    <div>C) A graphical user interface tool to manage servers</div>
+                    <div>D) An index structure used for fast searching</div>
+                </div>
+                <button onclick="toggleAnswer('ans12')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans12" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) A virtual table based on the result-set of an SQL statement</p>
+                    <p class="text-slate-600">Explanation: A view contains rows and columns, just like a real table, but its fields are fields from one or more real tables in the database.</p>
+                </div>
+            </div>
+
+            <!-- Q13: PHP Cookie vs Session -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q13. Where are PHP Session data variables securely stored by default?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) Directly inside the user's browser local storage</div>
+                    <div>B) On the server side in temporary files or database</div>
+                    <div>C) Inside the client cookies encrypted via MD5</div>
+                    <div>D) In the web server RAM cache only</div>
+                </div>
+                <button onclick="toggleAnswer('ans13')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans13" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) On the server side in temporary files or database</p>
+                    <p class="text-slate-600">Explanation: Unlike cookies which reside on the client's machine, PHP sessions store sensitive user data securely on the server side.</p>
+                </div>
+            </div>
+
+            <!-- Q14: SQL Aggregate Function -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q14. Which SQL clause is used in conjunction with aggregate functions to filter groups of rows?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) WHERE</div>
+                    <div>B) HAVING</div>
+                    <div>C) FILTER</div>
+                    <div>D) GROUP BY condition</div>
+                </div>
+                <button onclick="toggleAnswer('ans14')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans14" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) HAVING</p>
+                    <p class="text-slate-600">Explanation: The HAVING clause was added to SQL because the WHERE keyword could not be used with aggregate functions.</p>
+                </div>
+            </div>
+
+            <!-- Q15: PHP OOP Constructor -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q15. In PHP Object-Oriented Programming, what is the correct syntax for declaring a constructor method?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) function construct()</div>
+                    <div>B) public function __construct()</div>
+                    <div>C) _init_class()</div>
+                    <div>D) class_initialize()</div>
+                </div>
+                <button onclick="toggleAnswer('ans15')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans15" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) public function __construct()</p>
+                    <p class="text-slate-600">Explanation: PHP uses double underscores (__construct) for constructor magic methods in classes.</p>
+                </div>
+            </div>
+
+            <!-- Q16: SQL Deadlock -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q16. What causes a Database Deadlock situation?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) When two or more transactions are waiting for each other to release locks</div>
+                    <div>B) When the CPU usage exceeds 100% capacity</div>
+                    <div>C) When a primary key constraint fails during insertion</div>
+                    <div>D) When the PHP execution timeout limit is reached</div>
+                </div>
+                <button onclick="toggleAnswer('ans16')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans16" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: A) When two or more transactions are waiting for each other to release locks</p>
+                    <p class="text-slate-600">Explanation: A deadlock occurs when separate transactions hold locks on resources the other needs, causing a permanent freeze until the DBMS aborts one.</p>
+                </div>
+            </div>
+
+            <!-- Q17: PHP Password Hashing -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q17. Which built-in PHP function is recommended for securely hashing user passwords?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) md5()</div>
+                    <div>B) sha1()</div>
+                    <div>C) password_hash()</div>
+                    <div>D) crypt_secure()</div>
+                </div>
+                <button onclick="toggleAnswer('ans17')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans17" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: C) password_hash()</p>
+                    <p class="text-slate-600">Explanation: password_hash() creates a secure password hash using strong, modern, and salted cryptographic algorithms like Bcrypt or Argon2.</p>
+                </div>
+            </div>
+
+            <!-- Q18: Database Foreign Key -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q18. What is the main purpose of a Foreign Key constraint in a relational database?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) To ensure referential integrity between two tables</div>
+                    <div>B) To speed up multi-table query joins automatically</div>
+                    <div>C) To encrypt foreign language characters in text columns</div>
+                    <div>D) To allow duplicate primary keys across databases</div>
+                </div>
+                <button onclick="toggleAnswer('ans18')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans18" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: A) To ensure referential integrity between two tables</p>
+                    <p class="text-slate-600">Explanation: A foreign key links child table data to the primary key of a parent table, preventing orphan records.</p>
+                </div>
+            </div>
+
+            <!-- Q19: PHP Include vs Require -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q19. What is the fundamental difference between `include` and `require` in PHP when a file is missing?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) require throws a fatal error and stops script execution; include only throws a warning and continues</div>
+                    <div>B) include throws a fatal error; require throws a warning</div>
+                    <div>C) require works only with databases; include works with files</div>
+                    <div>D) There is no difference between them</div>
+                </div>
+                <button onclick="toggleAnswer('ans19')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans19" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: A) require throws a fatal error and stops script execution; include only throws a warning and continues</p>
+                    <p class="text-slate-600">Explanation: Use require when the file is critical for application execution, and include when the file is optional.</p>
+                </div>
+            </div>
+
+            <!-- Q20: SQL GROUP BY -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q20. Which SQL clause is mandatory when you want to apply aggregate functions across different categories in a table?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) ORDER BY</div>
+                    <div>B) GROUP BY</div>
+                    <div>C) SORT BY</div>
+                    <div>D) CLUSTER BY</div>
+                </div>
+                <button onclick="toggleAnswer('ans20')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                    👁️ View Answer
+                </button>
+                <div id="ans20" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) GROUP BY</p>
+                    <p class="text-slate-600">Explanation: GROUP BY groups rows that have the same values into summary rows, enabling aggregate functions like COUNT, SUM, or AVG.</p>
+                </div>
+            </div>
+
+            <!-- Pagination Buttons (1, 2, 3, 4) -->
+            <div class="flex items-center justify-center gap-2 pt-6 border-t border-slate-200">
+                <span class="text-xs font-bold text-slate-500 mr-2">Pages:</span>
+                <a href="joait.html" class="bg-orange-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm">1</a>
+                <a href="joaitpage2.html" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm">2</a>
+                <a href="joaitpage3.html" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm">3</a>
+                <a href="joaitpage4.html" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm">4</a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CUSTOM BEAUTIFUL POPUP MODAL -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-white border border-slate-200 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl space-y-5">
+            <div class="w-16 h-16 bg-orange-100 border border-orange-200 text-orange-600 rounded-2xl flex items-center justify-center mx-auto text-3xl">
+                ⚠️
+            </div>
+            <div>
+                <h3 class="text-2xl font-black text-slate-900 mb-1">Login Required!</h3>
+                <p class="text-xs text-slate-600">Please login first to buy this course. If you haven't created an account yet, please sign up.</p>
+            </div>
+            
+            <div class="bg-[#f8fafc] border border-slate-200 py-3 px-4 rounded-2xl flex items-center justify-center gap-2 text-sm">
+                <span class="text-slate-600">Redirecting to login in</span>
+                <span id="countdownTimer" class="bg-orange-600 text-white font-black px-3 py-1 rounded-xl text-base">8</span>
+                <span class="text-slate-600">seconds...</span>
+            </div>
+
+            <a href="ofc.html" class="block w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg">
+                Go to Login Now →
+            </a>
+        </div>
+    </div>
+
+    <!-- Professional SEO-Optimized Footer -->
+<footer class="w-full bg-[#090d16] border-t border-slate-800 text-slate-400 text-xs mt-16">
+    <div class="w-full px-6 sm:px-10 py-12 space-y-10 max-w-7xl mx-auto">
+        
+        <!-- Top Row: Brand & Quick Links -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+            <!-- Brand Info & Bio -->
+            <div class="space-y-3 md:col-span-1">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl">💡</span>
+                    <span class="text-lg font-black tracking-wider text-white">CRACKIT <span class="text-orange-500">BHAI</span></span>
+                </div>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Himachal Pradesh’s most trusted online mock test and preparation portal for HPRCA, HPPSC, and competitive exams. Get high-standard practice sets, chapter-wise notes, and expert guidance.
+                </p>
+            </div>
+
+            <!-- Quick Navigation Links (Only JOA-IT active, others '#') -->
+            <div class="space-y-3">
+                <h4 class="text-white font-bold text-sm tracking-wide uppercase">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-orange-400 transition">🏠 Home Dashboard</a></li>
+                    <li><a href="joait.html" class="hover:text-orange-400 transition">💻 HP JOA-IT Course & Syllabus</a></li>
+                    <li><a href="#" class="hover:text-orange-400 transition">👮 HP Police Constable Series</a></li>
+                    <li><a href="#" class="hover:text-orange-400 transition">📚 HP TGT Arts Exam Prep</a></li>
+                    <li><a href="#" class="hover:text-orange-400 transition">📊 Himachal Patwari Mock Tests</a></li>
+                </ul>
+            </div>
+
+            <!-- Important Exam Categories -->
+            <div class="space-y-3">
+                <h4 class="text-white font-bold text-sm tracking-wide uppercase">Exam Categories</h4>
+                <ul class="space-y-2">
+                    <li><span class="text-slate-300">HPRCA Junior Office Assistant (IT)</span></li>
+                    <li><span class="text-slate-300">HP Police Ground & Written Test</span></li>
+                    <li><span class="text-slate-300">Himachal Pradesh Teacher Eligibility Test</span></li>
+                    <li><span class="text-slate-300">Revenue Department Patwari Exam</span></li>
+                    <li><span class="text-slate-300">HP GK & Current Affairs 2026</span></li>
+                </ul>
+            </div>
+
+            <!-- Contact & Support -->
+            <div class="space-y-3">
+                <h4 class="text-white font-bold text-sm tracking-wide uppercase">Student Support</h4>
+                <p class="text-slate-400 leading-relaxed">
+                    Dedicated to helping aspirants crack government exams in Himachal Pradesh with top-tier technical and general studies content.
+                </p>
+                <div class="pt-2">
+                    <span class="bg-orange-500/10 text-orange-400 border border-orange-500/20 px-3 py-1.5 rounded-xl font-bold inline-block">
+                        🚀 Shape Your Career with Us
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SEO Keywords & Search Tags Cloud (Crucial for Google Ranking) -->
+        <div class="border-t border-slate-800/80 pt-6 space-y-2">
+            <h5 class="text-white font-bold text-[11px] uppercase tracking-wider text-slate-300">Popular Search Tags:</h5>
+            <div class="flex flex-wrap gap-2 text-[11px] text-slate-400">
+                <span class="bg-[#0f172a] border border-slate-800 px-2.5 py-1 rounded-lg">HP JOA IT mock test online</span>
+                <span class="bg-[#0f172a] border border-slate-800 px-2.5 py-1 rounded-lg">HPRCA previous year question papers</span>
+                <span class="bg-[#0f172a] border border-slate-800 px-2.5 py-1 rounded-lg">HP Police constable practice set</span>
+                <span class="bg-[#0f172a] border border-slate-800 px-2.5 py-1 rounded-lg">HP TGT Arts exam syllabus</span>
+                <span class="bg-[#0f172a] border border-slate-800 px-2.5 py-1 rounded-lg">Himachal Patwari computer notes</span>
+                <span class="bg-[#0f172a] border border-slate-800 px-2.5 py-1 rounded-lg">Crackit Bhai portal</span>
+                <span class="bg-[#0f172a] border border-slate-800 px-2.5 py-1 rounded-lg">HP GK questions in hindi</span>
+                <span class="bg-[#0f172a] border border-slate-800 px-2.5 py-1 rounded-lg">Junior Office Assistant IT books</span>
+            </div>
+        </div>
+
+        <!-- Copyright & Bottom Bar -->
+        <div class="border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-xs">
+            <p>© 2026 Crackit Bhai. All rights reserved. Built for Himachal Aspirants.</p>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-orange-400 transition">Privacy Policy</a>
+                <a href="#" class="hover:text-orange-400 transition">Terms & Conditions</a>
+                <a href="#" class="hover:text-orange-400 transition">Contact Us</a>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+</body>
+</html>

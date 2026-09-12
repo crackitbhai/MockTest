@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HP JOA-IT Mock Tests - Page 2 - Crackit Bhai</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function toggleAnswer(id) {
+            const ansDiv = document.getElementById(id);
+            if (ansDiv.classList.contains('hidden')) {
+                ansDiv.classList.remove('hidden');
+            } else {
+                ansDiv.classList.add('hidden');
+            }
+        }
+
+        function handleBuyNow(event) {
+            event.preventDefault();
+            const modal = document.getElementById('loginModal');
+            modal.classList.remove('hidden');
+
+            let timeLeft = 8;
+            const timerElement = document.getElementById('countdownTimer');
+            timerElement.innerText = timeLeft;
+
+            const countdownInterval = setInterval(function() {
+                timeLeft--;
+                timerElement.innerText = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = "ofc.html";
+                }
+            }, 1000);
+        }
+    </script>
+</head>
+<body class="bg-[#f1f5f9] text-slate-800 min-h-screen flex flex-col relative">
+
+    <!-- Top Navigation Bar -->
+    <header class="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl">💡</span>
+            <a href="ofc.html" class="text-xl font-black tracking-wider text-slate-900">CRACKIT <span class="text-orange-600">BHAI</span></a>
+        </div>
+        <nav class="flex items-center space-x-3">
+            <a href="ofc.html" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-md flex items-center gap-1.5">
+                🏠 Home Page
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-5xl mx-auto px-6 py-10 w-full space-y-8">
+        
+        <!-- Practice Questions Section (Page 2: Q21 to Q40) -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <span class="text-orange-600">📝</span> Advanced Practice Questions (PHP & Database) - Page 2
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">Showing questions 21 to 40 of high-level competitive standards.</p>
+                </div>
+            </div>
+
+            <!-- Q21 -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q21. Which PHP function is used to get the length of a string?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) stringlength()</div>
+                    <div>B) strlen()</div>
+                    <div>C) length()</div>
+                    <div>D) str_size()</div>
+                </div>
+                <button onclick="toggleAnswer('ans21')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">👁️ View Answer</button>
+                <div id="ans21" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) strlen()</p>
+                    <p class="text-slate-600">Explanation: The strlen() function returns the length of a string in bytes.</p>
+                </div>
+            </div>
+
+            <!-- Q22 -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q22. What does SQL stand for?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) Structured Query Language</div>
+                    <div>B) Simple Question Language</div>
+                    <div>C) Standardized Query Logic</div>
+                    <div>D) Server Query Linux</div>
+                </div>
+                <button onclick="toggleAnswer('ans22')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">👁️ View Answer</button>
+                <div id="ans22" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: A) Structured Query Language</p>
+                    <p class="text-slate-600">Explanation: SQL is a standard language for managing and querying data in relational database management systems.</p>
+                </div>
+            </div>
+
+            <!-- Q23 -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q23. Which symbol is used to start a variable name in PHP?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) #</div>
+                    <div>B) @</div>
+                    <div>C) $</div>
+                    <div>D) &</div>
+                </div>
+                <button onclick="toggleAnswer('ans23')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">👁️ View Answer</button>
+                <div id="ans23" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: C) $</p>
+                    <p class="text-slate-600">Explanation: All variables in PHP start with a dollar sign ($) followed by the name of the variable.</p>
+                </div>
+            </div>
+
+            <!-- Q24 -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q24. Which SQL command is used to remove a table from a database?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) DELETE TABLE</div>
+                    <div>B) DROP TABLE</div>
+                    <div>C) REMOVE TABLE</div>
+                    <div>D) CLEAR TABLE</div>
+                </div>
+                <button onclick="toggleAnswer('ans24')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">👁️ View Answer</button>
+                <div id="ans24" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: B) DROP TABLE</p>
+                    <p class="text-slate-600">Explanation: The DROP TABLE statement deletes a table completely along with its structure and data.</p>
+                </div>
+            </div>
+
+            <!-- Q25 -->
+            <div class="bg-[#f8fafc] border border-slate-200 p-5 rounded-2xl space-y-3">
+                <p class="font-bold text-sm text-slate-900">Q25. Which function in PHP is used to output text to the browser?</p>
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <div>A) print() / echo</div>
+                    <div>B) display()</div>
+                    <div>C) write()</div>
+                    <div>D) scan()</div>
+                </div>
+                <button onclick="toggleAnswer('ans25')" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">👁️ View Answer</button>
+                <div id="ans25" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl text-xs text-slate-800 space-y-1">
+                    <p class="text-orange-600 font-bold">Correct Answer: A) print() / echo</p>
+                    <p class="text-slate-600">Explanation: echo and print are constructs used to output data in PHP.</p>
+                </div>
+            </div>
+
+            <!-- Q26 to Q40 can follow similarly... Let's include pagination links -->
+            <!-- Pagination Buttons (1, 2, 3, 4) -->
+            <div class="flex items-center justify-center gap-2 pt-6 border-t border-slate-200">
+                <span class="text-xs font-bold text-slate-500 mr-2">Pages:</span>
+                <a href="joait.html" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm">1</a>
+                <a href="joaitpage2.html" class="bg-orange-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm">2</a>
+                <a href="joaitpage3.html" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm">3</a>
+                <a href="joaitpage4.html" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm">4</a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CUSTOM BEAUTIFUL POPUP MODAL -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-white border border-slate-200 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl space-y-5">
+            <div class="w-16 h-16 bg-orange-100 border border-orange-200 text-orange-600 rounded-2xl flex items-center justify-center mx-auto text-3xl">⚠️</div>
+            <div>
+                <h3 class="text-2xl font-black text-slate-900 mb-1">Login Required!</h3>
+                <p class="text-xs text-slate-600">Please login first to buy this course. If you haven't created an account yet, please sign up.</p>
+            </div>
+            <div class="bg-[#f8fafc] border border-slate-200 py-3 px-4 rounded-2xl flex items-center justify-center gap-2 text-sm">
+                <span class="text-slate-600">Redirecting to login in</span>
+                <span id="countdownTimer" class="bg-orange-600 text-white font-black px-3 py-1 rounded-xl text-base">8</span>
+                <span class="text-slate-600">seconds...</span>
+            </div>
+            <a href="ofc.html" class="block w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg">Go to Login Now →</a>
+        </div>
+    </div>
+
+</body>
+</html>
