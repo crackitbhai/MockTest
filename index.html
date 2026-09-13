@@ -4062,15 +4062,21 @@ window.addEventListener("DOMContentLoaded", () => {
         loadAdminPaidStudentsData();
     }
 });
+
+window.showAllReviewsState = false; // Default: sirf 3 dikhenge
+
+// 1. Google Sheet + LocalStorage se reviews fetch aur render karne ka function
 async function loadStudentReviews() {
     const container = document.getElementById('reviews-container');
     const spinner = document.getElementById('loading-spinner');
     const moreBtnContainer = document.getElementById('more-btn-container');
     const remainingCountSpan = document.getElementById('remaining-count');
-    const showMoreBtn = document.getElementById('show-more-btn');
+    const expandBtn = document.getElementById('expand-reviews-btn');
     
     if(!container) return;
-    if(spinner) spinner.classList.remove('hidden');
+    
+    // Agar background fetching nahi chal rahi hai, tabhi spinner dikhao
+    if(spinner && !window.isFetchingMore) spinner.classList.remove('hidden');
     
     try {
         const response = await fetch(REVIEW_SHEET_URL + "?action=reviews");
@@ -4078,11 +4084,11 @@ async function loadStudentReviews() {
         
         if(spinner) spinner.classList.add('hidden');
 
-        let sheetReviews = [];
+        let allReviews = [];
         if(data && data.length > 0) {
             data.reverse().forEach(item => {
                 if(item.review && item.review !== "undefined") {
-                    sheetReviews.push({
+                    allReviews.push({
                         name: item.name || 'Student',
                         text: item.text || item.review || "",
                         rating: item.rating || 5,
@@ -4091,21 +4097,16 @@ async function loadStudentReviews() {
                 }
             });
         }
-        
 
-        // LocalStorage वाले रिव्यूज
+        // LocalStorage wale reviews bhi sath me jod lein
         let localReviews = JSON.parse(localStorage.getItem('crackitBhaiReviews')) || [];
-
-        // ⚡ स्मार्ट तरीका: Google Sheet और LocalStorage दोनों को मिलाकर केवल Unique (अलग-अलग) रिव्यूज रखें
-        let combinedMap = new Map();
         
-        // पहले Sheet वाले डालें (क्योंकि वे डेटाबेस के पक्के रिव्यूज हैं)
-        sheetReviews.forEach(rev => {
+        let combinedMap = new Map();
+        allReviews.forEach(rev => {
             let key = (rev.name + "_" + rev.text).toLowerCase();
             combinedMap.set(key, rev);
         });
 
-        // फिर LocalStorage वाले डालें (अगर शीट में नहीं होंगे तभी जुड़ेंगे, डबल नहीं होंगे)
         localReviews.forEach(rev => {
             let key = (rev.name + "_" + rev.text).toLowerCase();
             if(!combinedMap.has(key)) {
@@ -4113,7 +4114,7 @@ async function loadStudentReviews() {
             }
         });
 
-        let allReviews = Array.from(combinedMap.values());
+        allReviews = Array.from(combinedMap.values());
 
         if(allReviews.length === 0) {
             container.innerHTML = `<p class="text-xs text-slate-400 text-center col-span-full py-10">No reviews yet. Be the first to share your experience!</p>`;
@@ -4128,11 +4129,11 @@ async function loadStudentReviews() {
             if(moreBtnContainer) moreBtnContainer.classList.add('hidden');
         }
 
+        // State ke mutabiq reviews select karein
         let reviewsToDisplay = window.showAllReviewsState ? allReviews : allReviews.slice(0, 3);
 
         container.innerHTML = reviewsToDisplay.map(item => {
             let stars = "⭐".repeat(parseInt(item.rating) || 5);
-            
             return `
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-3">
                     <div>
@@ -4150,24 +4151,53 @@ async function loadStudentReviews() {
             `;
         }).join('');
 
-        if(showMoreBtn) {
-            showMoreBtn.innerHTML = window.showAllReviewsState ? "⬆️ Show Less" : `⬇️ Show More (${allReviews.length - 3} More)`;
+        // ⚡ Rendering complete hote hi button ko wapas normal active state me laao aur text set karo
+        if(expandBtn) {
+            expandBtn.disabled = false;
+            if (window.showAllReviewsState) {
+                expandBtn.innerHTML = "⬆️ Show Less";
+            } else {
+                expandBtn.innerHTML = `⬇️ Show More (${allReviews.length - 3} More)`;
+            }
         }
+        window.isFetchingMore = false;
 
     } catch(err) {
         if(spinner) spinner.classList.add('hidden');
+        if(expandBtn) expandBtn.disabled = false;
+        window.isFetchingMore = false;
         container.innerHTML = `<p class="text-xs text-rose-500 text-center col-span-full py-6">Failed to load reviews.</p>`;
     }
 }
-window.openReviewModal = function() {
-    const modal = document.getElementById('reviewModal');
-    if (modal) modal.classList.remove('hidden');
-};
 
-window.closeReviewModal = function() {
-    const modal = document.getElementById('reviewModal');
-    if (modal) modal.classList.add('hidden');
-};
+// 2. Toggle Button Action with strict Loading -> Show Less / Show More logic
+async function toggleMoreReviews() {
+    const expandBtn = document.getElementById('expand-reviews-btn');
+    
+    if (!window.showAllReviewsState) {
+        // Jab user 'Show More' dabaye, toh turant Loading... dikhao aur button disable karo
+        window.isFetchingMore = true;
+        if(expandBtn) {
+            expandBtn.disabled = true;
+            expandBtn.innerHTML = "⌛ Loading....";
+        }
+        
+        window.showAllReviewsState = true;
+        
+        // Thoda sa gap dekar load function call karein taaki loading animation clear dikhe
+        setTimeout(() => {
+            loadStudentReviews();
+        }, 150);
+        
+    } else {
+        // Jab user 'Show Less' dabaye
+        window.showAllReviewsState = false;
+        loadStudentReviews();
+    }
+}
+
+// Global Window Binding (Module ke liye zaroori hai)
+window.toggleMoreReviews = toggleMoreReviews;
 
 
 
