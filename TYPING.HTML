@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Typing Test Platform | Crackit Bhai</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="./logo.png">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Top Navigation Bar -->
+    <header class="w-full bg-[#0f172a] text-white py-4 px-6 flex justify-between items-center shadow-sm sticky top-0 z-50 border-b border-slate-800">
+        <div class="flex items-center space-x-2">
+            <span class="text-xl">⌨️</span>
+            <h1 class="text-base md:text-xl font-black text-white">Crackit Bhai <span class="text-[#f97316]">Typing Arena</span></h1>
+        </div>
+        <div class="flex items-center space-x-3">
+            <a href="index.html" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition border border-slate-700">🏠 Home Page</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl w-full mx-auto p-4 sm:p-6 my-8 space-y-6">
+
+        <!-- SETUP SCREEN (Step 1) -->
+        <div id="setup-card" class="bg-white border border-slate-200 rounded-3xl p-8 shadow-xl space-y-6">
+            <div class="text-center space-y-2">
+                <span class="bg-orange-500/10 text-orange-600 border border-orange-500/20 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">HPRCA Standard Exam</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Configure Your Typing Test</h2>
+                <p class="text-xs text-slate-500">Enter your details and choose your preferred testing environment.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-2">Student Name</label>
+                    <input type="text" id="student-name" placeholder="Enter your full name" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-2">Select Medium</label>
+                    <select id="exam-medium" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-500">
+                        <option value="english">English (QWERTY)</option>
+                        <option value="hindi">Hindi (Mangal / Remington Gail)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-2">Duration (Minutes)</label>
+                    <select id="test-duration" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-500">
+                        <option value="10" selected>10 Minutes (Default JOA)</option>
+                        <option value="5">5 Minutes</option>
+                        <option value="15">15 Minutes</option>
+                        <option value="2">2 Minutes (Demo)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Mock Test Selector -->
+            <div class="bg-orange-50 border border-orange-200 p-4 rounded-2xl space-y-2">
+                <label class="block text-xs font-bold text-orange-900">Select Mock Test (All Available Tests)</label>
+                <select id="selected-mock-test" class="w-full bg-white border border-orange-300 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-500" onchange="syncTestSelection(this.value)">
+                    <!-- Populated dynamically via JS -->
+                </select>
+            </div>
+
+            <!-- Examination Modes -->
+            <div class="space-y-3 pt-2">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Choose Examination Mode</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button onclick="startDesktopExam()" class="bg-slate-900 hover:bg-slate-800 text-white font-black p-5 rounded-2xl text-xs transition shadow-lg cursor-pointer flex flex-col items-center justify-center gap-1.5 border border-slate-800 text-center">
+                        <span class="text-xl">💻</span>
+                        <span class="text-sm font-bold">Desktop Typing Mode</span>
+                        <span class="text-[10px] text-slate-400 font-normal">Text will be displayed directly on your desktop screen.</span>
+                    </button>
+
+                    <button onclick="startPaperModeExam()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-black p-5 rounded-2xl text-xs transition shadow-lg cursor-pointer flex flex-col items-center justify-center gap-1.5 border border-orange-600 text-center">
+                        <span class="text-xl">🖨️</span>
+                        <span class="text-sm font-bold">Paper Mode (Real HPRCA Experience)</span>
+                        <span class="text-[10px] text-orange-100 font-normal">Print your test sheet or use existing printout.</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAPER MODE PRINT & CONFIRMATION SCREEN (With "Already Have Printout" Button Added) -->
+        <div id="print-step-arena" class="hidden bg-white border border-slate-200 rounded-3xl p-8 shadow-xl space-y-6 relative">
+            <div class="flex justify-start">
+                <button onclick="backToSetup()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-xs cursor-pointer inline-flex items-center gap-1.5 border border-slate-200">
+                    ← Back to Configure
+                </button>
+            </div>
+
+            <div class="text-center space-y-2">
+                <span class="bg-orange-500/10 text-orange-600 border border-orange-500/20 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">HPRCA Real Exam Simulation</span>
+                <h3 class="text-2xl font-black text-slate-900">🖨️ Print Your Selected Test Sheet</h3>
+                <p class="text-xs text-slate-600 max-w-xl mx-auto">You can print your test sheet below[cite: 9], or if you already have a printout ready, click "I Already Have Printout, Start Exam Now".</p>
+            </div>
+
+            <!-- Mock Test Selector Inside Print Screen -->
+            <div class="bg-orange-50 border border-orange-200 p-4 rounded-2xl space-y-2">
+                <label class="block text-xs font-bold text-orange-900">Select Mock Test to Print & Attempt[cite: 9]</label>
+                <select id="selected-mock-test-print" class="w-full bg-white border border-orange-300 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-500" onchange="syncTestSelection(this.value)">
+                    <!-- Populated dynamically via JS -->
+                </select>
+            </div>
+            
+            <!-- Two Actions: Print Now OR Already Have Printout -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                <button onclick="printPassageWithConfirmation()" class="bg-slate-800 hover:bg-slate-900 text-white font-black p-4 rounded-2xl text-xs transition shadow-md cursor-pointer flex flex-col items-center justify-center gap-1.5">
+                    <span class="text-base">🖨️</span>
+                    <span>Print Current Test & Proceed[cite: 9]</span>
+                </button>
+                <button onclick="startAlreadyHavePrintoutFromScreen()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black p-4 rounded-2xl text-xs transition shadow-md cursor-pointer flex flex-col items-center justify-center gap-1.5">
+                    <span class="text-base">📄</span>
+                    <span>I Already Have Printout, Start Exam Now</span>
+                </button>
+            </div>
+
+            <div class="pt-6 border-t border-slate-100 text-center">
+                <button onclick="printAllMockTestsBulk()" class="text-indigo-600 hover:text-indigo-800 font-bold text-xs underline cursor-pointer">
+                    📚 Optional: Bulk Print All Tests at Once (Master PDF)[cite: 9]
+                </button>
+            </div>
+        </div>
+
+        <!-- 5-SECOND COUNTDOWN OVERLAY MODAL -->
+        <div id="countdown-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-10 max-w-sm w-full text-center space-y-4 shadow-2xl border border-slate-200">
+                <span class="text-xs font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full">Real Exam Ready!</span>
+                <h3 class="text-slate-500 text-sm font-semibold">Test starting in...</h3>
+                <div id="countdown-number" class="text-6xl font-black text-orange-600 animate-bounce">5</div>
+                <p class="text-xs text-slate-400">Position your fingers on the keyboard.</p>
+            </div>
+        </div>
+
+        <!-- LIVE TEST ARENA -->
+        <div id="test-arena" class="hidden bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                <div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-wider block">Active Test Name</span>
+                    <span id="active-test-title-display" class="text-xs font-black text-orange-600">--</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-wider block">Candidate</span>
+                    <span id="display-name" class="text-xs font-bold text-slate-900">--</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-wider block">Time Remaining</span>
+                    <span id="timer-display" class="text-base font-black text-orange-600">10:00</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-wider block">Net Speed</span>
+                    <span id="live-wpm" class="text-xs font-bold text-emerald-600">0 WPM</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-wider block">Accuracy</span>
+                    <span id="live-acc" class="text-xs font-bold text-cyan-600">100%</span>
+                </div>
+                <button onclick="submitTest()" class="bg-rose-500/10 hover:bg-rose-500 text-rose-600 hover:text-white border border-rose-500/20 text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer">
+                    End Test
+                </button>
+            </div>
+
+            <!-- Passage Box (Only visible in Desktop Mode) -->
+            <div id="passage-container" class="hidden bg-slate-50 border-2 border-slate-300 p-6 rounded-2xl h-[185px] overflow-y-auto overflow-x-hidden text-lg sm:text-xl font-bold font-mono leading-relaxed text-slate-800 shadow-inner select-none whitespace-pre-wrap break-words">
+                <!-- Text rendered via JS -->
+            </div>
+
+            <!-- Paper Mode Notice -->
+            <div id="paper-mode-notice" class="hidden bg-orange-50 border border-orange-200 p-4 rounded-2xl text-center">
+                <p class="text-xs font-bold text-orange-800">📄 Paper Mode Active: Read from your printed A4 sheet and type below!</p>
+            </div>
+
+            <!-- Typing Input Textarea -->
+            <div>
+                <textarea id="typing-input" rows="5" placeholder="Click here and start typing the passage..." class="w-full bg-slate-50 border border-slate-300 rounded-2xl p-4 text-sm sm:text-base font-mono text-slate-900 focus:outline-none focus:border-orange-500 leading-relaxed shadow-inner" oninput="checkTyping(event)"></textarea>
+            </div>
+        </div>
+
+        <!-- RESULT CARD -->
+        <div id="result-card" class="hidden bg-white border border-slate-200 rounded-3xl p-8 shadow-xl space-y-6 text-center">
+            <h3 class="text-3xl font-black text-slate-900">📊 Test Performance Report</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4">
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <span class="text-[10px] text-slate-500 block">Net Speed</span>
+                    <span id="res-wpm" class="text-xl font-black text-orange-600">0 WPM</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <span class="text-[10px] text-slate-500 block">Accuracy</span>
+                    <span id="res-acc" class="text-xl font-black text-emerald-600">0%</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <span class="text-[10px] text-slate-500 block">Total Typed Words</span>
+                    <span id="res-words" class="text-xl font-black text-cyan-600">0</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <span class="text-[10px] text-slate-500 block">Errors / Mistakes</span>
+                    <span id="res-errors" class="text-xl font-black text-rose-600">0</span>
+                </div>
+            </div>
+            <button onclick="location.reload()" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-black px-8 py-3.5 rounded-2xl text-xs transition cursor-pointer shadow-md">
+                Take Another Test 🔄
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-200 bg-white">
+        &copy; 2026 Crackit Bhai Platform. All Rights Reserved.
+    </footer>
+
+    <!-- Mock Tests Bank & Logic -->
+    <script>
+        let adminTests = [];
+        let targetText = "";
+        let baseParagraph = "";
+        let timerInterval = null;
+        let timeLeft = 600; 
+        let totalSeconds = 600;
+        let isPaperMode = false;
+
+        const twentyMockTestsBank =[
+  "Digital transformation is continuously reshaping our daily lives on a 24/7 basis, establishing new benchmarks across modern industries, corporate ecosystems, and global economies. In the dynamic landscape of the 21st century, the seamless integration of advanced technology, cloud infrastructure, and human intelligence has formed a robust foundation for sustainable growth, continuous innovation, and digital empowerment. Tracing its historical roots back to the 19th century industrial revolution, the remarkable transition from manual computational systems and paper-based ledgers to fully automated, interconnected digital environments has completely redefined how societies operate. Modern infrastructure development now extends far beyond traditional physical architecture, encompassing intelligent power grids, automated utility billing, smart city networks, and comprehensive e-governance solutions designed to optimize public service delivery. For instance, the large-scale deployment of smart meters within critical utility sectors (#Power_Grid & Water Supply) enables precise real-time analytics, thereby reducing overall energy wastage by nearly 15% and conserving vital natural resources. Furthermore, consumers can effortlessly track billing records, process secure financial transactions, and submit service grievances through intuitive web portals ($Portal_Login) without the hassle of visiting physical government offices. However, this rapid and unprecedented digital expansion also introduces notable security vulnerabilities that require constant vigilance, robust risk mitigation, and proactive defense mechanisms at every level. As modern organizations increasingly rely on scalable cloud storage, external APIs, and distributed remote server architectures, safeguarding sensitive data privacy remains a critical top priority for IT departments. A single security oversight, human error, or compromised password (@Secure_Key#2026) can easily expose entire corporate networks to potential breaches, financial fraud, and unauthorized system access. Consequently, system administrators and software developers must strictly enforce multi-factor authentication (MFA), role-based access control, and end-to-end encryption protocols across all enterprise platforms. Concurrently, artificial intelligence (AI) and machine learning (ML) have fundamentally transformed traditional software engineering, data analysis, and application development methodologies across the board. Today, sophisticated coding assistants and intelligent agents such as Jules AI and Gemini empower enterprise developers to accelerate workflow productivity by over 3x, reducing overall project time-to-market significantly. These cutting-edge tools streamline complex algorithmic debugging, automated boilerplate generation, and seamless collaborative version control across distributed code repositories like GitHub and Firebase. Educational paradigms have similarly evolved to embrace comprehensive digital resources, offering competitive examination aspirants (such as JOA-IT candidates) interactive mock testing portals, cloud-hosted digital libraries, and AI-driven study modules. Ultimately, future societal progress depends heavily on continuous skill adaptation, efficient resource management, and strategic technological innovation across every administrative, industrial, and technical sector worldwide to ensure long-term prosperity.",
+
+  "Sustainable urban development and the rapid green energy transition have become the absolute defining priorities of the 21st century as global communities collectively combat escalating climate change, environmental degradation, and resource depletion. Modern metropolitan areas are actively shifting away from traditional fossil-dependent frameworks toward decentralized smart grids, large-scale renewable solar installations, and eco-friendly public transportation networks. For example, advanced municipal transit systems now seamlessly integrate electric buses, smart metro lines, and automated bike-sharing stations (#Eco_Transit & Metro_Hub) to curb carbon emissions by nearly 25% across heavily congested urban sectors. Additionally, urban residents regularly utilize centralized digital mobile applications ($Citizen_Portal) to monitor household water consumption, schedule waste recycling pickups, and report local civic grievances instantly without administrative delays. Despite these remarkable technological advancements, urban planners and civil engineers continue to face persistent challenges regarding electrical grid stability, electronic waste management, and equitable resource distribution across diverse communities. As smart cities expand rapidly, the widespread integration of Internet of Things (IoT) sensors and digital smart meters generates massive streams of operational data that require stringent cybersecurity measures. A single network vulnerability, system misconfiguration, or unauthorized backdoor entry (@Grid_Secure#2026) could severely disrupt vital municipal services for thousands of residential households simultaneously. Therefore, municipal IT engineers must implement heavily encrypted communication channels and multi-factor authentication (MFA) protocols across all automated infrastructure nodes to maintain public trust. Simultaneously, recent breakthroughs in clean technology and advanced battery storage systems are revolutionizing how green energy is harvested, stored, and distributed during peak consumption hours. Engineers utilizing cloud-based simulation suites and advanced AI analytics platforms can optimize power distribution workflows with unprecedented 4x operational efficiency and reduced transmission losses. Furthermore, modern educational institutions and vocational training centers are introducing specialized curricula focused on environmental science, renewable engineering, and smart infrastructure management to prepare students for future green-collar careers. Expanding further into regional ecosystems, policymakers are forging strategic alliances with international research bodies to secure funding and accelerate the deployment of next-generation wind farms, tidal energy generators, and geothermal heating grids. Public engagement campaigns play an equally vital role, fostering eco-conscious behavioral shifts among citizens through incentivized recycling programs, smart home energy audits, and community-led conservation workshops. Moreover, corporate enterprises are increasingly held accountable under stringent ESG (Environmental, Social, and Governance) compliance frameworks, mandating regular carbon footprint disclosures and transparent supply chain audits. To support these massive administrative and technical workloads, governmental bodies rely heavily on resilient cloud infrastructure, distributed database management systems, and automated DevOps pipelines running on secure platforms like GitHub and Firebase. Software engineers and data scientists deploy advanced machine learning algorithms to forecast weather patterns, predict solar energy generation capacities, and dynamically adjust power loads across urban sub-stations in real time. Ultimately, achieving a truly sustainable global future requires unwavering international commitment, collaborative policy-making, robust public-private partnerships, and continuous technological innovation across every economic, industrial, and ecological sector worldwide.",
+
+  "The rapid evolution of modern biotechnology and artificial intelligence has opened unprecedented frontiers in healthcare, molecular research, and personalized medicine. Medical professionals and clinical researchers now leverage sophisticated machine learning models to analyze complex genomic sequences, accelerate drug discovery pipelines, and predict patient responses to targeted therapies with remarkable accuracy. In clinical environments, digital health records and cloud-hosted diagnostic databases ($Health_Portal & Patient_Care) enable multidisciplinary medical teams to collaborate seamlessly across global institutions without administrative bottlenecks. For instance, the integration of automated diagnostic imaging tools (#AI_Diagnostics & Radiology_Lab) has reduced anomaly detection times by nearly 35%, significantly improving early intervention rates for critical illnesses. However, this profound digital transformation in the medical sector introduces immense ethical responsibilities and strict regulatory compliance requirements regarding patient confidentiality. As hospitals and research laboratories increasingly rely on interconnected IoT medical devices, remote patient monitoring systems, and centralized cloud servers, safeguarding sensitive biomedical data becomes paramount. A single cybersecurity breach, unauthorized server intrusion, or compromised administrative credential (@MediSecure#2026) could expose confidential patient records, clinical trial intellectual property, and proprietary pharmaceutical formulations to malicious actors. Consequently, healthcare IT infrastructure managers must mandate stringent multi-factor authentication (MFA), role-based data access controls, and end-to-end encryption protocols across all connected clinical networks. Concurrently, advancements in bioinformatics and synthetic biology are revolutionizing how treatments are formulated, tested, and administered to diverse patient populations. Researchers utilizing high-performance computing clusters and advanced simulation software can model molecular interactions at atomic scales, achieving a 4x reduction in preclinical testing phases. Furthermore, premier medical universities and biotechnology institutes are introducing specialized interdisciplinary curricula focused on genomic data science, biomedical engineering, and health informatics to equip the next generation of researchers with essential technical skills. Expanding further into global health ecosystems, international health organizations are forging strategic public-private partnerships to distribute life-saving therapeutics, establish telemedicine infrastructure in remote rural regions, and combat emerging infectious diseases proactively. Public health campaigns play an equally vital role, educating communities on preventive wellness, digital health literacy, and adherence to evidence-based medical guidelines through interactive mobile platforms and community workshops. Moreover, pharmaceutical enterprises and medical device manufacturers are held strictly accountable under comprehensive compliance frameworks, mandating regular algorithmic bias audits, rigorous clinical validation, and transparent supply chain reporting. To support these massive computational workloads and clinical data pipelines, healthcare institutions rely heavily on resilient cloud architectures, distributed database management systems, and secure DevOps workflows running on platforms like GitHub and Firebase. Ultimately, harnessing the full potential of digital health innovation requires unwavering ethical commitment, rigorous regulatory oversight, and continuous collaboration across the scientific, medical, and technological sectors worldwide.",
+
+  "Space exploration and aerospace engineering have entered a thrilling new era defined by commercial privatization, reusable rocket technology, and ambitious interplanetary colonization initiatives. Global space agencies and private aerospace enterprises are actively developing next-generation launch vehicles, lunar habitats, and autonomous robotic rovers to unlock the deepest mysteries of the universe. For example, advanced commercial spaceports now seamlessly integrate reusable booster telemetry, automated propellant loading systems, and precision tracking networks (#Orbital_Launch & Deep_Space) to reduce mission operational costs by nearly 40% per flight. Additionally, aerospace researchers regularly utilize centralized telemetry dashboards ($Mission_Control) to monitor orbital trajectory metrics, analyze atmospheric re-entry stresses, and schedule payload maintenance updates instantly without mission delays. Despite these monumental technological milestones, aerospace engineers and flight directors continue to face profound operational challenges regarding cosmic radiation shielding, orbital debris management, and long-duration life support stability in deep space. As interplanetary missions expand rapidly, the widespread deployment of onboard IoT sensors, automated navigation telemetry, and high-frequency communication arrays generates massive streams of critical telemetry data requiring airtight cybersecurity protocols. A single communication glitch, software misconfiguration, or unauthorized data interception attempt (@Aero_Secure#2026) could severely compromise crew safety and abort multi-million dollar orbital maneuvers simultaneously. Therefore, aerospace cybersecurity teams must implement heavily encrypted quantum-resistant communication channels and multi-factor authentication (MFA) frameworks across all ground station nodes and spacecraft flight computers. Simultaneously, recent breakthroughs in ion propulsion systems and advanced thermal protection materials are revolutionizing how spacecraft navigate deep space trajectories and endure extreme planetary re-entry temperatures. Engineers utilizing high-performance cloud simulation clusters and advanced AI modeling platforms can optimize rocket aerodynamics and structural integrity workflows with unprecedented 4x computational efficiency and minimal structural mass penalties. Furthermore, premier technical universities and aerospace training institutes are introducing specialized interdisciplinary curricula focused on orbital mechanics, propulsion engineering, and space systems architecture to prepare students for future careers in the space economy. Expanding further into interstellar research initiatives, international space coalitions are forging strategic public-private partnerships to fund asteroid mining ventures, establish permanent lunar research bases, and deploy advanced orbital telescopes. Public outreach programs play an equally vital role, inspiring the next generation of scientists through interactive space science exhibits, virtual observatory tours, and community astronomy workshops. Moreover, commercial aerospace manufacturers are held strictly accountable under comprehensive regulatory compliance frameworks, mandating rigorous flight safety validations, hardware stress testing, and transparent mission audit reporting. To support these massive computational workloads and mission control data pipelines, space agencies rely heavily on resilient cloud architectures, distributed telemetry databases, and secure DevOps workflows running on platforms like GitHub and Firebase. Ultimately, achieving a truly sustainable and expansive multi-planetary future requires unwavering international cooperation, rigorous scientific discipline, and continuous technological innovation across every engineering and industrial sector worldwide.",
+
+  "The evolution of modern telecommunication networks has revolutionized how global information is shared, processed, and archived across diverse administrative institutions. With the rapid nationwide rollout of high-speed 5G infrastructure and fiber-optic broadband cables (Bandwidth capacity: 10 Gbps per node, Line ID: #OFC-HP-882), government offices and educational campuses now enjoy uninterrupted connectivity. System administrators and network engineers deploy advanced firewalls, custom VLAN configurations, and automated backup scripts (written in Python or bash) to safeguard sensitive institutional databases from emerging cyber threats and unauthorized intrusion. Digital archiving initiatives successfully convert millions of legacy paper files into searchable PDF documents using advanced optical character recognition (OCR) software, ensuring complete data preservation and instantaneous retrieval. As public administration becomes increasingly dependent on automated data processing (EDP) systems, continuous technological upgrades and regular cybersecurity audits remain vital for maintaining absolute public trust. Financial management and administrative accountability form the undeniable bedrock of efficient governance in any democratic institution. Modern enterprise resource planning (ERP) software and digital accounting tools (such as SAP and Tally Prime) allow government treasuries to track revenue generation, expenditure budgets, tax filings (e.g., GST returns under Form GSTR-3B), and audit reports with remarkable precision. Certified accountants reconcile ledger balances, verify transaction receipts (Reference #TXN-77192), and generate comprehensive monthly financial statements for senior review. Transparency in public spending ensures that funds allocated for infrastructure development, rural electrification, healthcare upgrades, and educational scholarships reach intended beneficiaries without leakage. By embracing digital financial systems, institutions eliminate corruption, expedite vendor payments, and foster an environment of fiscal responsibility that drives long-term economic growth across the state.",
+
+  "Cybersecurity has become a critical operational concern for modern organizations as persistent cyber threats, ransomware attacks, and sophisticated phishing campaigns target government databases and critical infrastructure daily. Institutional policies now mandate rigorous security awareness training for all personnel, emphasizing strict password complexity rules (Minimum length: 12 characters, history of 24 remembered passwords) and multi-factor authentication (MFA). IT security teams monitor network traffic logs 24/7 using advanced SIEM tools, instantly isolating compromised subnets (e.g., IP range 192.168.50.0/24) before malware spreads across the enterprise network. Regular vulnerability assessments and penetration testing (VAPT) ensure that software patches are deployed promptly. Safeguarding sensitive citizen data and intellectual property requires unyielding vigilance, proactive threat intelligence sharing, and strict adherence to established cybersecurity frameworks. The implementation of Geographic Information Systems (GIS) and spatial data mapping has transformed urban planning, disaster management, and agricultural monitoring across Himachal Pradesh. Cartographers and GIS specialists analyze high-resolution satellite imagery (Pixel resolution: 0.5 meters, Coordinate system: EPSG:32643) to generate detailed contour maps, landslide susceptibility zones, and municipal development blueprints. During natural calamities like cloudbursts or flash floods, district disaster management authorities rely on real-time GIS dashboards to coordinate rescue operations, dispatch emergency relief supplies, and assess infrastructure damage accurately. Integrating spatial databases with e-governance portals enables citizens to view land-use plans, apply for building permits digitally, and track public utility expansions seamlessly, fostering smart and resilient urban communities.",
+
+  "Human resource management systems (HRMS) have streamlined workforce administration across state government departments, replacing cumbersome manual registers with automated attendance tracking, online leave applications, and digital payroll processing. Employees can access their service books, annual performance appraisals (APARs), and provident fund statements securely through mobile-friendly web portals. HR managers utilize advanced analytics dashboards to evaluate departmental productivity, identify skill gaps, and organize targeted training workshops for administrative staff. This digital transition not only saves countless hours of administrative labor but also ensures complete accuracy in salary disbursement, pension calculations, and seniority list promotions, resulting in a highly motivated and efficient public workforce. Cloud computing and scalable data storage solutions have eliminated the need for maintaining expensive, cumbersome on-premise server rooms in government offices. State agencies now migrate legacy databases to secure cloud environments (such as AWS and Microsoft Azure), benefiting from automated load balancing, 99.99% uptime guarantees, and disaster recovery replication features. Automated daily backups stored in geo-redundant buckets (e.g., `s3://hp-gov-cloud-backup-2026/`) ensure that institutional records remain safe even during catastrophic hardware failures. Cloud technology empowers administrative bodies to scale computing resources up or down dynamically based on seasonal traffic demands, such as during university examination results declaration or massive public recruitment drives.",
+
+  "The role of office automation tools in modern secretarial administration cannot be overstated. Administrative assistants, stenographers, and office superintendents rely heavily on advanced word processors, spreadsheet software, and digital document management systems to draft official circulars, prepare meeting agendas, and archive correspondence. Standardized templates, digital signatures (using Aadhaar eSign or DSC tokens), and secure email gateways (SMTP/IMAP with TLS encryption) ensure that inter-departmental communication is both swift and legally binding. Mastering these office productivity tools is a core competency tested in competitive examinations like JOA IT, ensuring that incoming administrative personnel hit the ground running from their very first day in office. Artificial intelligence (AI) and machine learning (ML) technologies are rapidly reshaping public service delivery by introducing intelligent chatbots, automated document summarization, and predictive analytics. The integration of conversational AI assistants on government portals allows citizens to ask questions in regional languages and receive instant, accurate responses regarding welfare schemes, eligibility criteria, and application status tracking 24 hours a day. Behind the scenes, machine learning models analyze historical traffic patterns and electricity consumption data to predict peak loads and optimize power distribution across substations. Embracing artificial intelligence responsibly enables government agencies to make data-driven policy decisions and serve the public with unprecedented efficiency.",
+
+  "Inventory control and store management mechanisms ensure that government departments maintain optimal stock levels of essential hardware peripherals, electrical spares, and office stationery without incurring wasteful expenditure. Storekeepers utilize barcode scanning systems and centralized inventory software (Module ID: #INV-SUP-99) to record purchase orders, track item distribution across sub-divisions, and conduct physical verification audits quarterly. Strict adherence to procurement guidelines and transparent e-tendering processes (via platforms like GeM - Government e-Marketplace) guarantees fair competition among vendors and optimal utilization of public funds for departmental supplies. The digital archiving of historical government records, judicial files, and land registry documents is an indispensable initiative preserving the documentary heritage of the state. Archivists and documentation experts utilize high-speed document scanners and optical character recognition (OCR) software to convert fragile paper registers into searchable digital formats. Metadata indexing standards (Schema version: eOffice v2.5) ensure that every file can be retrieved within seconds using keyword searches, eliminating the endless hunt through dusty record rooms. This digital preservation strategy protects invaluable historical records against physical decay, fire hazards, and accidental loss.",
+
+  "Quality assurance (QA) and rigorous software testing methodologies are essential pillars in the development of reliable e-governance applications. Software engineers and QA testers execute comprehensive test cases—including unit testing, boundary value analysis, load testing, and regression suites—before deploying any new portal feature to production environments. Identifying and resolving software bugs early in the development lifecycle prevents system crashes during high-traffic events such as online application deadlines or result announcements. Quality commitment ensures that citizens experience seamless, bug-free digital interactions across all state web platforms. Telecommunication and broadband connectivity expansion in rural and tribal belts bridges the educational and economic divide, bringing digital classrooms, telemedicine services, and e-commerce opportunities to remote mountain communities. State-sponsored optical fiber projects connect every panchayat office, primary health center, and government school to high-speed internet networks. Local youth benefit from online skill development courses, competitive exam coaching portals, and remote employment avenues, transforming traditional agrarian settlements into vibrant, digitally empowered knowledge hubs.",
+
+  "Public grievance redressal mechanisms have undergone a remarkable digital overhaul with the implementation of integrated grievance portals and mobile applications. Citizens can lodge complaints regarding water supply disruptions, electricity faults, road damage, or civic issues with a single click, attaching geotagged photographs for immediate verification. Administrative departments are bound by strict service level agreements (SLAs) to resolve grievances within a stipulated timeframe (typically 3 to 7 working days). Transparent tracking systems empower citizens to monitor the exact status of their complaints, fostering unprecedented accountability and trust in local governance. Disaster management and preparedness strategies in hilly terrains heavily depend on early warning weather systems, automated river gauge sensors, and real-time satellite communication networks. State emergency operation centers (SEOC) monitor meteorological data 24/7 to issue timely advisories regarding heavy rainfall, cloudbursts, or seismic activities. Coordinated rescue protocols involving police, home guards, medical teams, and local volunteers ensure swift evacuation and relief distribution during emergencies, minimizing loss of human lives and property damage.",
+
+  "The promotion of digital payments and cashless transactions across government treasury offices, transport departments, and municipal corporation counters has streamlined revenue collection and eliminated cash-handling risks. Citizens can pay utility bills, property taxes, driving license fees, and court fines securely using UPI, debit cards, net banking, or QR code scanners. Automated receipt generation and instant SMS/email confirmations provide absolute financial transparency, ensuring that every rupee collected is accounted for in real-time ledger updates. Environmental monitoring and green energy initiatives play a pivotal role in preserving the pristine ecology of Himachal Pradesh. State departments employ IoT-based air quality monitoring sensors, automated forest fire detection systems, and solar-powered street lighting networks to promote sustainable urban development. Strict compliance with environmental impact assessment (EIA) norms for infrastructure projects ensures that economic progress walks hand in hand with ecological conservation, protecting rare flora and fauna for future generations.",
+
+  "The continuous professional development and skill enhancement of government employees through mandatory in-service training programs ensure that administrative machinery remains adaptable to emerging technologies. Specialized training modules covering advanced spreadsheet modeling, cybersecurity best practices, e-office workflows, and interpersonal communication equip officers with the competencies required to excel in a rapidly digitizing administrative landscape, setting a benchmark for administrative excellence nationwide. Furthermore, digital literacy campaigns launched in multiple districts have empowered youth with essential computer skills, preparing them for competitive examinations like Junior Office Assistant (JOA IT) conducted by boards such as HPRCA. As we move towards a fully digitized economy, maintaining robust data security, protecting personal privacy through strict compliance policies, and fostering continuous technological innovation remain paramount for sustainable societal progress across the state.",
+
+  "Global logistics and supply chain networks have undergone a massive paradigm shift driven by autonomous shipping vessels, drone delivery trials, and blockchain-enabled tracking ledgers. Multinational corporations and regional distribution centers now deploy predictive analytics platforms to forecast inventory demands, optimize freight routing, and minimize carbon footprints across multi-modal transport corridors. For instance, smart shipping containers equipped with IoT temperature sensors and shock-monitoring chips (#Logistics_Hub & Freight_Node) transmit real-time telemetry updates over secure 5G cellular arrays, reducing spoilage rates by nearly 18% during international transit. Furthermore, logistics coordinators utilize centralized cloud dashboards ($Supply_Chain_Portal) to manage customs clearance documentation, verify digital bills of lading, and track cargo positions instantly without bureaucratic friction. Despite these advancements, supply chain managers face severe vulnerabilities related to geopolitical disruptions, fuel price volatility, and sophisticated cyber attacks targeting automated warehouse management systems. A single database corruption incident or unauthorized ransomware encryption event (@Cargo_Safe#2026) could halt port operations and delay critical shipments for thousands of dependent manufacturing plants. Consequently, logistics enterprises must enforce stringent multi-factor authentication (MFA) and immutable ledger backups to protect trade data integrity. Simultaneously, advancements in electric freight trucks and hydrogen-powered cargo locomotives are transforming heavy transport logistics toward carbon-neutral operations. Engineers leveraging high-performance cloud simulation suites can optimize fleet aerodynamics and route planning workflows with remarkable efficiency gains. Ultimately, modernizing global trade requires resilient infrastructure, rigorous cybersecurity standards, and continuous technological collaboration across all participating nations.",
+
+  "Renewable energy integration and smart grid management represent the cornerstone of modern power distribution systems worldwide. Power generation authorities are rapidly replacing conventional fossil-fuel plants with decentralized wind farms, solar photovoltaic parks, and biomass energy generators to meet surging electricity demands sustainably. Advanced supervisory control and data acquisition (SCADA) systems, coupled with real-time phasor measurement units (PMUs), allow grid operators to monitor voltage stability and frequency fluctuations across massive transmission networks (#Smart_Grid & Power_Substation). Additionally, utility engineers utilize centralized enterprise management portals ($Grid_Control) to balance load distribution, detect transformer faults instantly, and reroute power flows during peak consumption hours without manual intervention. However, transitioning to hyper-connected smart grids introduces significant cyber-physical security risks that threaten national energy security. As power substations become automated and interconnected via industrial IoT devices, malicious actors constantly seek exploitation vectors. A coordinated cyber attack or unauthorized command injection (@Grid_Defense#2026) could trigger widespread blackouts, crippling essential public services and industrial operations. To counteract these threats, utility providers must implement quantum-resistant encryption, strict network segmentation, and mandatory multi-factor authentication (MFA) for all operational technology personnel. Furthermore, advanced machine learning models deployed on secure cloud platforms analyze historical weather forecasts and consumer demand trends to optimize renewable energy storage in lithium-ion battery banks. Ultimately, securing the future of global energy infrastructure demands uncompromising vigilance, regulatory compliance, and continuous engineering innovation.",
+
+  "Agricultural biotechnology and precision farming technologies are revolutionizing traditional crop production methods to ensure global food security in an era of unpredictable climate patterns. Modern agronomists and farmers utilize IoT-enabled soil moisture sensors, automated drip irrigation valves, and high-precision GPS tractor guidance systems to optimize water usage and fertilizer application across vast farmlands. Unmanned aerial vehicles (UAVs) equipped with multispectral imaging cameras (#Agri_Tech & Crop_Monitor) fly over fields to detect early signs of pest infestations, nutrient deficiencies, and crop diseases with remarkable precision. Furthermore, agricultural extension officers and farming cooperatives rely on centralized mobile platforms ($Krishi_Portal) to distribute weather advisories, process minimum support price (MSP) transactions, and provide real-time market price updates to rural producers. Despite these innovative strides, the agricultural sector faces persistent hurdles related to water scarcity, soil degradation, and market access limitations. As farming becomes increasingly data-driven, protecting rural telecommunication networks and cloud-hosted agricultural databases from cyber threats is essential. A malicious data tampering incident or unauthorized database deletion (@Agri_Secure#2026) could disrupt supply chains and jeopardize farmers' financial livelihoods. Therefore, agricultural technology providers must mandate strict data encryption protocols and secure access controls across all digital platforms. Concurrently, ongoing research into climate-resilient crop varieties and bio-fertilizers is enhancing agricultural sustainability. Ultimately, empowering farmers with advanced digital tools and scientific knowledge is vital for fostering long-term economic prosperity and rural development.",
+
+  "Marine conservation and oceanographic research have entered a transformative phase driven by autonomous underwater vehicles (AUVs), satellite oceanography, and deep-sea sensor arrays. Marine biologists and environmental scientists now deploy sophisticated robotic submersibles to map fragile coral reefs, monitor ocean acidification rates, and track migratory marine species across vast oceanic expanses. Coastal monitoring stations equipped with automated water quality probes and acoustic hydrophones (#Marine_Lab & Ocean_Sensor) transmit continuous ecological telemetry over satellite links, helping researchers detect harmful algal blooms and pollution spikes early. Additionally, maritime authorities utilize centralized coastal management portals ($Marine_Portal) to monitor vessel traffic density, enforce sustainable fishing quotas, and coordinate rapid response protocols during maritime oil spills. However, oceanographic research and coastal infrastructure face mounting threats from rising sea levels, extreme weather events, and illicit maritime activities. Protecting offshore data buoys and shore-based telemetry servers from physical vandalism and cyber interference is a critical operational priority. An unauthorized data interception or telemetry manipulation attempt (@Ocean_Secure#2026) could compromise navigational safety and distort critical climate research models. Consequently, marine research agencies must implement hardened communication protocols, encrypted data transmission channels, and strict multi-factor authentication (MFA) for all research personnel. Furthermore, international cooperation and data-sharing frameworks are essential for tackling global marine challenges effectively. Ultimately, preserving ocean ecosystems requires a balanced synthesis of advanced scientific technology, rigorous environmental policies, and global commitment.",
+
+  "Advanced manufacturing and industrial automation have redefined factory floors worldwide through the widespread adoption of robotics, the Internet of Things (IoT), and cyber-physical production systems. Modern industrial plants leverage high-speed industrial Ethernet networks, automated robotic assembly arms, and computerized numerical control (CNC) machinery to manufacture complex components with microscopic precision. Factory supervisors monitor production line performance metrics, machine temperature levels, and inventory flow rates in real time via centralized supervisory dashboards (#Smart_Factory & Industrial_IoT). Furthermore, plant engineers utilize enterprise maintenance portals ($Manufacturing_Portal) to schedule predictive maintenance routines, track raw material supplies, and analyze equipment wear patterns before mechanical failures occur, thereby minimizing costly downtime. Despite these significant productivity gains, smart manufacturing facilities remain prime targets for sophisticated cyber attacks and industrial espionage. As traditional operational technology (OT) converges with enterprise information technology (IT) networks, the attack surface expands exponentially. A malicious firmware tampering exploit or unauthorized remote command insertion (@Factory_Secure#2026) could halt production lines, damage expensive machinery, and compromise worker safety. Therefore, manufacturing enterprises must establish strict network isolation barriers, deploy advanced endpoint detection and response (EDR) tools, and enforce mandatory multi-factor authentication (MFA) across all control terminals. Concurrently, sustainable manufacturing initiatives focus on reducing industrial waste and recycling wastewater. Ultimately, achieving long-term industrial competitiveness requires balancing high-speed automation with uncompromising cybersecurity and sustainable engineering practices.",
+
+  "Modern financial technology and digital banking ecosystems have fundamentally transformed how individuals, businesses, and government institutions manage monetary transactions, investments, and credit services. Traditional brick-and-mortar banking has largely evolved into frictionless mobile-first platforms offering instant peer-to-peer transfers, algorithmic credit scoring, and automated wealth management advisory services. Financial institutions deploy advanced artificial intelligence models and distributed ledger technologies to detect fraudulent transaction patterns, verify user identities, and streamline compliance audits in real time. For instance, high-security banking servers equipped with biometric authentication gateways and end-to-end encryption protocols (#FinTech_Hub & Secure_Vault) process millions of secure payment requests daily without service interruption. Furthermore, corporate treasurers and individual account holders utilize centralized online banking portals ($Fin_Portal) to monitor account balances, schedule automated loan repayments, and download tax statements instantly. However, the rapid digitization of financial services also attracts sophisticated cyber criminals seeking to exploit vulnerabilities in mobile applications and payment gateways. A successful phishing campaign, credential stuffing attack, or unauthorized database breach (@Fin_Secure#2026) could result in catastrophic financial losses and severe reputational damage for banking institutions. Consequently, financial regulatory bodies mandate strict adherence to international security standards, multi-factor authentication (MFA), and regular penetration testing. Concurrently, financial inclusion initiatives leverage digital wallets to bring banking services to unbanked rural populations. Ultimately, maintaining absolute trust in the digital financial economy requires unyielding security vigilance, transparent governance, and continuous technological innovation.",
+
+  "Commercial aviation and air traffic management systems have achieved unprecedented levels of safety, efficiency, and global connectivity through advanced avionics, satellite navigation, and automated flight control networks. Modern commercial airlines and air navigation service providers utilize real-time radar tracking, predictive weather modeling, and digital flight management computers to optimize flight routes and reduce fuel consumption across international corridors. Air traffic control towers equipped with automated collision-avoidance algorithms and high-frequency communication arrays (#Aero_Control & Flight_Ops) coordinate aircraft movements seamlessly across crowded terminal airspace. Furthermore, airline operations centers utilize centralized management portals ($Aviation_Portal) to schedule routine aircraft maintenance, track passenger manifests, and monitor crew scheduling compliance instantly without administrative delays. Despite these remarkable technological milestones, the aviation sector faces persistent operational challenges regarding airspace congestion, severe meteorological disruptions, and sophisticated cyber threats targeting air traffic control infrastructure. A critical communication jamming attempt or unauthorized navigational data injection (@Sky_Secure#2026) could compromise flight safety and disrupt global travel schedules simultaneously. Therefore, aviation cybersecurity authorities must implement heavily encrypted, quantum-resistant communication channels and strict multi-factor authentication (MFA) protocols across all ground station nodes and aircraft transponders. Simultaneously, ongoing research into electric aircraft propulsion and sustainable aviation fuels is paving the way for greener skies. Ultimately, maintaining global aviation excellence requires rigorous international cooperation, uncompromising safety standards, and continuous technological adaptation across every sector of the aerospace industry."
+];
+
+        window.onload = function() {
+            let stored = localStorage.getItem('firebase_typing_tests');
+            if (stored) {
+                adminTests = JSON.parse(stored);
+            } else {
+                adminTests = [];
+            }
+
+            if(adminTests.length === 0) {
+                twentyMockTestsBank.forEach((passage, idx) => {
+                    adminTests.push({
+                        title: "Mock Test " + (idx + 1) + " (Full-Page A4 Exam Sheet)",
+                        content: passage
+                    });
+                });
+            }
+
+            const selectBox1 = document.getElementById('selected-mock-test');
+            const selectBox2 = document.getElementById('selected-mock-test-print');
+            
+            selectBox1.innerHTML = "";
+            selectBox2.innerHTML = "";
+
+            adminTests.forEach((test, i) => {
+                let opt1 = document.createElement('option');
+                opt1.value = i;
+                opt1.innerText = test.title;
+                selectBox1.appendChild(opt1);
+
+                let opt2 = document.createElement('option');
+                opt2.value = i;
+                opt2.innerText = test.title;
+                selectBox2.appendChild(opt2);
+            });
+        };
+
+        function syncTestSelection(val) {
+            document.getElementById('selected-mock-test').value = val;
+            document.getElementById('selected-mock-test-print').value = val;
+        }
+
+        function startDesktopExam() {
+            const name = document.getElementById('student-name').value.trim();
+            if(!name) {
+                alert("Please enter your student name to start the test!");
+                return;
+            }
+            document.getElementById('display-name').innerText = name;
+            const selectedIndex = document.getElementById('selected-mock-test').value;
+            baseParagraph = adminTests[selectedIndex].content;
+            document.getElementById('active-test-title-display').innerText = adminTests[selectedIndex].title;
+            
+            isPaperMode = false;
+            startCountdownAndExam();
+        }
+
+        function startPaperModeExam() {
+            const name = document.getElementById('student-name').value.trim();
+            if(!name) {
+                alert("Please enter your student name first!");
+                return;
+            }
+            const selectedIndex = document.getElementById('selected-mock-test').value;
+            syncTestSelection(selectedIndex);
+            baseParagraph = adminTests[selectedIndex].content;
+            document.getElementById('active-test-title-display').innerText = adminTests[selectedIndex].title;
+            document.getElementById('display-name').innerText = name;
+
+            isPaperMode = true;
+            document.getElementById('setup-card').classList.add('hidden');
+            document.getElementById('print-step-arena').classList.remove('hidden');
+        }
+
+        function startAlreadyHavePrintoutFromScreen() {
+            const selectedIndex = document.getElementById('selected-mock-test-print').value;
+            syncTestSelection(selectedIndex);
+            baseParagraph = adminTests[selectedIndex].content;
+            document.getElementById('active-test-title-display').innerText = adminTests[selectedIndex].title;
+            document.getElementById('display-name').innerText = document.getElementById('student-name').value;
+
+            isPaperMode = true;
+            document.getElementById('print-step-arena').classList.add('hidden');
+            startCountdownAndExam();
+        }
+
+        function backToSetup() {
+            document.getElementById('print-step-arena').classList.add('hidden');
+            document.getElementById('setup-card').classList.remove('hidden');
+        }
+
+        function printPassageWithConfirmation() {
+            let studentName = document.getElementById('student-name').value;
+            let duration = document.getElementById('test-duration').value;
+            let selectedIndex = document.getElementById('selected-mock-test-print').value;
+            syncTestSelection(selectedIndex);
+            let testObj = adminTests[selectedIndex];
+
+            baseParagraph = testObj.content;
+            document.getElementById('active-test-title-display').innerText = testObj.title;
+
+            let printWindow = window.open('', '_blank');
+            printWindow.document.write('<!DOCTYPE html><html><head><title>' + testObj.title + '</title><style>@page { size: A4; margin: 8mm; } body { font-family: monospace; font-size: 10.5pt; line-height: 1.35; color: #111; padding: 0; } .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 4px; margin-bottom: 10px; } .header h2 { margin: 0; font-size: 13pt; text-transform: uppercase; color: #d97706; } .header p { margin: 3px 0 0 0; font-size: 8.5pt; color: #555; } .passage-box { text-align: justify; word-spacing: 1px; }</style></head><body><div class="header"><h2>' + testObj.title + '</h2><p>Candidate: <strong>' + studentName + '</strong> | Duration: <strong>' + duration + ' Mins</strong></p></div><div class="passage-box"><p>' + testObj.content + '</p></div></body></html>');
+            printWindow.document.close();
+            
+            setTimeout(function() {
+                printWindow.focus();
+                printWindow.print();
+            }, 500);
+
+            setTimeout(function() {
+                let isPrinted = confirm("Kya aapka print successfully ho gaya hai?");
+                if (isPrinted) {
+                    document.getElementById('print-step-arena').classList.add('hidden');
+                    startCountdownAndExam();
+                } else {
+                    alert("Aap dobara 'Print Current Test' par click karke print kar sakte hain.");
+                }
+            }, 1000);
+        }
+
+        function startCountdownAndExam() {
+            const modal = document.getElementById('countdown-modal');
+            const numEl = document.getElementById('countdown-number');
+            modal.classList.remove('hidden');
+            
+            let count = 5;
+            numEl.innerText = count;
+
+            let countdownInterval = setInterval(() => {
+                count--;
+                if(count > 0) {
+                    numEl.innerText = count;
+                } else {
+                    clearInterval(countdownInterval);
+                    modal.classList.add('hidden');
+                    startActualExamArena();
+                }
+            }, 1000);
+        }
+
+        function startActualExamArena() {
+            document.getElementById('setup-card').classList.add('hidden');
+            document.getElementById('print-step-arena').classList.add('hidden');
+            document.getElementById('test-arena').classList.remove('hidden');
+
+            targetText = baseParagraph + " " + baseParagraph + " " + baseParagraph + " " + baseParagraph;
+
+            const passageContainer = document.getElementById('passage-container');
+            const paperNotice = document.getElementById('paper-mode-notice');
+
+            if (isPaperMode) {
+                passageContainer.classList.add('hidden');
+                paperNotice.classList.remove('hidden');
+            } else {
+                paperNotice.classList.add('hidden');
+                passageContainer.classList.remove('hidden');
+                renderPassageHTML("");
+            }
+
+            const durationMinutes = parseInt(document.getElementById('test-duration').value);
+            totalSeconds = durationMinutes * 60;
+            timeLeft = totalSeconds;
+
+            const textarea = document.getElementById('typing-input');
+            textarea.value = "";
+            textarea.focus();
+
+            startTimer();
+        }
+
+        function renderPassageHTML(userInput) {
+            const passageContainer = document.getElementById('passage-container');
+            let html = "";
+            for (let i = 0; i < targetText.length; i++) {
+                let char = targetText[i];
+                if (i < userInput.length) {
+                    if (userInput[i] === char) {
+                        html += '<span class="text-emerald-700 bg-emerald-100">' + (char === ' ' ? '&nbsp;' : char) + '</span>';
+                    } else {
+                        html += '<span class="text-rose-700 bg-rose-200 underline">' + (char === ' ' ? '_' : char) + '</span>';
+                    }
+                } else if (i === userInput.length) {
+                    html += '<span id="typing-cursor" class="bg-orange-500 text-white font-black px-0.5 rounded">' + (char === ' ' ? '&nbsp;' : char) + '</span>';
+                } else {
+                    html += '<span class="text-slate-800">' + char + '</span>';
+                }
+            }
+            passageContainer.innerHTML = html;
+
+            const activeCursor = document.getElementById('typing-cursor');
+            if (activeCursor) {
+                activeCursor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    let mins = Math.floor(timeLeft / 60);
+                    let secs = timeLeft % 60;
+                    document.getElementById('timer-display').innerText = mins + ":" + (secs < 10 ? '0' : '') + secs;
+                    calculateStats();
+                } else {
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        function checkTyping(e) {
+            const userInput = e.target.value;
+            if (!isPaperMode) {
+                renderPassageHTML(userInput);
+            }
+
+            if (userInput.length >= targetText.length - 100) {
+                targetText += " " + baseParagraph;
+            }
+        }
+
+        function calculateStats() {
+            const userInput = document.getElementById('typing-input').value;
+            const timeElapsed = totalSeconds - timeLeft;
+            if (timeElapsed <= 0) return;
+
+            let correctChars = 0;
+            let errors = 0;
+
+            for (let i = 0; i < userInput.length; i++) {
+                if (userInput[i] === targetText[i]) {
+                    correctChars++;
+                } else {
+                    errors++;
+                }
+            }
+
+            const minutes = timeElapsed / 60;
+            const netWpm = Math.max(0, Math.round(((correctChars - errors) / 5) / minutes));
+
+            let accuracy = 100;
+            if (userInput.length > 0) {
+                accuracy = Math.max(0, Math.round((correctChars / userInput.length) * 100));
+            }
+
+            document.getElementById('live-wpm').innerText = netWpm + " WPM";
+            document.getElementById('live-acc').innerText = accuracy + "%";
+        }
+
+        function printAllMockTestsBulk() {
+            let studentName = document.getElementById('student-name').value || "Candidate";
+            let printWindow = window.open('', '_blank');
+            
+            let bulkHTML = '<!DOCTYPE html><html><head><title>Master Bulk Print - All 20 Mock Tests</title><style>@page { size: A4; margin: 10mm; } body { font-family: monospace; font-size: 10.5pt; line-height: 1.35; color: #111; } .page-break { page-break-after: always; } .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 4px; margin-bottom: 12px; } .header h2 { margin: 0; font-size: 13pt; text-transform: uppercase; color: #d97706; } .header p { margin: 3px 0 0 0; font-size: 8.5pt; color: #555; } .passage-box { text-align: justify; word-spacing: 1px; }</style></head><body>';
+
+            adminTests.forEach((test, idx) => {
+                bulkHTML += `
+                    <div class="${idx < adminTests.length - 1 ? 'page-break' : ''}">
+                        <div class="header">
+                            <h2>Crackit Bhai - ${test.title}</h2>
+                            <p>Candidate: <strong>${studentName}</strong> | Real Based Typing Test Series</p>
+                        </div>
+                        <div class="passage-box">
+                            <p>${test.content}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            bulkHTML += '</body></html>';
+            printWindow.document.write(bulkHTML);
+            printWindow.document.close();
+            
+            setTimeout(function() {
+                printWindow.focus();
+                printWindow.print();
+            }, 800);
+        }
+
+        function submitTest() {
+            clearInterval(timerInterval);
+            
+            document.getElementById('test-arena').classList.add('hidden');
+            document.getElementById('result-card').classList.remove('hidden');
+
+            const userInput = document.getElementById('typing-input').value;
+            const timeElapsed = totalSeconds - timeLeft;
+            const minutes = Math.max(1, timeElapsed) / 60;
+
+            let correctChars = 0;
+            let errors = 0;
+
+            for (let i = 0; i < userInput.length; i++) {
+                if (userInput[i] === targetText[i]) {
+                    correctChars++;
+                } else {
+                    errors++;
+                }
+            }
+
+            const netWpm = Math.max(0, Math.round(((correctChars - errors) / 5) / minutes));
+            const wordsTyped = Math.round(userInput.length / 5);
+
+            let accuracy = userInput.length > 0 ? Math.max(0, Math.round((correctChars / userInput.length) * 100)) : 100;
+
+            document.getElementById('res-wpm').innerText = netWpm + " WPM";
+            document.getElementById('res-acc').innerText = accuracy + "%";
+            document.getElementById('res-words').innerText = wordsTyped;
+            document.getElementById('res-errors').innerText = errors;
+        }
+    </script>
+</body>
+</html>
