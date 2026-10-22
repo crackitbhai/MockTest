@@ -982,68 +982,79 @@ document.addEventListener('DOMContentLoaded', () => {
         <!-- 1. ऊपर वाला हिस्सा: लोगो और लॉगिन फॉर्म -->
                 <div class="flex flex-col md:flex-row w-full min-h-0 md:min-h-[calc(100vh-105px)] items-stretch justify-center bg-[#101827]">
             
-                    <div class="flex w-full md:w-1/2 bg-[#111b2c] text-white flex-col justify-center items-center gap-6 p-6 sm:p-8 md:p-12 border-r border-slate-700">
+                    <div class="flex w-full md:w-1/2 bg-[#111b2c] text-white flex-col justify-center items-center gap-4 md:gap-6 p-4 sm:p-8 md:p-12 border-b md:border-b-0 md:border-r border-slate-700">
     
     <!-- Top Highlight Badge & Title -->
     <div class="w-full max-w-lg mx-auto flex flex-col items-center text-center">
-        <div class="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-400/30 text-orange-300 px-4 py-2 rounded-full text-[10px] md:text-xs font-extrabold uppercase shadow-sm mb-5">
+        <div class="relative md:hidden w-full h-[220px] sm:h-[250px] overflow-hidden rounded-2xl border border-slate-600/70 bg-slate-950 shadow-xl">
+            <img src="https://images.unsplash.com/photo-1557989048-03456d01a26e?auto=format&fit=crop&w=1200&q=85" alt="Students studying together in a classroom" class="absolute inset-0 w-full h-full object-cover object-center">
+            <div aria-hidden="true" class="absolute inset-0 bg-black/40"></div>
+            <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/35 to-slate-950/10"></div>
+            <div class="absolute inset-x-0 bottom-0 p-5 text-left">
+                <p class="text-[10px] font-black uppercase text-orange-300">Crackit Bhai · HP Exam Prep</p>
+                <h2 class="mt-2 text-2xl sm:text-3xl font-black leading-tight text-white drop-shadow-lg">Crack your exam with me.</h2>
+                <p class="mt-1 text-xs sm:text-sm font-medium text-slate-200">Smart practice for Himachal's competitive exams.</p>
+            </div>
+        </div>
+
+        <div class="hidden md:inline-flex items-center gap-2 bg-orange-500/10 border border-orange-400/30 text-orange-300 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-extrabold uppercase shadow-sm mb-3 md:mb-5">
     <span class="w-2 h-2 rounded-full bg-orange-400"></span>
      Himachal's #1 Exam Preparation Portal
 </div>
 
-        <h2 class="text-3xl md:text-4xl font-black tracking-tight text-white leading-tight mb-3">
+        <h2 class="hidden md:block text-2xl md:text-4xl font-black tracking-tight text-white leading-tight mb-2 md:mb-3">
             Crack Your HP Exams With <span class="text-[#f97316]">Confidence!</span>
         </h2>
 
-        <p class="max-w-md text-sm font-medium text-slate-300 mb-6">
+        <p class="hidden md:block max-w-md text-xs sm:text-sm font-medium text-slate-300 mb-4 md:mb-6">
             Get chapter-wise tests and study material for Himachal competitive exams.
         </p>
 
         <!-- 💡 Advertisement / Exam Highlights Cards with "NEW" Tags -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full text-left">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 w-full text-left">
             
             <!-- Card 1: JOA IT -->
-        <a href="joait.html" class="min-h-[82px] bg-[#172235] border border-slate-700 p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] hover:-translate-y-0.5 transition">
-    <div class="flex items-center gap-3 min-w-0">
-        <span class="w-10 h-10 shrink-0 rounded-lg bg-sky-500/10 flex items-center justify-center text-xl">💻</span>
+        <a href="joait.html" class="min-h-[72px] md:min-h-[82px] bg-[#172235] border border-slate-700 p-3 md:p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] hover:-translate-y-0.5 transition">
+    <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
+        <span class="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-lg bg-sky-500/10 flex items-center justify-center text-lg md:text-xl">💻</span>
         <div>
-            <h4 class="text-sm font-bold text-white">20+ JOA IT Tests</h4>
-            <p class="mt-0.5 text-[11px] text-slate-400">Computer Series</p>
+            <h4 class="text-xs md:text-sm font-bold text-white">20+ JOA IT Tests</h4>
+            <p class="mt-0.5 text-[10px] md:text-[11px] text-slate-400">Computer Series</p>
         </div>
     </div>
     <span class="shrink-0 bg-orange-500/15 text-orange-300 text-[9px] font-black px-2 py-1 rounded-full uppercase">NEW</span>
 </a>
             <!-- Card 2: HP Constable -->
-            <a href="constable.html" class="min-h-[82px] bg-[#172235] border border-slate-700 p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] hover:-translate-y-0.5 transition">
-                <div class="flex items-center gap-3 min-w-0">
-                    <span class="w-10 h-10 shrink-0 rounded-lg bg-amber-500/10 flex items-center justify-center text-xl">👮‍♂️</span>
+            <a href="constable.html" class="min-h-[72px] md:min-h-[82px] bg-[#172235] border border-slate-700 p-3 md:p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] hover:-translate-y-0.5 transition">
+                <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
+                    <span class="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-lg bg-amber-500/10 flex items-center justify-center text-lg md:text-xl">👮‍♂️</span>
                     <div>
-                        <h4 class="text-sm font-bold text-white">HP Constable</h4>
-                        <p class="mt-0.5 text-[11px] text-slate-400">Practice Sets</p>
+                        <h4 class="text-xs md:text-sm font-bold text-white">HP Constable</h4>
+                        <p class="mt-0.5 text-[10px] md:text-[11px] text-slate-400">Practice Sets</p>
                     </div>
                 </div>
                 <span class="shrink-0 bg-orange-500/15 text-orange-300 text-[9px] font-black px-2 py-1 rounded-full uppercase">HOT</span>
             </a>
 
             <!-- Card 3: TGT Arts -->
-            <div class="min-h-[82px] bg-[#172235] border border-slate-700 p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] transition">
-                <div class="flex items-center gap-3 min-w-0">
-                    <span class="w-10 h-10 shrink-0 rounded-lg bg-emerald-500/10 flex items-center justify-center text-xl">📖</span>
+            <div class="min-h-[72px] md:min-h-[82px] bg-[#172235] border border-slate-700 p-3 md:p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] transition">
+                <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
+                    <span class="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-lg bg-emerald-500/10 flex items-center justify-center text-lg md:text-xl">📖</span>
                     <div>
-                        <h4 class="text-sm font-bold text-white">HP TGT Arts</h4>
-                        <p class="mt-0.5 text-[11px] text-slate-400">Subject Wise</p>
+                        <h4 class="text-xs md:text-sm font-bold text-white">HP TGT Arts</h4>
+                        <p class="mt-0.5 text-[10px] md:text-[11px] text-slate-400">Subject Wise</p>
                     </div>
                 </div>
                 <span class="shrink-0 bg-emerald-500/15 text-emerald-300 text-[9px] font-black px-2 py-1 rounded-full uppercase">LIVE</span>
             </div>
 
             <!-- Card 4: Patwari Series -->
-            <div class="min-h-[82px] bg-[#172235] border border-slate-700 p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] transition">
-                <div class="flex items-center gap-3 min-w-0">
-                    <span class="w-10 h-10 shrink-0 rounded-lg bg-sky-500/10 flex items-center justify-center text-xl">📝</span>
+            <div class="min-h-[72px] md:min-h-[82px] bg-[#172235] border border-slate-700 p-3 md:p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] transition">
+                <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
+                    <span class="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-lg bg-sky-500/10 flex items-center justify-center text-lg md:text-xl">📝</span>
                     <div>
-                        <h4 class="text-sm font-bold text-white">Himachal Patwari</h4>
-                        <p class="mt-0.5 text-[11px] text-slate-400">Upcoming Series</p>
+                        <h4 class="text-xs md:text-sm font-bold text-white">Himachal Patwari</h4>
+                        <p class="mt-0.5 text-[10px] md:text-[11px] text-slate-400">Upcoming Series</p>
                     </div>
                 </div>
                 <span class="shrink-0 bg-amber-500/15 text-amber-300 text-[9px] font-black px-2 py-1 rounded-full uppercase">SOON</span>
@@ -1052,22 +1063,22 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <!-- Motivational Quote -->
-        <p class="w-full text-left text-xs font-semibold text-slate-300 mt-5 bg-[#172235] px-4 py-3 rounded-r-xl border-l-2 border-orange-500">
+        <p class="w-full text-left text-xs font-semibold text-slate-300 mt-3 md:mt-5 bg-[#172235] px-3 md:px-4 py-2.5 md:py-3 rounded-r-xl border-l-2 border-orange-500">
             <span class="block text-[9px] font-black text-orange-300 uppercase mb-1">Aaj ka reminder</span>
             Consistency se hi safalta milti hai, rukna nahi.
         </p>
     </div>
 
     <!-- Bottom YouTube Links (As it is preserved) -->
-    <div class="mt-0 flex flex-col sm:flex-row items-center justify-center gap-3 w-full">
-        <a href="https://www.youtube.com/@crackitbhai" target="_blank" class="flex items-center gap-2 bg-[#172235] border border-slate-700 px-4 py-2.5 rounded-xl text-slate-300 hover:text-white hover:border-slate-500 transition duration-200">
+    <div class="mt-0 flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-3 w-full">
+        <a href="https://www.youtube.com/@crackitbhai" target="_blank" class="flex items-center gap-2 bg-[#172235] border border-slate-700 px-3 md:px-4 py-2 md:py-2.5 rounded-xl text-slate-300 hover:text-white hover:border-slate-500 transition duration-200">
             <svg class="w-6 h-6 fill-red-600" viewBox="0 0 24 24">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
             </svg>
             <span class="text-sm font-semibold tracking-wide text-slate-300">Crackit Bhai YouTube</span>
         </a>
 
-        <a href="https://www.youtube.com/@crackitbhai?sub_confirmation=1" target="_blank" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md flex items-center gap-2 transition-all duration-200">
+        <a href="https://www.youtube.com/@crackitbhai?sub_confirmation=1" target="_blank" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-3 md:py-2.5 md:px-4 rounded-xl shadow-md flex items-center gap-2 transition-all duration-200">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
             </svg>
