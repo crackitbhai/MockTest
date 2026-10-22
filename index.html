@@ -679,7 +679,6 @@ window.loadStorageDataFromFirebase = async function() {
     } catch (error) {
         console.error("Error loading data from Firebase:", error);
     }
-    showScreen('login-screen', false);
 }
 
 
@@ -725,9 +724,141 @@ document.addEventListener('DOMContentLoaded', () => {
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
+            body.homepage-theme { background-color: #0b1221; color: #e2e8f0; }
+            body.portal-screen-view > #login-screen,
+            body.portal-screen-view > .homepage-content { display: none !important; }
         .hide { display: none !important; }
+
+            .homepage-hero-layout {
+                position: relative;
+                isolation: isolate;
+                overflow: hidden;
+                display: flex !important;
+                flex-direction: column !important;
+                background: #101827;
+            }
+            .homepage-hero-layout::before,
+            .homepage-hero-layout::after {
+                content: "";
+                position: absolute;
+                inset: 0 0 auto;
+                height: 540px;
+                z-index: -1;
+                pointer-events: none;
+            }
+            .homepage-hero-layout::before {
+                background: url('https://images.unsplash.com/photo-1557989048-03456d01a26e?auto=format&fit=crop&w=1800&q=85') center 42% / cover;
+                opacity: 0.38;
+            }
+            .homepage-hero-layout::after {
+                background: linear-gradient(90deg, rgba(10, 22, 31, 0.96), rgba(10, 22, 31, 0.68)), linear-gradient(0deg, #101827 0%, transparent 74%);
+            }
+            .homepage-feature-panel {
+                order: 2;
+                width: 100% !important;
+                gap: 0;
+                padding: 0 24px 40px !important;
+                border: 0 !important;
+                background: transparent;
+            }
+            .homepage-feature-panel > div:first-child {
+                width: 100%;
+                max-width: 1100px;
+                align-items: stretch;
+            }
+            .homepage-hero-copy {
+                order: 1;
+                display: flex !important;
+                width: 100% !important;
+                min-height: 0;
+                padding: 44px 24px 28px !important;
+                overflow: visible;
+                background: transparent !important;
+            }
+            .homepage-hero-copy::before,
+            .homepage-hero-copy::after { content: none; }
+            .homepage-hero-copy .homepage-hero-inner {
+                width: 100%;
+                max-width: 1100px;
+                padding: 0 0 28px;
+            }
+            .homepage-hero-inner h1 { max-width: 800px; }
+            .homepage-hero-inner > p { max-width: 650px; }
+            .homepage-hero-inner > div:last-child {
+                max-width: 620px;
+                border-color: rgba(255, 255, 255, 0.2);
+                background: rgba(10, 26, 37, 0.48);
+                backdrop-filter: blur(8px);
+            }
+            .homepage-track-grid > a,
+            .homepage-track-grid > div {
+                border-color: rgba(148, 163, 184, 0.2);
+                background: rgba(255, 255, 255, 0.045);
+                backdrop-filter: blur(8px);
+            }
+            .homepage-track-grid > a:hover,
+            .homepage-track-grid > div:hover {
+                transform: translateY(-3px);
+                border-color: rgba(251, 146, 60, 0.75);
+                background: rgba(255, 255, 255, 0.085);
+            }
+            .homepage-hero-copy h1,
+            .homepage-track-grid h4 {
+                font-family: 'Sora', 'DM Sans', sans-serif;
+                font-optical-sizing: auto;
+                letter-spacing: 0;
+            }
+            .homepage-feature-panel > div:first-child > p:last-child {
+                background: rgba(255, 255, 255, 0.055);
+            }
+            .auth-modal:not(.hide) {
+                justify-content: flex-start;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+            }
+            .auth-modal .auth-box {
+                flex: 0 0 auto;
+                margin-block: auto;
+            }
+            body.free-trial-only-view > :not(#freetrial-hub-screen) {
+                display: none !important;
+            }
+            body.test-workspace-view > :not(#instructions-screen):not(#tablet-terms-screen):not(#exam-screen):not(#tablet-exam-screen):not(#result-screen):not(#notification-box) {
+                display: none !important;
+            }
+            .tablet-hold-option { position: relative; overflow: hidden; touch-action: none; user-select: none; }
+            .tablet-hold-option::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                transform: scaleX(0);
+                transform-origin: left;
+                background: rgba(249, 115, 22, 0.2);
+                pointer-events: none;
+            }
+            .tablet-hold-option.is-holding::before { animation: tablet-hold-fill 1s linear forwards; }
+            .tablet-omr-bubble.is-holding::before { background: rgba(236, 72, 153, 0.24); }
+            .tablet-omr-bubble { width: 25px; height: 25px; aspect-ratio: 1; border-radius: 9999px; }
+            .tablet-omr-resize-handle { height: 16px; flex: 0 0 16px; touch-action: none; cursor: ns-resize; }
+            #tablet-omr-panel { height: 34vh; min-height: 150px; max-height: 75vh; }
+            @media (min-width: 768px) {
+                .tablet-omr-bubble { width: 29px; height: 29px; }
+            }
+            @media (min-width: 1024px) {
+                .tablet-omr-bubble { width: 32px; height: 32px; }
+            }
+            @keyframes tablet-hold-fill { to { transform: scaleX(1); } }
+            @keyframes homepage-arrive {
+                from { opacity: 0; transform: translateY(14px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .homepage-hero-inner { animation: homepage-arrive 650ms ease-out both; }
+            .homepage-feature-panel > div:first-child { animation: homepage-arrive 550ms ease-out both; }
         
         @keyframes arrow-move {
             0%, 100% { transform: translateY(0) scale(1); opacity: 0.85; }
@@ -750,6 +881,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .cbt-container { height: calc(100vh - 65px); overflow: hidden; }
 
         @media (max-width: 768px) {
+            .homepage-feature-panel {
+                background: linear-gradient(180deg, #142234 0%, #111b2c 100%);
+            }
+            .homepage-track-grid > a,
+            .homepage-track-grid > div { backdrop-filter: none; }
+            .homepage-feature-panel > div:first-child > p:last-child { line-height: 1.55; }
             .palette-section { position: fixed; top: 65px; right: -100%; width: 85%; height: calc(100vh - 65px); z-index: 50; transition: right 0.3s ease-in-out; background: #ffffff; border-left: 1px solid #cbd5e1; }
             .palette-section.open { right: 0; }
             #mobile-palette-overlay { display: none; position: fixed; inset: 0; top: 65px; background: rgba(0,0,0,0.4); z-index: 40; }
@@ -760,7 +897,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .modal-overlay { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); }
     </style>
 </head>
-<body class="relative antialiased">
+<body class="relative antialiased homepage-theme">
 
     <div id="notification-box" class="hide fixed top-12 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-xl z-[250] font-black text-center text-sm md:text-base border border-slate-200 shadow-md bg-white"></div>
 
@@ -980,144 +1117,65 @@ document.addEventListener('DOMContentLoaded', () => {
         
         
         <!-- 1. ऊपर वाला हिस्सा: लोगो और लॉगिन फॉर्म -->
-                <div class="flex flex-col md:flex-row w-full min-h-0 md:min-h-[calc(100vh-105px)] items-stretch justify-center bg-[#101827]">
+                <div class="homepage-hero-layout w-full text-white">
             
-                    <div class="flex w-full md:w-1/2 bg-[#111b2c] text-white flex-col justify-center items-center gap-4 md:gap-6 p-4 sm:p-8 md:p-12 border-b md:border-b-0 md:border-r border-slate-700">
-    
-    <!-- Top Highlight Badge & Title -->
-    <div class="w-full max-w-lg mx-auto flex flex-col items-center text-center">
-        <div class="relative md:hidden w-full h-[220px] sm:h-[250px] overflow-hidden rounded-2xl border border-slate-600/70 bg-slate-950 shadow-xl">
-            <img src="https://images.unsplash.com/photo-1557989048-03456d01a26e?auto=format&fit=crop&w=1200&q=85" alt="Students studying together in a classroom" class="absolute inset-0 w-full h-full object-cover object-center">
-            <div aria-hidden="true" class="absolute inset-0 bg-black/40"></div>
-            <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/35 to-slate-950/10"></div>
-            <div class="absolute inset-x-0 bottom-0 p-5 text-left">
-                <p class="text-[10px] font-black uppercase text-orange-300">Crackit Bhai · HP Exam Prep</p>
-                <h2 class="mt-2 text-2xl sm:text-3xl font-black leading-tight text-white drop-shadow-lg">Crack your exam with me.</h2>
-                <p class="mt-1 text-xs sm:text-sm font-medium text-slate-200">Smart practice for Himachal's competitive exams.</p>
-            </div>
-        </div>
-
-        <div class="hidden md:inline-flex items-center gap-2 bg-orange-500/10 border border-orange-400/30 text-orange-300 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-extrabold uppercase shadow-sm mb-3 md:mb-5">
-    <span class="w-2 h-2 rounded-full bg-orange-400"></span>
-     Himachal's #1 Exam Preparation Portal
-</div>
-
-        <h2 class="hidden md:block text-2xl md:text-4xl font-black tracking-tight text-white leading-tight mb-2 md:mb-3">
-            Crack Your HP Exams With <span class="text-[#f97316]">Confidence!</span>
-        </h2>
-
-        <p class="hidden md:block max-w-md text-xs sm:text-sm font-medium text-slate-300 mb-4 md:mb-6">
-            Get chapter-wise tests and study material for Himachal competitive exams.
-        </p>
-
-        <!-- 💡 Advertisement / Exam Highlights Cards with "NEW" Tags -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 w-full text-left">
-            
-            <!-- Card 1: JOA IT -->
-        <a href="joait.html" class="min-h-[72px] md:min-h-[82px] bg-[#172235] border border-slate-700 p-3 md:p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] hover:-translate-y-0.5 transition">
-    <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
-        <span class="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-lg bg-sky-500/10 flex items-center justify-center text-lg md:text-xl">💻</span>
-        <div>
-            <h4 class="text-xs md:text-sm font-bold text-white">20+ JOA IT Tests</h4>
-            <p class="mt-0.5 text-[10px] md:text-[11px] text-slate-400">Computer Series</p>
-        </div>
-    </div>
-    <span class="shrink-0 bg-orange-500/15 text-orange-300 text-[9px] font-black px-2 py-1 rounded-full uppercase">NEW</span>
-</a>
-            <!-- Card 2: HP Constable -->
-            <a href="constable.html" class="min-h-[72px] md:min-h-[82px] bg-[#172235] border border-slate-700 p-3 md:p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] hover:-translate-y-0.5 transition">
-                <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
-                    <span class="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-lg bg-amber-500/10 flex items-center justify-center text-lg md:text-xl">👮‍♂️</span>
-                    <div>
-                        <h4 class="text-xs md:text-sm font-bold text-white">HP Constable</h4>
-                        <p class="mt-0.5 text-[10px] md:text-[11px] text-slate-400">Practice Sets</p>
-                    </div>
-                </div>
-                <span class="shrink-0 bg-orange-500/15 text-orange-300 text-[9px] font-black px-2 py-1 rounded-full uppercase">HOT</span>
-            </a>
-
-            <!-- Card 3: TGT Arts -->
-            <div class="min-h-[72px] md:min-h-[82px] bg-[#172235] border border-slate-700 p-3 md:p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] transition">
-                <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
-                    <span class="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-lg bg-emerald-500/10 flex items-center justify-center text-lg md:text-xl">📖</span>
-                    <div>
-                        <h4 class="text-xs md:text-sm font-bold text-white">HP TGT Arts</h4>
-                        <p class="mt-0.5 text-[10px] md:text-[11px] text-slate-400">Subject Wise</p>
-                    </div>
-                </div>
-                <span class="shrink-0 bg-emerald-500/15 text-emerald-300 text-[9px] font-black px-2 py-1 rounded-full uppercase">LIVE</span>
-            </div>
-
-            <!-- Card 4: Patwari Series -->
-            <div class="min-h-[72px] md:min-h-[82px] bg-[#172235] border border-slate-700 p-3 md:p-3.5 rounded-xl flex items-center justify-between gap-2 shadow-sm hover:border-orange-400 hover:bg-[#1a2940] transition">
-                <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
-                    <span class="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-lg bg-sky-500/10 flex items-center justify-center text-lg md:text-xl">📝</span>
-                    <div>
-                        <h4 class="text-xs md:text-sm font-bold text-white">Himachal Patwari</h4>
-                        <p class="mt-0.5 text-[10px] md:text-[11px] text-slate-400">Upcoming Series</p>
-                    </div>
-                </div>
-                <span class="shrink-0 bg-amber-500/15 text-amber-300 text-[9px] font-black px-2 py-1 rounded-full uppercase">SOON</span>
-            </div>
-
-        </div>
-
-        <!-- Motivational Quote -->
-        <p class="w-full text-left text-xs font-semibold text-slate-300 mt-3 md:mt-5 bg-[#172235] px-3 md:px-4 py-2.5 md:py-3 rounded-r-xl border-l-2 border-orange-500">
-            <span class="block text-[9px] font-black text-orange-300 uppercase mb-1">Aaj ka reminder</span>
-            Consistency se hi safalta milti hai, rukna nahi.
-        </p>
-    </div>
-
-    <!-- Bottom YouTube Links (As it is preserved) -->
-    <div class="mt-0 flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-3 w-full">
-        <a href="https://www.youtube.com/@crackitbhai" target="_blank" class="flex items-center gap-2 bg-[#172235] border border-slate-700 px-3 md:px-4 py-2 md:py-2.5 rounded-xl text-slate-300 hover:text-white hover:border-slate-500 transition duration-200">
-            <svg class="w-6 h-6 fill-red-600" viewBox="0 0 24 24">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>
-            <span class="text-sm font-semibold tracking-wide text-slate-300">Crackit Bhai YouTube</span>
-        </a>
-
-        <a href="https://www.youtube.com/@crackitbhai?sub_confirmation=1" target="_blank" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-3 md:py-2.5 md:px-4 rounded-xl shadow-md flex items-center gap-2 transition-all duration-200">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>
-            <span>Subscribe Now</span>
-        </a>
-    </div>
-
-</div>
-
-<div class="hidden md:flex md:w-1/2 items-center bg-[#101827] px-6 py-10 sm:px-10 md:px-12 md:py-8">
-    <div class="w-full max-w-xl mx-auto">
-        <span class="inline-flex items-center gap-2 bg-orange-50 text-orange-700 border border-orange-100 px-3.5 py-2 rounded-full text-xs font-black uppercase">
-            <span class="w-2 h-2 rounded-full bg-orange-500"></span> Crackit Bhai · HP Exam Prep
+<div class="homepage-hero-copy items-center">
+    <div class="homepage-hero-inner w-full max-w-xl mx-auto">
+        <span class="inline-flex items-center gap-2 bg-orange-500/10 text-orange-200 border border-orange-400/30 px-3.5 py-2 rounded-full text-xs font-black uppercase">
+            <span class="w-2 h-2 rounded-full bg-orange-400"></span> Himachal exam preparation
         </span>
-        <h1 class="mt-6 text-3xl sm:text-4xl font-black leading-tight text-white">Your next <span class="text-orange-400">big result</span> starts with today's practice.</h1>
-        <p class="mt-4 text-sm sm:text-base leading-relaxed text-slate-300">Mock tests, focused study material, and typing practice, all built around Himachal competitive exams.</p>
+        <h1 class="mt-5 text-3xl sm:text-4xl font-black leading-tight text-white">Himachal exam prep, <span class="text-orange-400">all in one place.</span></h1>
+        <p class="mt-3 text-sm sm:text-base leading-relaxed text-slate-300">Mock tests, study material, and typing practice for JOA IT, HP Constable, TGT Arts, and Patwari exams.</p>
 
-        <div class="mt-7 flex flex-col sm:flex-row gap-3">
+        <div class="homepage-track-grid mt-5 grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3 w-full text-left">
+            <a href="joait.html" class="min-h-[72px] bg-[#172235] border border-slate-700 p-2.5 md:p-3 rounded-xl flex items-center justify-between gap-2 shadow-sm transition">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-8 h-8 shrink-0 rounded-lg bg-sky-500/10 flex items-center justify-center text-base">💻</span>
+                    <div class="min-w-0"><h4 class="text-[11px] md:text-sm font-bold text-white">JOA IT</h4><p class="mt-0.5 text-[9px] md:text-[11px] text-slate-400">20+ mock tests</p></div>
+                </div>
+                <span class="shrink-0 bg-orange-500/15 text-orange-300 text-[8px] font-black px-1.5 py-1 rounded-full uppercase">LIVE</span>
+            </a>
+            <a href="constable.html" class="min-h-[72px] bg-[#172235] border border-slate-700 p-2.5 md:p-3 rounded-xl flex items-center justify-between gap-2 shadow-sm transition">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-8 h-8 shrink-0 rounded-lg bg-amber-500/10 flex items-center justify-center text-base">👮</span>
+                    <div class="min-w-0"><h4 class="text-[11px] md:text-sm font-bold text-white">HP Constable</h4><p class="mt-0.5 text-[9px] md:text-[11px] text-slate-400">Practice sets</p></div>
+                </div>
+                <span class="shrink-0 bg-orange-500/15 text-orange-300 text-[8px] font-black px-1.5 py-1 rounded-full uppercase">LIVE</span>
+            </a>
+            <div class="min-h-[72px] bg-[#172235] border border-slate-700 p-2.5 md:p-3 rounded-xl flex items-center justify-between gap-2 shadow-sm">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-8 h-8 shrink-0 rounded-lg bg-emerald-500/10 flex items-center justify-center text-base">📖</span>
+                    <div class="min-w-0"><h4 class="text-[11px] md:text-sm font-bold text-white">TGT Arts</h4><p class="mt-0.5 text-[9px] md:text-[11px] text-slate-400">Subject-wise</p></div>
+                </div>
+                <span class="shrink-0 bg-emerald-500/15 text-emerald-300 text-[8px] font-black px-1.5 py-1 rounded-full uppercase">LIVE</span>
+            </div>
+            <div class="min-h-[72px] bg-[#172235] border border-slate-700 p-2.5 md:p-3 rounded-xl flex items-center justify-between gap-2 shadow-sm">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-8 h-8 shrink-0 rounded-lg bg-sky-500/10 flex items-center justify-center text-base">📝</span>
+                    <div class="min-w-0"><h4 class="text-[11px] md:text-sm font-bold text-white">Patwari</h4><p class="mt-0.5 text-[9px] md:text-[11px] text-slate-400">Coming soon</p></div>
+                </div>
+                <span class="shrink-0 bg-amber-500/15 text-amber-300 text-[8px] font-black px-1.5 py-1 rounded-full uppercase">SOON</span>
+            </div>
+        </div>
+
+        <div class="mt-5 flex flex-col sm:flex-row gap-3">
             <button onclick="window.scrollToSection('study-section')" class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-xl text-sm font-bold shadow-sm transition">Explore Study Material <span aria-hidden="true">→</span></button>
             <a href="TYPING.HTML" class="inline-flex items-center justify-center gap-2 border border-slate-600 hover:border-sky-400 hover:bg-slate-800 text-slate-100 px-5 py-3 rounded-xl text-sm font-bold transition"><span aria-hidden="true">⌨️</span> Typing Practice</a>
         </div>
 
-        <div class="mt-7 grid grid-cols-3 border-y border-slate-700 py-4">
-            <div class="pr-2"><p class="text-2xl font-black text-white">20+</p><p class="mt-1 text-[10px] sm:text-xs font-semibold text-slate-400">JOA IT tests</p></div>
-            <div class="px-3 border-x border-slate-700"><p class="text-2xl font-black text-white">4</p><p class="mt-1 text-[10px] sm:text-xs font-semibold text-slate-400">Exam tracks</p></div>
-            <div class="pl-3"><p class="text-2xl font-black text-white">Daily</p><p class="mt-1 text-[10px] sm:text-xs font-semibold text-slate-400">Practice access</p></div>
-        </div>
-
-        <div class="mt-5 flex items-start gap-3 border-l-4 border-sky-500 bg-sky-500/10 px-4 py-4">
-            <span class="text-xl" aria-hidden="true">💡</span>
-            <div><p class="text-xs font-black uppercase text-sky-300">Aaj ka focus</p><p class="mt-1 text-sm font-semibold text-slate-200">Small, consistent practice beats last-minute preparation.</p></div>
+        <div class="mt-5 grid grid-cols-3 border-y border-white/15 py-3">
+            <div class="pr-2"><p class="text-xl font-black text-white">20+</p><p class="mt-1 text-[10px] sm:text-xs font-semibold text-slate-400">JOA IT tests</p></div>
+            <div class="px-3 border-x border-white/15"><p class="text-xl font-black text-white">4</p><p class="mt-1 text-[10px] sm:text-xs font-semibold text-slate-400">Exam tracks</p></div>
+            <div class="pl-3"><p class="text-xl font-black text-white">Daily</p><p class="mt-1 text-[10px] sm:text-xs font-semibold text-slate-400">Practice access</p></div>
         </div>
     </div>
 </div>
+</div>
 
-<div id="auth-modal" class="hide fixed inset-0 z-[60] flex flex-col justify-center items-center overflow-y-auto bg-black/70 backdrop-blur-sm p-4">
+<div id="auth-modal" class="auth-modal hide fixed inset-0 z-[60] flex flex-col justify-center items-center overflow-y-auto bg-black/70 backdrop-blur-sm p-4">
     <button onclick="document.getElementById('auth-modal').classList.add('hide');" aria-label="Close login" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-slate-800 text-white text-2xl hover:bg-slate-700">&times;</button>
     
-    <div id="login-box" class="bg-white p-6 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md text-slate-900">
+    <div id="login-box" class="auth-box bg-white p-6 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md text-slate-900">
         
     
         <div class="text-center mb-6">
@@ -1150,7 +1208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
 
-    <div id="signup-box" class="hide bg-white p-6 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md text-slate-900">
+    <div id="signup-box" class="auth-box hide bg-white p-6 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md text-slate-900">
         <div class="text-center mb-6">
             <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-1">Create Account</h2>
             <p class="text-slate-500 font-medium text-xs md:text-sm">Register with your email and set a password.</p>
@@ -1195,36 +1253,8 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
         </div>
 
-        <div id="signup-box" class="hide bg-white p-6 md:p-10 rounded-[2rem] max-w-md w-full border border-slate-200 shadow-md text-slate-900">
-    <div class="text-center mb-6">
-        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-1">Create Account</h2>
-        <p class="text-slate-500 font-medium text-xs md:text-sm">Register with your email and set a password.</p>
-    </div>
-    <div class="space-y-4">
-        <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Full Name</label>
-            <input type="text" id="signup-name" placeholder="Enter your full name" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-sm text-slate-800 focus:bg-white focus:border-[#f97316] transition">
-        </div>
-        <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Email Address</label>
-            <input type="email" id="signup-email" placeholder="Enter your email" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-sm text-slate-800 focus:bg-white focus:border-[#f97316] transition">
-        </div>
-        <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Set Password</label>
-            <input type="password" id="signup-password" placeholder="Create a secure password" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-sm text-slate-800 focus:bg-white focus:border-[#f97316] transition">
-        </div>
-        <button onclick="window.firebaseSignup()" class="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3.5 rounded-xl transition text-base shadow-sm flex items-center justify-center gap-2 mt-2">Register Now →</button>
-        
-        <div class="text-center pt-3 border-t border-slate-100">
-            <p class="text-xs font-bold text-slate-500">Already have an account? <button onclick="window.toggleAuthMode('login')" class="text-[#f97316] hover:underline font-black">Login</button></p>
-        </div>
-    </div>
-</div>
-
-
-
 <!-- ⌨️ Special Typing Test Series Section for JOA-IT & Clerk -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+<section class="homepage-content max-w-7xl mx-auto px-4 sm:px-6 py-12">
     <div class="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] rounded-3xl p-8 sm:p-12 border border-slate-800 shadow-2xl relative overflow-hidden">
         
         <!-- Decorative Glow Background Elements -->
@@ -1298,7 +1328,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- Explore Our Himachal Exam Courses Section (Stacked Vertically with Proper Spacing) -->
 <!-- Explore Our Himachal Exam Courses Section (Full Screen Width) -->
-<section class="w-full px-4 sm:px-8 py-12 space-y-6">
+<section class="homepage-content w-full px-4 sm:px-8 py-12 space-y-6 bg-[#0b1221] text-slate-100">
     <div class="text-center mb-8 space-y-2">
         <span class="bg-orange-500/20 text-orange-400 text-xs font-bold px-3 py-1.5 rounded-full border border-orange-500/30 uppercase tracking-widest inline-block">
             Featured Study Material
@@ -1423,12 +1453,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         <!-- 2. हल्की सी हॉरिजॉन्टल लाइन -->
-        <div class="w-full px-6">
+        <div class="homepage-content w-full px-6">
             <hr class="border-t border-slate-700/40 max-w-5xl mx-auto opacity-50">
         </div>
 
 <!-- Review Board Section (Full Width, Dark Theme Matched, Max 6 + More Review Button) -->
-    <div class="w-full px-4 sm:px-8 py-10 flex justify-center bg-[#0b1221]">
+    <div class="homepage-content w-full px-4 sm:px-8 py-10 flex justify-center bg-[#0b1221]">
         <div id="review-board-section" class="bg-[#0f172a] text-slate-100 p-6 sm:p-10 rounded-[2.5rem] w-full max-w-[96%] border border-slate-800 shadow-2xl space-y-8">
             
             <!-- Section Header & Write Review Button -->
@@ -1513,7 +1543,7 @@ document.addEventListener('DOMContentLoaded', () => {
  
 
           <!-- Professional SEO-Optimized Footer -->
-<footer class="w-full bg-[#090d16] border-t border-slate-800 text-slate-400 text-xs mt-16">
+<footer class="homepage-content w-full bg-[#090d16] border-t border-slate-800 text-slate-400 text-xs mt-16">
     <div class="w-full px-6 sm:px-10 py-12 space-y-10 max-w-7xl mx-auto">
         
         <!-- Top Row: Brand & Quick Links -->
@@ -2130,6 +2160,75 @@ Explanation: HTML stands for HyperText Markup Language.<br>
         </div>
     </div>
 
+    <section id="tablet-terms-screen" class="hide min-h-screen bg-slate-100 p-4 sm:p-8">
+        <div class="mx-auto mt-6 max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
+            <button onclick="window.returnFromTabletTerms()" class="mb-5 text-sm font-bold text-slate-500 hover:text-slate-900">← Back to tests</button>
+            <span class="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-[10px] font-black uppercase tracking-wide text-orange-700">Tablet test agreement</span>
+            <h1 id="tablet-terms-test-title" class="mt-3 text-2xl font-black text-slate-900 sm:text-3xl">Mock Test</h1>
+            <p class="mt-2 text-sm text-slate-500"><span id="tablet-terms-question-count">0</span> questions · <span id="tablet-terms-duration">0 minutes</span></p>
+            <div class="mt-6 space-y-3 rounded-xl bg-slate-50 p-5 text-sm leading-relaxed text-slate-700">
+                <p>Read each question carefully. Questions and answer choices are shown in English and Hindi when Hindi content is available.</p>
+                <p>Hold an answer option for one second to mark it on the OMR sheet. You can change an answer before submitting.</p>
+                <p>Use Skip and Mark for Review to track questions. Once submitted, your answers cannot be changed.</p>
+            </div>
+            <label class="mt-6 flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-4 text-sm font-semibold text-slate-700">
+                <input id="tablet-terms-accepted" type="checkbox" class="mt-0.5 h-5 w-5 shrink-0 accent-orange-600">
+                <span>I have read and accept the test instructions and terms.</span>
+            </label>
+            <button onclick="window.acceptTabletTerms()" class="mt-5 w-full rounded-xl bg-orange-600 px-5 py-3.5 text-sm font-black text-white transition hover:bg-orange-700 sm:w-auto">Accept & Start Test →</button>
+        </div>
+    </section>
+
+    <section id="tablet-exam-screen" class="hide fixed inset-0 z-[80] flex flex-col bg-slate-100 text-slate-900">
+        <header class="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3 shadow-sm sm:px-6">
+            <div class="min-w-0">
+                <p class="text-[10px] font-black uppercase tracking-wide text-orange-600">Tablet Mock Test</p>
+                <h1 id="tablet-exam-title" class="truncate text-base font-black text-slate-900 sm:text-lg">Mock Test</h1>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center"><span class="block text-[9px] font-bold uppercase text-slate-500">Attempted</span><span id="tablet-attempted-count" class="text-sm font-black text-emerald-700">0</span></div>
+                <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center"><span class="block text-[9px] font-bold uppercase text-slate-500">Skipped</span><span id="tablet-skipped-count" class="text-sm font-black text-slate-700">0</span></div>
+                <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center"><span class="block text-[9px] font-bold uppercase text-slate-500">Review</span><span id="tablet-review-count" class="text-sm font-black text-sky-700">0</span></div>
+                <div class="rounded-lg bg-slate-900 px-3 py-2 text-center text-white"><span class="block text-[9px] font-bold uppercase text-slate-300">Time left · HH:MM</span><span id="tablet-timer-display" class="text-sm font-black">00:00</span></div>
+                <button onclick="window.submitExam()" class="rounded-xl bg-orange-600 px-4 py-3 text-xs font-black text-white hover:bg-orange-700 sm:text-sm">Submit Test</button>
+            </div>
+        </header>
+
+        <main id="tablet-question-area" class="min-h-0 flex-1 overflow-y-auto bg-slate-200 p-3 sm:p-5">
+            <div class="mx-auto max-w-5xl">
+                <div class="mb-3 flex items-center justify-between gap-3">
+                    <h2 class="text-lg font-black text-slate-900 sm:text-xl">Question <span id="tablet-question-number" class="text-orange-600">1</span></h2>
+                    <span id="tablet-question-position" class="rounded-full bg-white px-3 py-1 text-xs font-bold text-slate-500">Question 1 of 1</span>
+                </div>
+                <article id="tablet-question-bilingual" class="mx-auto min-h-[420px] max-w-4xl border border-slate-300 bg-white p-5 shadow-md sm:p-9"></article>
+                <p class="mx-auto mt-2 max-w-4xl text-center text-[10px] font-bold text-slate-500">Mark your answer on the OMR sheet below by holding its bubble for one second.</p>
+                <div class="mt-4 flex flex-wrap justify-between gap-2 rounded-xl border border-slate-200 bg-white p-3">
+                    <button onclick="window.previousTabletQuestion()" class="rounded-lg border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50">← Previous</button>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="window.skipTabletQuestion()" class="rounded-lg border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50">Skip</button>
+                        <button onclick="window.reviewTabletQuestion()" class="rounded-lg border border-sky-200 bg-sky-50 px-4 py-2.5 text-xs font-bold text-sky-800 hover:bg-sky-100">Mark for Review</button>
+                        <button onclick="window.clearTabletAnswer()" class="rounded-lg border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50">Clear Answer</button>
+                        <button onclick="window.nextTabletQuestion()" class="rounded-lg bg-slate-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-slate-800">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <section id="tablet-omr-panel" class="flex shrink-0 flex-col overflow-hidden border-t-4 border-slate-300 bg-white shadow-[0_-8px_24px_rgba(15,23,42,0.08)]">
+            <div class="tablet-omr-resize-handle flex items-center justify-center border-b border-pink-200 bg-[#fff7fa]" onpointerdown="window.beginTabletOmrResize(event)" onpointermove="window.moveTabletOmrResize(event)" onpointerup="window.endTabletOmrResize()" onpointercancel="window.endTabletOmrResize()" aria-label="Drag upward to enlarge the OMR sheet">
+                <span class="h-1 w-12 rounded-full bg-slate-700"></span>
+            </div>
+            <div class="flex min-h-12 shrink-0 items-center justify-between gap-2 border-b border-pink-200 bg-[#fce7ef] px-4 py-2 sm:px-6">
+                <h2 class="text-sm font-black text-black">OMR Answer Sheet</h2>
+                <p class="text-[10px] font-semibold text-slate-800">Hold a bubble for 1 second</p>
+            </div>
+            <div id="tablet-omr-grid" class="grid min-h-0 flex-1 grid-cols-2 gap-4 overflow-y-auto bg-[#fff7fa] p-2 sm:gap-6 sm:p-4">
+                <div id="tablet-omr-left" class="grid content-start gap-1 border-r border-black/40 pr-2 sm:pr-4"></div>
+                <div id="tablet-omr-right" class="grid content-start gap-1 pl-2 sm:pl-4"></div>
+            </div>
+        </section>
+    </section>
+
     <!-- Instructions Screen -->
     <div id="instructions-screen" class="hide max-w-3xl mx-auto p-4 md:p-10 mt-8 bg-white rounded-3xl border border-slate-200 shadow-xs">
         <h2 class="text-xl md:text-3xl font-black text-slate-900 border-b border-slate-100 pb-4 mb-6" id="inst-test-title">Mock Test</h2>
@@ -2245,6 +2344,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
         <div class="mb-6 flex gap-3 justify-center hide-on-pdf flex-wrap">
             <button onclick="window.downloadPDF()" class="bg-[#0b1221] hover:bg-slate-900 text-white font-black py-3 px-8 rounded-xl text-sm transition shadow-xs">📄 Download PDF Report</button>
             <button onclick="window.goHome()" class="bg-[#0ea5e9] hover:bg-cyan-600 text-white font-black py-3 px-8 rounded-xl text-sm transition shadow-xs">Attempt Another Test</button>
+            <button onclick="window.showScreen('login-screen')" class="bg-slate-700 hover:bg-slate-600 text-white font-black py-3 px-8 rounded-xl text-sm transition shadow-xs">🏠 Homepage</button>
         </div>
         <div id="pdf-content" style="background: white; padding: 30px; color: #000; font-family: Arial, sans-serif; border-radius: 12px; border: 1px solid #e2e8f0;">
             <div style="text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 20px;">
@@ -2307,6 +2407,11 @@ Explanation: HTML stands for HyperText Markup Language.<br>
         let currentCategory = null; 
         let testData = [];
         let currentQuestionIndex = 0;
+        let currentTestMode = 'computer';
+        let tabletHoldTimer = null;
+        let tabletOmrHeight = 34;
+        let tabletOmrResizeOriginY = 0;
+        let tabletOmrResizeOriginHeight = 34;
         let timerInterval;
         let totalTestDurationSeconds = 7200;
         let timeRemaining = 7200;
@@ -2361,7 +2466,6 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 showNotification("Failed to load data from server.");
             }
             renderLoginScreenTrialBtn();
-            showScreen('login-screen', false);
         } 
                 localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories));
             localStorage.setItem(STORAGE_KEY_TESTS, JSON.stringify(catalog));
@@ -2445,13 +2549,23 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             showScreen('freetrial-hub-screen');
         }
 
+        function inlineTestId(id) {
+            return JSON.stringify(String(id)).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function findTestById(id) {
+            return catalog.find(test => String(test.id) === String(id)) || null;
+        }
+
         function renderFreeTrialHub() {
             const list = document.getElementById('freetrial-list');
             if(!list) return;
             list.innerHTML = "";
-            const freeTests = catalog.filter(t => freeTrialTestIds.includes(t.id));
+            const selectedTestIds = new Set((Array.isArray(freeTrialTestIds) ? freeTrialTestIds : []).map(String));
+            const freeTests = catalog.filter(test => selectedTestIds.has(String(test.id)));
             if(freeTests.length > 0) {
                 freeTests.forEach(test => {
+                    const testId = inlineTestId(test.id);
                     list.innerHTML += `
                         <div class="bg-gradient-to-br from-amber-50 via-orange-50 to-white p-6 rounded-[2rem] border border-orange-200 shadow-sm flex flex-col justify-between hover:shadow-lg transition-all">
                             <div>
@@ -2459,7 +2573,10 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                                 <h3 class="text-lg font-black text-slate-900 mt-3 mb-1">${test.name}</h3>
                                 <p class="text-xs text-slate-500 font-bold mb-4">📚 ${test.data.length} Qs | ⏱️ ${test.duration}m</p>
                             </div>
-                            <button onclick="window.showInstructions(${test.id})" class="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3 rounded-xl text-sm transition shadow-sm">Start Free Test →</button>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick='window.showInstructions(${testId})' class="bg-slate-800 hover:bg-slate-700 text-white font-black py-3 px-2 rounded-xl text-xs transition">Computer Test</button>
+                                <button onclick='window.startTabletTest(${testId})' class="bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3 px-2 rounded-xl text-xs transition">Tablet Test</button>
+                            </div>
                         </div>
                     `;
                 });
@@ -2907,6 +3024,11 @@ async function addCategory() {
 
         function toggleDropdown() { document.getElementById("dropdown-menu").classList.toggle("hide"); }
       function showScreen(screenId, pushHistory = true) {
+        document.body.classList.toggle('free-trial-only-view', screenId === 'freetrial-hub-screen');
+        document.body.classList.toggle('homepage-theme', screenId === 'login-screen');
+                document.body.classList.toggle('portal-screen-view', screenId !== 'login-screen');
+                document.body.classList.toggle('test-workspace-view', ['instructions-screen', 'tablet-terms-screen', 'exam-screen', 'tablet-exam-screen', 'result-screen'].includes(screenId));
+                window.scrollTo(0, 0);
             const screens = [
                 'login-screen', 
                 'category-screen', 
@@ -2914,7 +3036,9 @@ async function addCategory() {
                 'admin-login-screen', 
                 'admin-dashboard-screen', 
                 'instructions-screen', 
+                'tablet-terms-screen',
                 'exam-screen', 
+                'tablet-exam-screen',
                 'result-screen',
                 'freetrial-hub-screen',
                 'studymaterial-hub-screen',
@@ -2969,7 +3093,11 @@ async function addCategory() {
         };
 
         window.onpopstate = function(event) {
-            if(currentStudent && document.getElementById("exam-screen") && !document.getElementById("exam-screen").classList.contains("hide")) {
+            if(currentTestMode === 'tablet' && !document.getElementById('tablet-exam-screen').classList.contains('hide')) {
+                showScreen('tablet-terms-screen', false);
+            } else if(currentTestMode === 'tablet' && !document.getElementById('tablet-terms-screen').classList.contains('hide')) {
+                returnFromTabletTerms();
+            } else if(currentStudent && document.getElementById("exam-screen") && !document.getElementById("exam-screen").classList.contains("hide")) {
                 if(confirm("Do you want to exit the exam?")) {
                     showScreen("dashboard-screen", false);
                 } else {
@@ -3115,8 +3243,9 @@ function renderCategories() {
 
             filteredTests.forEach((test, index) => {
                 const theme = testThemes[index % testThemes.length];
+                const testId = inlineTestId(test.id);
                 grid.innerHTML += `
-                    <div class="${theme.bg} p-6 rounded-[2rem] border ${theme.border} transition-all duration-300 flex flex-col justify-between h-52 shadow-sm hover:shadow-xl hover:-translate-y-1 relative overflow-hidden group">
+                    <div class="${theme.bg} p-6 rounded-[2rem] border ${theme.border} transition-all duration-300 flex flex-col justify-between min-h-[220px] shadow-sm hover:shadow-xl hover:-translate-y-1 relative overflow-hidden group">
                         <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-white/40 rounded-full blur-xl pointer-events-none"></div>
                         <div class="relative z-10">
                             <span class="text-[10px] font-black uppercase bg-white px-3 py-1 rounded-full text-slate-600 border border-slate-200 shadow-2xs">Full Assessment</span>
@@ -3126,7 +3255,10 @@ function renderCategories() {
                                 <span class="bg-white px-2.5 py-1 rounded-lg border border-slate-200">⏱️ ${test.duration} Mins</span>
                             </p>
                         </div>
-                        <button onclick="window.showInstructions(${test.id})" class="relative z-10 w-full ${theme.btn} text-white font-black py-3 rounded-xl mt-auto text-sm transition shadow-sm">Start Attempt →</button>
+                        <div class="relative z-10 grid grid-cols-2 gap-2 mt-4">
+                            <button onclick='window.showInstructions(${testId})' class="bg-slate-800 hover:bg-slate-700 text-white font-black py-3 px-2 rounded-xl text-xs transition">Computer</button>
+                            <button onclick='window.startTabletTest(${testId})' class="${theme.btn} text-white font-black py-3 px-2 rounded-xl text-xs transition">Tablet</button>
+                        </div>
                     </div>
                 `;
             });
@@ -3421,7 +3553,9 @@ async function saveTestToFirebaseSeparately(testId, testData) {
    
         function showInstructions(id) {
             currentTestId = id;
-            const testMeta = catalog.find(t => t.id === id);
+            currentTestMode = 'computer';
+            const testMeta = findTestById(id);
+            if(!testMeta) { showNotification('Test data is unavailable. Please try again.'); return; }
             document.getElementById("inst-test-title").innerText = testMeta.name;
             document.getElementById("inst-time").innerText = `${testMeta.duration} Minutes`;
             
@@ -3436,8 +3570,9 @@ async function saveTestToFirebaseSeparately(testId, testData) {
         }
 
         function startExamEngine() {
-            const testMeta = catalog.find(t => t.id === currentTestId);
-            testData = JSON.parse(JSON.stringify(testMeta.data));
+            const testMeta = findTestById(currentTestId);
+            if(!testMeta) { showNotification('Test data is unavailable. Please try again.'); return; }
+            testData = JSON.parse(JSON.stringify(testMeta.data)).map(question => ({ ...question, selectedOption: null, status: 'not-visited' }));
             currentQuestionIndex = 0;
             isHindiLanguage = false;
             totalTestDurationSeconds = testMeta.duration * 60;
@@ -3446,6 +3581,233 @@ async function saveTestToFirebaseSeparately(testId, testData) {
             startTimer();
             showScreen("exam-screen");
             renderQuestion(0);
+        }
+
+        function startTabletTest(id) {
+            const testMeta = findTestById(id);
+            if(!testMeta) { showNotification('Test data is unavailable. Please try again.'); return; }
+            currentTestId = testMeta.id;
+            currentTestMode = 'tablet';
+            document.getElementById('tablet-terms-test-title').textContent = testMeta.name;
+            document.getElementById('tablet-exam-title').textContent = testMeta.name;
+            document.getElementById('tablet-terms-question-count').textContent = testMeta.data.length;
+            document.getElementById('tablet-terms-duration').textContent = `${testMeta.duration} minutes`;
+            document.getElementById('tablet-terms-accepted').checked = false;
+            showScreen('tablet-terms-screen');
+        }
+
+        function returnFromTabletTerms() {
+            if(currentStudent === 'Free Trial User') {
+                renderFreeTrialHub();
+                showScreen('freetrial-hub-screen', false);
+            } else if(currentCategory !== null && currentCategory !== undefined) {
+                showScreen('dashboard-screen', false);
+                renderDashboard();
+            } else {
+                showScreen('login-screen', false);
+            }
+        }
+
+        function acceptTabletTerms() {
+            if(!document.getElementById('tablet-terms-accepted').checked) {
+                showNotification('Please accept the test terms before continuing.');
+                return;
+            }
+
+            const testMeta = findTestById(currentTestId);
+            if(!testMeta) { showNotification('Test data is unavailable. Please try again.'); return; }
+            testData = JSON.parse(JSON.stringify(testMeta.data)).map(question => ({ ...question, selectedOption: null, status: 'not-visited' }));
+            currentQuestionIndex = 0;
+            isHindiLanguage = false;
+            totalTestDurationSeconds = Number(testMeta.duration || 0) * 60;
+            timeRemaining = totalTestDurationSeconds;
+            tabletOmrHeight = 34;
+            showScreen('tablet-exam-screen');
+            resizeTabletOmr(tabletOmrHeight);
+            renderTabletPaper();
+            renderTabletQuestion(0, false);
+            renderTabletOmr();
+            startTimer();
+        }
+
+        function renderTabletPaper() {
+            const paper = document.getElementById('tablet-question-bilingual');
+            if(!paper) return;
+            paper.innerHTML = testData.map((question, index) => {
+                const options = Array.isArray(question.opts) ? question.opts : [];
+                const englishOptionRows = options.map((option, optionIndex) => {
+                    const letter = String.fromCharCode(65 + optionIndex);
+                    return `<div class="grid grid-cols-[25px_minmax(0,1fr)] gap-2 py-1.5 text-sm leading-relaxed">
+                        <span class="font-bold text-slate-700">${letter}.</span>
+                        <span class="text-slate-800">${option}</span>
+                    </div>`;
+                }).join('');
+                const hindiOptionRows = options.map((option, optionIndex) => {
+                    const letter = String.fromCharCode(65 + optionIndex);
+                    const hindiOption = question.hiOpts && question.hiOpts[optionIndex];
+                    return `<div class="grid grid-cols-[25px_minmax(0,1fr)] gap-2 py-1.5 text-sm leading-relaxed">
+                        <span class="font-bold text-slate-700">${letter}.</span>
+                        <span class="text-slate-800">${hindiOption || option}</span>
+                    </div>`;
+                }).join('');
+                return `<section id="tablet-paper-question-${index}" data-question-index="${index}" class="tablet-paper-question scroll-mt-3 border-b border-slate-300 py-5 first:pt-0 last:border-0">
+                    <p class="mb-2 text-xs font-black uppercase tracking-wide text-slate-500">Question ${question.originalId || index + 1}</p>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="mb-1 text-[10px] font-black uppercase tracking-wide text-slate-500">English</p>
+                            <p class="whitespace-pre-wrap text-sm font-semibold leading-relaxed text-slate-900 sm:text-base">${question.q || ''}</p>
+                            <div class="mt-2">${englishOptionRows}</div>
+                        </div>
+                        <div class="border-t border-slate-200 pt-3">
+                            <p class="mb-1 text-[10px] font-black uppercase tracking-wide text-slate-500">हिंदी</p>
+                            <p class="whitespace-pre-wrap text-sm font-semibold leading-relaxed text-slate-900 sm:text-base">${question.hiQ || 'इस प्रश्न का हिंदी अनुवाद उपलब्ध नहीं है।'}</p>
+                            <div class="mt-2">${hindiOptionRows}</div>
+                        </div>
+                    </div>
+                </section>`;
+            }).join('');
+        }
+
+        function renderTabletQuestion(index, scrollToQuestion = true) {
+            const question = testData[index];
+            if(!question) return;
+            currentQuestionIndex = index;
+            document.getElementById('tablet-question-number').textContent = question.originalId || index + 1;
+            document.getElementById('tablet-question-position').textContent = `Question ${index + 1} of ${testData.length}`;
+            if(scrollToQuestion) {
+                const paperQuestion = document.getElementById(`tablet-paper-question-${index}`);
+                const questionArea = document.getElementById('tablet-question-area');
+                if(paperQuestion && questionArea) {
+                    const scrollTop = questionArea.scrollTop + paperQuestion.getBoundingClientRect().top - questionArea.getBoundingClientRect().top;
+                    questionArea.scrollTop = scrollTop;
+                }
+            }
+            renderTabletStats();
+            renderTabletOmr();
+        }
+
+        function beginTabletHold(questionIndex, optionIndex, button, event) {
+            cancelTabletHold();
+            if(event && button.setPointerCapture) {
+                try { button.setPointerCapture(event.pointerId); } catch (error) { }
+            }
+            button.classList.add('is-holding');
+            tabletHoldTimer = setTimeout(() => {
+                button.classList.remove('is-holding');
+                tabletHoldTimer = null;
+                setTabletAnswer(questionIndex, optionIndex);
+            }, 1000);
+        }
+
+        function cancelTabletHold(button) {
+            if(tabletHoldTimer) clearTimeout(tabletHoldTimer);
+            tabletHoldTimer = null;
+            if(button) button.classList.remove('is-holding');
+        }
+
+        function setTabletAnswer(questionIndex, optionIndex) {
+            const question = testData[questionIndex];
+            if(!question) return;
+            if(question.selectedOption === optionIndex) {
+                question.selectedOption = null;
+                question.status = 'not-answered';
+            } else {
+                question.selectedOption = optionIndex;
+                question.status = 'answered';
+            }
+            renderTabletQuestion(questionIndex);
+        }
+
+        function renderTabletStats() {
+            const attempted = testData.filter(question => question.selectedOption !== null && question.selectedOption !== undefined).length;
+            const skipped = testData.filter(question => question.status === 'not-answered' && (question.selectedOption === null || question.selectedOption === undefined)).length;
+            const review = testData.filter(question => question.status === 'review').length;
+            document.getElementById('tablet-attempted-count').textContent = attempted;
+            document.getElementById('tablet-skipped-count').textContent = skipped;
+            document.getElementById('tablet-review-count').textContent = review;
+        }
+
+        function renderTabletOmr() {
+            const leftColumn = document.getElementById('tablet-omr-left');
+            const rightColumn = document.getElementById('tablet-omr-right');
+            if(!leftColumn || !rightColumn) return;
+            const splitIndex = Math.ceil(testData.length / 2);
+            const renderQuestionBubble = (question, index) => {
+                const selected = question.selectedOption;
+                const bubbles = (question.opts || []).map((option, optionIndex) => {
+                    const letter = String.fromCharCode(65 + optionIndex);
+                    const isSelected = selected === optionIndex;
+                    return `<button type="button" class="tablet-hold-option tablet-omr-bubble ${isSelected ? 'is-selected border-black bg-black text-white' : 'border-black bg-[#fff7fa] text-black'} border text-[10px] font-semibold transition" onpointerdown="window.beginTabletHold(${index}, ${optionIndex}, this, event)" onpointerup="window.cancelTabletHold(this)" onpointercancel="window.cancelTabletHold(this)" oncontextmenu="return false" aria-label="Hold one second to select option ${letter} for question ${index + 1}" aria-pressed="${isSelected}">${letter}</button>`;
+                }).join('');
+                const numberClass = question.status === 'review' ? 'text-black font-black underline decoration-pink-500 decoration-2' : 'text-black';
+                return `<div class="grid h-10 grid-cols-[30px_minmax(0,1fr)] items-center gap-1 border-b border-pink-100 px-1 ${index === currentQuestionIndex ? 'bg-pink-100' : 'bg-[#fff7fa]'}">
+                    <button type="button" onclick="window.goToTabletQuestion(${index})" class="text-left text-xs font-semibold ${numberClass}" aria-label="Go to question ${index + 1}">${question.originalId || index + 1}</button>
+                    <div class="grid grid-cols-4 place-items-center gap-1">${bubbles}</div>
+                </div>`;
+            };
+            leftColumn.innerHTML = testData.slice(0, splitIndex).map((question, index) => renderQuestionBubble(question, index)).join('');
+            rightColumn.innerHTML = testData.slice(splitIndex).map((question, index) => renderQuestionBubble(question, index + splitIndex)).join('');
+            renderTabletStats();
+        }
+
+        function goToTabletQuestion(index) {
+            if(index < 0 || index >= testData.length) return;
+            renderTabletQuestion(index);
+        }
+
+        function nextTabletQuestion() {
+            const current = testData[currentQuestionIndex];
+            if(current && current.selectedOption == null && current.status !== 'review') current.status = 'not-answered';
+            if(currentQuestionIndex < testData.length - 1) renderTabletQuestion(currentQuestionIndex + 1);
+            else { renderTabletOmr(); showNotification('This is the last question.'); }
+        }
+
+        function previousTabletQuestion() {
+            if(currentQuestionIndex > 0) renderTabletQuestion(currentQuestionIndex - 1);
+        }
+
+        function skipTabletQuestion() {
+            const current = testData[currentQuestionIndex];
+            if(current) { current.selectedOption = null; current.status = 'not-answered'; }
+            nextTabletQuestion();
+        }
+
+        function reviewTabletQuestion() {
+            const current = testData[currentQuestionIndex];
+            if(current) current.status = 'review';
+            renderTabletOmr();
+            nextTabletQuestion();
+        }
+
+        function clearTabletAnswer() {
+            const current = testData[currentQuestionIndex];
+            if(current) { current.selectedOption = null; current.status = 'not-answered'; }
+            renderTabletQuestion(currentQuestionIndex);
+        }
+
+        function resizeTabletOmr(value) {
+            tabletOmrHeight = Math.max(20, Math.min(75, Number(value) || 34));
+            const panel = document.getElementById('tablet-omr-panel');
+            if(panel) panel.style.height = `${tabletOmrHeight}vh`;
+        }
+
+        function beginTabletOmrResize(event) {
+            tabletOmrResizeOriginY = event.clientY;
+            tabletOmrResizeOriginHeight = tabletOmrHeight;
+            if(event.currentTarget.setPointerCapture) {
+                try { event.currentTarget.setPointerCapture(event.pointerId); } catch (error) { }
+            }
+            event.preventDefault();
+        }
+
+        function moveTabletOmrResize(event) {
+            if(event.buttons === 0) return;
+            const heightDelta = (tabletOmrResizeOriginY - event.clientY) / window.innerHeight * 100;
+            resizeTabletOmr(tabletOmrResizeOriginHeight + heightDelta);
+        }
+
+        function endTabletOmrResize() {
+            tabletOmrResizeOriginY = 0;
         }
 
  // ग्लोबल ट्रांसलेशन कैशे ताकि बार-बार इंटरनेट की जरूरत न पड़े
@@ -3636,20 +3998,32 @@ function markForReview() {
             renderQuestion(currentQuestionIndex);
         }
 
+        function formatTabletTimer(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const remainingSeconds = seconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
         function startTimer() {
             clearInterval(timerInterval);
+            const initialMinutes = Math.floor(timeRemaining / 60);
+            const initialSeconds = timeRemaining % 60;
+            const timerDisplay = document.getElementById(currentTestMode === 'tablet' ? 'tablet-timer-display' : 'timer-display');
+            if(timerDisplay) timerDisplay.innerText = currentTestMode === 'tablet' ? formatTabletTimer(timeRemaining) : `${initialMinutes.toString().padStart(2, '0')}:${initialSeconds.toString().padStart(2, '0')}`;
             timerInterval = setInterval(() => {
                 timeRemaining--;
                 const minutes = Math.floor(timeRemaining / 60);
                 const seconds = timeRemaining % 60;
-                document.getElementById("timer-display").innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                const activeTimerDisplay = document.getElementById(currentTestMode === 'tablet' ? 'tablet-timer-display' : 'timer-display');
+                if(activeTimerDisplay) activeTimerDisplay.innerText = currentTestMode === 'tablet' ? formatTabletTimer(timeRemaining) : `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 if (timeRemaining <= 0) { submitExam(); }
             }, 1000);
         }
 
         function submitExam() {
             clearInterval(timerInterval);
-            const testMeta = catalog.find(t => t.id === currentTestId);
+            const testMeta = findTestById(currentTestId);
             let testNeg = testMeta && testMeta.negativeMarking !== undefined ? testMeta.negativeMarking : 0.25;
 
             let correct = 0, wrong = 0, skipped = 0;
@@ -3728,7 +4102,7 @@ function markForReview() {
                 return; // अगर स्टूडेंट 'Cancel' दबाएगा, तो टेस्ट बंद नहीं होगा और यहीं रुक जाएगा
             }
             clearInterval(timerInterval);
-            const testMeta = catalog.find(t => t.id === currentTestId);
+            const testMeta = findTestById(currentTestId);
             let testNeg = testMeta && testMeta.negativeMarking !== undefined ? testMeta.negativeMarking : 0.25;
 
             let correct = 0, wrong = 0, skipped = 0;
@@ -4519,6 +4893,21 @@ window.toggleMoreReviews = toggleMoreReviews;
         window.toggleDropdown = toggleDropdown;
         window.toggleMobilePalette = toggleMobilePalette;
         window.showInstructions = showInstructions;
+        window.startTabletTest = startTabletTest;
+        window.returnFromTabletTerms = returnFromTabletTerms;
+        window.acceptTabletTerms = acceptTabletTerms;
+        window.beginTabletHold = beginTabletHold;
+        window.cancelTabletHold = cancelTabletHold;
+        window.nextTabletQuestion = nextTabletQuestion;
+        window.previousTabletQuestion = previousTabletQuestion;
+        window.skipTabletQuestion = skipTabletQuestion;
+        window.reviewTabletQuestion = reviewTabletQuestion;
+        window.clearTabletAnswer = clearTabletAnswer;
+        window.goToTabletQuestion = goToTabletQuestion;
+        window.resizeTabletOmr = resizeTabletOmr;
+        window.beginTabletOmrResize = beginTabletOmrResize;
+        window.moveTabletOmrResize = moveTabletOmrResize;
+        window.endTabletOmrResize = endTabletOmrResize;
         window.startExamEngine = startExamEngine;
         window.toggleTranslation = toggleTranslation;
         window.jumpToSection = jumpToSection;
