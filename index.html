@@ -9,7 +9,7 @@
     
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, getDoc,deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -153,12 +153,12 @@ window.updateCategoryPricing = async function(catId) {
 }
 
 window.handlePaidCategoryClick = function(catId, price) {
-    const cat = categories.find(c => c.id === catId);
+    const cat = categories.find(c => String(c.id) === String(catId));
     if (!cat) return;
 
     // 1. पहले चेक करें कि क्या यूजर ने पहले से कोर्स खरीद रखा है
-    const hasPurchased = window.currentStudentPurchased && 
-                         window.currentStudentPurchased.includes(catId);
+    const hasPurchased = Array.isArray(window.currentStudentPurchased)
+        && window.currentStudentPurchased.some(id => String(id) === String(catId));
 
     if (hasPurchased) {
         showNotification("Access Granted! Welcome to your course 🚀", true);
@@ -544,6 +544,43 @@ window.filterStudentsTable = function() {
     }
 };
 
+window.sendPasswordReset = async function() {
+    const emailInput = document.getElementById('login-email');
+    if(!emailInput) {
+        console.error("Password reset email field is unavailable.");
+        showNotification("Unable to start password reset. Please refresh and try again.");
+        return;
+    }
+
+    const email = emailInput.value.trim();
+    if(!email) {
+        showNotification("Enter your registered email address first.");
+        emailInput.focus();
+        return;
+    }
+    if(!emailInput.checkValidity()) {
+        showNotification("Enter a valid email address.");
+        emailInput.focus();
+        return;
+    }
+
+    try {
+        await sendPasswordResetEmail(auth, email);
+        showNotification("If an account exists for this email, a password reset link has been sent.", true);
+    } catch(error) {
+        console.error("Password reset email error:", error);
+        if(error.code === 'auth/invalid-email') {
+            showNotification("Enter a valid email address.");
+        } else if(error.code === 'auth/too-many-requests') {
+            showNotification("Too many reset attempts. Please wait a while and try again.");
+        } else if(error.code === 'auth/network-request-failed') {
+            showNotification("Network error. Check your internet connection and try again.");
+        } else {
+            showNotification("Could not send the reset email. Please try again later.");
+        }
+    }
+};
+
     // --- Student Login Function ---
   window.firebaseLogin = async function() {
     const emailInput = document.getElementById('login-email');
@@ -568,9 +605,25 @@ window.filterStudentsTable = function() {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        const studentFullName = user.displayName || email.split('@')[0];
+        currentStudent = studentFullName;
+        window.currentStudentEmail = user.email;
+        window.currentStudentPurchased = [];
+        window.currentStudentAttempts = loadLocalStudentAttempts(user.uid);
+        window.studentAttemptsLoadError = false;
+        window.studentAttemptsLoading = true;
+        window.studentAttemptsSyncError = false;
+        window.studentCoursesLoading = true;
+        window.studentUnlockedCategories = [];
+        showScreen("student-overview-screen");
+        document.getElementById('auth-modal')?.classList.add('hide');
+        document.getElementById('login-nav-btn')?.classList.add('hide');
+        document.getElementById('mobile-login-nav-btn')?.classList.add('hide');
+        setStudentNavigation(true);
+        loadingModal?.classList.add('hide');
+        renderStudentOverview();
         
         // 🌟 सबसे ज़रूरी लाइन: लॉगिन होते ही इस स्टूडेंट का ईमेल और परचेस्ड कोर्सेज लोड करें!
-        window.currentStudentEmail = user.email;
         if (typeof window.loadStudentPurchases === 'function') {
             await window.loadStudentPurchases(user.uid);
         } else {
@@ -589,13 +642,12 @@ window.filterStudentsTable = function() {
             }
         }
 
-        const studentFullName = user.displayName || email.split('@')[0];
-        currentStudent = studentFullName;
         const firstLetter = currentStudent.charAt(0).toUpperCase();
 
         if (typeof window.loadStorageDataFromFirebase === 'function') {
             await window.loadStorageDataFromFirebase();
         }
+        window.studentCoursesLoading = false;
 
         const loggedBox = document.getElementById('logged-in-user-box');
         const mobileLoggedBox = document.getElementById('mobile-logged-in-box');
@@ -611,6 +663,8 @@ window.filterStudentsTable = function() {
             const el = document.getElementById(id);
             if(el) el.innerText = firstLetter;
         });
+        const mobileDashboardButton = document.getElementById('mobile-student-dashboard-btn');
+        if(mobileDashboardButton) mobileDashboardButton.classList.remove('hide');
 
         const loginScreen = document.getElementById('login-screen');
         if(loginScreen) loginScreen.classList.add('hide');
@@ -621,13 +675,20 @@ window.filterStudentsTable = function() {
         const toppersBtn = document.getElementById('toppers-btn');
         if(toppersBtn) toppersBtn.classList.add('hide');
 
+        await loadStudentDashboardData();
         showNotification("Logged in successfully! 🚀", true);
-        showScreen("category-screen");
-        renderCategories(); // 👈 यह अब सही परचेस डेटा के साथ कैटेगरी रेंडर करेगा!
+        showScreen("student-overview-screen", false);
+        renderStudentOverview();
 
     } catch (error) {
         console.error("Firebase Login Error:", error);
-        showNotification("Invalid email or password!");
+        const authFailure = typeof error?.code === 'string' && error.code.startsWith('auth/');
+        if(currentStudent) {
+            window.studentAttemptsLoading = false;
+            window.studentCoursesLoading = false;
+            renderStudentOverview();
+        }
+        showNotification(authFailure ? "Invalid email or password!" : "Logged in, but some dashboard data could not be loaded. Please refresh.");
     } finally {
         if(loadingModal) loadingModal.classList.add('hide');
     }
@@ -986,14 +1047,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <!-- Desktop Right Buttons & Profile Dropdown -->
     <div class="hidden md:flex items-center gap-2">
-        <button onclick="window.scrollToSection('study-section')" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">📚 Study</button>
-        <a href="https://www.youtube.com/@crackitbhai" target="_blank" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">🎥 YouTube</a>
-        <button onclick="document.getElementById('review-board-section').scrollIntoView({behavior: 'smooth'})" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">⭐ Reviews</button>
-        <a href="aboutus.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center gap-1.5">
+        <button data-public-nav onclick="window.scrollToSection('study-section')" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">📚 Study</button>
+        <a data-public-nav href="https://www.youtube.com/@crackitbhai" target="_blank" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">🎥 YouTube</a>
+        <button data-public-nav onclick="document.getElementById('review-board-section').scrollIntoView({behavior: 'smooth'})" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">⭐ Reviews</button>
+        <a data-public-nav href="aboutus.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center gap-1.5">
         <span>ℹ️</span> About Us
         </a> 
-        <button id="toppers-btn" onclick="window.openScoresModal();" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">🏆 Toppers</button>
-        <button id="login-nav-btn" onclick="window.toggleAuthMode('login'); document.getElementById('auth-modal').classList.remove('hide');" class="bg-[#f97316] hover:bg-[#ea580c] text-white px-3.5 py-2 rounded-xl text-xs font-bold transition">Login</button>
+        <button data-public-nav id="toppers-btn" onclick="window.openScoresModal();" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">🏆 Toppers</button>
+        <button data-public-nav id="login-nav-btn" onclick="window.toggleAuthMode('login'); document.getElementById('auth-modal').classList.remove('hide');" class="bg-[#f97316] hover:bg-[#ea580c] text-white px-3.5 py-2 rounded-xl text-xs font-bold transition">Login</button>
+        <nav id="student-desktop-nav" class="hide items-center gap-1 md:flex" aria-label="Student navigation">
+            <button onclick="window.navigateStudentSection('student-profile-section')" class="rounded-lg px-2 py-2 text-xs font-bold text-slate-200 transition hover:bg-slate-800">Profile</button>
+            <button onclick="window.navigateStudentSection('student-performance-section')" class="rounded-lg px-2 py-2 text-xs font-bold text-slate-200 transition hover:bg-slate-800">Performance Analysis</button>
+            <button onclick="window.navigateStudentSection('student-learnings-section')" class="rounded-lg px-2 py-2 text-xs font-bold text-slate-200 transition hover:bg-slate-800">Learnings</button>
+            <button onclick="window.navigateStudentSection('student-activity-section')" class="rounded-lg px-2 py-2 text-xs font-bold text-slate-200 transition hover:bg-slate-800">Recent Activity</button>
+            <button onclick="window.openAllMockTests()" class="rounded-lg px-2 py-2 text-xs font-bold text-slate-200 transition hover:bg-slate-800">All Courses</button>
+        </nav>
         
         <!-- 🌟 Desktop Profile Dropdown (Login ke baad dikhega) -->
         <div id="logged-in-user-box" class="hide relative">
@@ -1002,7 +1070,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="text-xs font-bold text-slate-200" id="box-user-name">Student</span>
                 <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div id="profile-dropdown-menu" class="hide absolute right-0 mt-2 w-36 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-1 z-50">
+            <div id="profile-dropdown-menu" class="hide absolute right-0 mt-2 w-40 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-1 z-50">
+                <button onclick="window.openStudentDashboard()" class="w-full text-left text-slate-200 hover:bg-slate-800 px-3 py-2 rounded-lg text-xs font-bold transition">My Dashboard</button>
                 <button onclick="window.signOut()" class="w-full text-left bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white px-3 py-2 rounded-lg text-xs font-black transition flex items-center gap-2 cursor-pointer">
                     <span>Sign Out</span>
                 </button>
@@ -1075,16 +1144,24 @@ document.addEventListener('DOMContentLoaded', () => {
         </button>
     </div>
 
-    <button onclick="window.openScoresModal(); document.getElementById('mobile-menu').classList.add('hide');" class="w-full text-left flex items-center gap-3 text-amber-400 bg-slate-800 hover:bg-slate-750 px-4 py-2.5 rounded-xl text-sm font-bold transition border border-amber-500/30">
+    <button data-public-nav onclick="window.openScoresModal(); document.getElementById('mobile-menu').classList.add('hide');" class="w-full text-left flex items-center gap-3 text-amber-400 bg-slate-800 hover:bg-slate-750 px-4 py-2.5 rounded-xl text-sm font-bold transition border border-amber-500/30">
         🏆 Toppers Leaderboard
     </button>
-    <button onclick="document.getElementById('review-board-section').scrollIntoView({behavior: 'smooth'}); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">⭐ Student Reviews</button>
-    <button onclick="window.scrollToSection('study-section'); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">📚 Study Material</button>
-    <a href="https://www.youtube.com/@crackitbhai" target="_blank" class="block w-full bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">🎥 YouTube Channel</a>
-    <a href="aboutus.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center gap-1.5">
+    <button id="mobile-student-dashboard-btn" onclick="window.openStudentDashboard(); document.getElementById('mobile-menu').classList.add('hide');" class="hide w-full text-left bg-orange-500/10 border border-orange-500/30 p-3 rounded-xl text-sm font-bold text-orange-200">📊 My Dashboard</button>
+    <button data-public-nav onclick="document.getElementById('review-board-section').scrollIntoView({behavior: 'smooth'}); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">⭐ Student Reviews</button>
+    <button data-public-nav onclick="window.scrollToSection('study-section'); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">📚 Study Material</button>
+    <a data-public-nav href="https://www.youtube.com/@crackitbhai" target="_blank" class="block w-full bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">🎥 YouTube Channel</a>
+    <a data-public-nav href="aboutus.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center gap-1.5">
     <span>ℹ️</span> About Us
 </a> 
-    <button id="mobile-login-nav-btn" onclick="window.toggleAuthMode('login'); document.getElementById('auth-modal').classList.remove('hide'); document.getElementById('mobile-menu').classList.add('hide');" class="w-full text-left bg-[#f97316] hover:bg-[#ea580c] text-white p-3 rounded-xl text-sm font-bold">Login</button>
+    <div id="student-mobile-nav" class="hide space-y-2" aria-label="Student navigation">
+        <button onclick="window.navigateStudentSection('student-profile-section'); document.getElementById('mobile-menu').classList.add('hide');" class="w-full rounded-xl bg-slate-800 p-3 text-left text-sm font-bold text-white">👤 Profile</button>
+        <button onclick="window.navigateStudentSection('student-performance-section'); document.getElementById('mobile-menu').classList.add('hide');" class="w-full rounded-xl bg-slate-800 p-3 text-left text-sm font-bold text-white">📈 Performance Analysis</button>
+        <button onclick="window.navigateStudentSection('student-learnings-section'); document.getElementById('mobile-menu').classList.add('hide');" class="w-full rounded-xl bg-slate-800 p-3 text-left text-sm font-bold text-white">📚 Learnings</button>
+        <button onclick="window.navigateStudentSection('student-activity-section'); document.getElementById('mobile-menu').classList.add('hide');" class="w-full rounded-xl bg-slate-800 p-3 text-left text-sm font-bold text-white">🕘 Recent Activity</button>
+        <button onclick="window.openAllMockTests(); document.getElementById('mobile-menu').classList.add('hide');" class="w-full rounded-xl bg-orange-600 p-3 text-left text-sm font-bold text-white">🗂️ All Courses</button>
+    </div>
+    <button data-public-nav id="mobile-login-nav-btn" onclick="window.toggleAuthMode('login'); document.getElementById('auth-modal').classList.remove('hide'); document.getElementById('mobile-menu').classList.add('hide');" class="w-full text-left bg-[#f97316] hover:bg-[#ea580c] text-white p-3 rounded-xl text-sm font-bold">Login</button>
 </div>
 
     <!-- Mobile Dropdown Menu Drawer (Toppers Included Here) -->
@@ -1246,6 +1323,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Password</label>
                 <input type="password" id="login-password" placeholder="Enter password" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-sm text-slate-800 focus:bg-white focus:border-[#f97316] transition" onkeypress="if(event.key === 'Enter') window.firebaseLogin();">
+            </div>
+            <div class="-mt-2 text-right">
+                <button type="button" onclick="window.sendPasswordReset()" class="text-xs font-bold text-[#f97316] hover:text-[#ea580c] hover:underline">Forgot Password?</button>
             </div>
             <button onclick="window.firebaseLogin()" class="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-3.5 rounded-xl transition text-base shadow-sm">Login →</button>
             
@@ -1765,13 +1845,100 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <!-- Dashboard Screen -->
     <div id="dashboard-screen" class="hide max-w-6xl mx-auto p-4 md:p-8 mt-4">
-        <button onclick="window.goHome()" class="text-[#f97316] font-semibold hover:underline mb-3 inline-flex items-center gap-1 text-sm">← Back to Categories</button>
+        <button id="test-list-back-button" onclick="window.backFromTestList()" class="text-[#f97316] font-semibold hover:underline mb-3 inline-flex items-center gap-1 text-sm">← Back to Dashboard</button>
         <div class="mb-6 bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
             <h2 class="text-2xl md:text-4xl font-black text-slate-900" id="dash-cat-title">Available Mock Tests</h2>
             <p class="text-slate-500 text-sm md:text-base mt-1">Select a test below to start your assessment.</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="test-grid"></div>
     </div>
+
+    <section id="student-overview-screen" class="hide mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:py-10">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <p class="text-xs font-black uppercase tracking-[0.18em] text-orange-600">Student workspace</p>
+                <h1 class="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">My Dashboard</h1>
+            </div>
+            <button onclick="window.openAllMockTests()" class="rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-black text-white transition hover:bg-orange-700">All Courses →</button>
+        </div>
+
+        <section id="student-learnings-section" class="scroll-mt-24 space-y-5">
+            <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-wide text-sky-600">Your learning</p>
+                        <h2 class="mt-1 text-lg font-black text-slate-900">Purchased courses</h2>
+                    </div>
+                    <span id="student-purchased-course-count" class="rounded-full bg-sky-50 px-3 py-1 text-xs font-black text-sky-700">0</span>
+                </div>
+                <div id="student-purchased-courses" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </article>
+
+            <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-wide text-slate-600">More to explore</p>
+                        <h2 class="mt-1 text-lg font-black text-slate-900">Other courses</h2>
+                    </div>
+                    <button onclick="window.openAllMockTests()" class="rounded-xl border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-black text-orange-700 transition hover:bg-orange-100">All Courses →</button>
+                </div>
+                <div id="student-other-courses" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </article>
+        </section>
+
+        <div class="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-2">
+            <article id="student-profile-section" class="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                <div class="flex items-center gap-4">
+                    <div id="student-overview-avatar" class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-100 text-xl font-black text-orange-700">S</div>
+                    <div class="min-w-0">
+                        <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Your profile</p>
+                        <h2 id="student-overview-name" class="truncate text-lg font-black text-slate-900">Student</h2>
+                    </div>
+                </div>
+                <div class="mt-5 space-y-3 border-t border-slate-100 pt-4 text-sm">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-wide text-slate-400">Email</p>
+                        <p id="student-overview-email" class="break-all font-semibold text-slate-700">Not available</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-wide text-slate-400">Account</p>
+                        <p class="font-semibold text-emerald-700">Signed-in account</p>
+                    </div>
+                </div>
+            </article>
+
+            <article id="student-performance-section" class="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                <div class="flex flex-wrap items-end justify-between gap-2">
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-wide text-orange-600">Performance analysis</p>
+                        <h2 class="mt-1 text-lg font-black text-slate-900">Your score trend</h2>
+                    </div>
+                    <p id="student-performance-summary" class="text-xs font-bold text-slate-500">Complete a mock test to see your analysis.</p>
+                </div>
+                <div id="student-performance-chart" class="mt-4 min-h-48 overflow-x-auto rounded-2xl bg-slate-50 p-2" aria-label="Mock test score trend chart"></div>
+            </article>
+
+            <article id="student-activity-section" class="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6 lg:col-span-2">
+                <div class="mb-4">
+                    <p class="text-xs font-black uppercase tracking-wide text-emerald-600">Recent activity</p>
+                    <h2 class="mt-1 text-lg font-black text-slate-900">Mock test scores</h2>
+                </div>
+                <div id="student-test-attempts" class="max-h-80 space-y-2 overflow-y-auto"></div>
+            </article>
+        </div>
+    </section>
+
+    <section id="all-mock-tests-screen" class="hide mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:py-10">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+            <div>
+                <p class="text-xs font-black uppercase tracking-wide text-orange-600">Explore</p>
+                <h1 class="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">Explore Courses</h1>
+                <p class="mt-1 text-sm text-slate-500">Browse course folders, access, and pricing.</p>
+            </div>
+            <button onclick="window.openStudentDashboard()" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-50">← Back to Dashboard</button>
+        </div>
+        <div id="all-course-folders-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
 
     <!-- Admin Login Screen -->
     <div id="admin-login-screen" class="hide flex flex-col items-center justify-center min-h-[85vh] p-4 bg-[#0b1221]">
@@ -3147,6 +3314,25 @@ async function addCategory() {
         }
 
         function toggleDropdown() { document.getElementById("dropdown-menu").classList.toggle("hide"); }
+
+        function setStudentNavigation(isStudent) {
+            document.querySelectorAll('[data-public-nav]').forEach(element => {
+                element.classList.toggle('hide', isStudent);
+            });
+            document.getElementById('student-desktop-nav')?.classList.toggle('hide', !isStudent);
+            document.getElementById('student-mobile-nav')?.classList.toggle('hide', !isStudent);
+            document.getElementById('logged-in-user-box')?.classList.toggle('hide', !isStudent);
+            document.getElementById('mobile-logged-in-box')?.classList.toggle('hide', !isStudent);
+        }
+
+        async function navigateStudentSection(sectionId) {
+            const overview = document.getElementById('student-overview-screen');
+            if(!overview || overview.classList.contains('hide')) {
+                await openStudentDashboard();
+            }
+            document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
       function showScreen(screenId, pushHistory = true) {
         document.body.classList.toggle('free-trial-only-view', screenId === 'freetrial-hub-screen');
         document.body.classList.toggle('homepage-theme', screenId === 'login-screen');
@@ -3157,6 +3343,8 @@ async function addCategory() {
                 'login-screen', 
                 'category-screen', 
                 'dashboard-screen', 
+                'student-overview-screen',
+                'all-mock-tests-screen',
                 'admin-login-screen', 
                 'admin-dashboard-screen', 
                 'instructions-screen', 
@@ -3233,8 +3421,16 @@ async function addCategory() {
                 } else {
                     history.pushState({ screen: "exam-screen" }, "", "");
                 }
-            } else if(currentStudent && document.getElementById("dashboard-screen") && !document.getElementById("dashboard-screen").classList.contains("hide")) {
+            } else if(currentStudent && document.getElementById("all-mock-tests-screen") && !document.getElementById("all-mock-tests-screen").classList.contains("hide")) {
+                showScreen("student-overview-screen", false);
+            } else if(currentStudent && document.getElementById("student-overview-screen") && !document.getElementById("student-overview-screen").classList.contains("hide")) {
                 showScreen("category-screen", false);
+            } else if(currentStudent && document.getElementById("dashboard-screen") && !document.getElementById("dashboard-screen").classList.contains("hide")) {
+                if(window.auth?.currentUser && currentStudent !== 'Free Trial User') {
+                    showScreen("student-overview-screen", false);
+                } else {
+                    showScreen("category-screen", false);
+                }
             } else if(currentStudent && document.getElementById("freetrial-hub-screen") && !document.getElementById("freetrial-hub-screen").classList.contains("hide")) {
                 showScreen("login-screen", false);
             } else if(currentStudent && document.getElementById("studymaterial-hub-screen") && !document.getElementById("studymaterial-hub-screen").classList.contains("hide")) {
@@ -3249,6 +3445,9 @@ async function addCategory() {
         function goHome() {
             if(currentStudent && currentStudent === "Free Trial User") {
                 openFreeTrialHub();
+            } else if(window.auth?.currentUser && currentStudent) {
+                showScreen("student-overview-screen");
+                renderStudentOverview();
             } else if(currentStudent) { 
                 showScreen("category-screen"); 
                 renderCategories(); 
@@ -3262,8 +3461,8 @@ async function addCategory() {
             document.getElementById('mobile-palette-overlay').classList.toggle('open');
         }
 
-function renderCategories() {
-        const grid = document.getElementById('category-grid');
+function renderCategories(gridId = 'category-grid') {
+        const grid = document.getElementById(gridId);
         if(!grid) return;
         grid.innerHTML = '';
         
@@ -3280,11 +3479,15 @@ function renderCategories() {
             const hasPassword = cat.password && cat.password.trim() !== "";
             
             const isPaid = cat.isPaid === true;
-            const price = cat.price || 199;
+            const price = Number(cat.price) || 199;
+            const isPurchased = isPaid && Array.isArray(window.currentStudentPurchased)
+                && window.currentStudentPurchased.some(id => String(id) === String(cat.id));
             
             let cardClickAction = "";
             if (isLocked) {
                 cardClickAction = "window.showNotification('This category is locked')";
+            } else if (isPaid && !isPurchased) {
+                cardClickAction = `window.handlePaidCategoryClick(${cat.id}, ${price})`;
             } else if (hasPassword) {
                 cardClickAction = `document.getElementById('cat-pass-${cat.id}').focus()`;
             } else if (isPaid) {
@@ -3296,7 +3499,9 @@ function renderCategories() {
             const badgeHtml = isLocked 
                 ? '<span class="text-xs bg-rose-100 text-rose-700 font-bold px-3.5 py-1.5 rounded-full border border-rose-200 flex items-center gap-1 shadow-2xs">Locked 🔒</span>' 
                 : isPaid 
-                    ? `<span class="text-xs bg-amber-100 text-amber-800 font-extrabold px-3.5 py-1.5 rounded-full border border-amber-200 shadow-2xs flex items-center gap-1">₹${price} 💳</span>`
+                    ? isPurchased
+                        ? '<span class="text-xs bg-emerald-100 text-emerald-700 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1">Active ✓</span>'
+                        : `<span class="text-xs bg-amber-100 text-amber-800 font-extrabold px-3.5 py-1.5 rounded-full border border-amber-200 shadow-2xs flex items-center gap-1">Locked 🔒 · ₹${price}</span>`
                     : '<span class="text-xs bg-emerald-100 text-emerald-700 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1">Free 🚀</span>';
 
             const waMessage = encodeURIComponent(`Hello Crackit Bhai, I want to know about ${cat.name}`);
@@ -3329,8 +3534,8 @@ function renderCategories() {
                         ` : isPaid ? `
                             <!-- 👇 Buy Now और WhatsApp Logo बटन -->
                             <div class="flex items-center gap-2" onclick="event.stopPropagation()">
-                                <button onclick="window.handlePaidCategoryClick(${cat.id}, ${price})" class="flex-1 bg-[#f97316] hover:bg-[#ea580c] text-white font-black py-2.5 px-3 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5">
-                                    🛒 Buy Now (₹${price})
+                                <button onclick="window.handlePaidCategoryClick(${cat.id}, ${price})" class="flex-1 ${isPurchased ? 'bg-slate-900 hover:bg-slate-800' : 'bg-[#f97316] hover:bg-[#ea580c]'} text-white font-black py-2.5 px-3 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5">
+                                    ${isPurchased ? 'Open Course' : `🛒 Buy Now (₹${price})`}
                                 </button>
                                 <a href="https://wa.me/918219256192?text=${waMessage}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl transition shadow-sm flex items-center justify-center shrink-0" title="WhatsApp Help">
                                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
@@ -3346,6 +3551,9 @@ function renderCategories() {
                 </div>
             `;
         });
+        if(!categories.length) {
+            grid.innerHTML = `<p class="col-span-full rounded-2xl bg-white p-6 text-center text-sm text-slate-500">${window.studentCoursesLoading ? 'Loading course folders…' : 'No course folders are available right now.'}</p>`;
+        }
     }  function openCategory(catId) {
             currentCategory = catId;
             const cat = categories.find(c => c.id === catId);
@@ -3358,7 +3566,7 @@ function renderCategories() {
             const grid = document.getElementById("test-grid");
             if(!grid) return;
             grid.innerHTML = "";
-            const filteredTests = catalog.filter(t => t.categoryId === currentCategory);
+            const filteredTests = catalog.filter(t => String(t.categoryId) === String(currentCategory));
             
             if(filteredTests.length === 0) {
                 grid.innerHTML = `<p class="text-slate-500 text-sm col-span-full text-center py-8">No mock tests available in this category yet.</p>`;
@@ -3392,6 +3600,410 @@ function renderCategories() {
                     </div>
                 `;
             });
+        }
+
+        function escapeDashboardText(value) {
+            return String(value ?? '').replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
+        function dashboardAttemptDate(attempt) {
+            const rawDate = attempt.completedAt;
+            let date;
+            if(rawDate && typeof rawDate.toDate === 'function') {
+                date = rawDate.toDate();
+            } else if(rawDate && typeof rawDate === 'object' && Number.isFinite(Number(rawDate.seconds ?? rawDate._seconds))) {
+                const seconds = Number(rawDate.seconds ?? rawDate._seconds);
+                const nanoseconds = Number(rawDate.nanoseconds ?? rawDate._nanoseconds) || 0;
+                date = new Date(seconds * 1000 + nanoseconds / 1e6);
+            } else {
+                date = new Date(rawDate || 0);
+            }
+            return Number.isNaN(date.getTime()) ? null : date;
+        }
+
+        function studentAttemptStorageKey(uid) {
+            return `student-test-attempts:${uid}`;
+        }
+
+        function loadLocalStudentAttempts(uid) {
+            try {
+                const stored = localStorage.getItem(studentAttemptStorageKey(uid));
+                const attempts = stored ? JSON.parse(stored) : [];
+                return Array.isArray(attempts) ? attempts : [];
+            } catch(error) {
+                console.error('Failed to read local student test history:', error);
+                return [];
+            }
+        }
+
+        function saveLocalStudentAttempts(uid, attempts) {
+            try {
+                localStorage.setItem(studentAttemptStorageKey(uid), JSON.stringify(attempts));
+                return true;
+            } catch(error) {
+                console.error('Failed to save local student test history:', error);
+                return false;
+            }
+        }
+
+        function mergeStudentAttempts(...attemptLists) {
+            const attemptsById = new Map();
+            attemptLists.flat().forEach(attempt => {
+                if(attempt && attempt.id !== undefined && attempt.id !== null) {
+                    attemptsById.set(String(attempt.id), attempt);
+                }
+            });
+            const attempts = Array.from(attemptsById.values());
+            const mergedAttempts = [];
+            attempts.forEach(attempt => {
+                const attemptDate = dashboardAttemptDate(attempt)?.getTime();
+                const duplicateIndex = attempt.source === 'google-sheet' || attemptDate
+                    ? mergedAttempts.findIndex(existing => {
+                        if(attempt.source !== 'google-sheet' && existing.source !== 'google-sheet') return false;
+                        const existingDate = dashboardAttemptDate(existing)?.getTime();
+                        return attemptDate && existingDate
+                            && Math.abs(attemptDate - existingDate) <= 5 * 60 * 1000
+                            && String(attempt.testName || '').trim().toLowerCase() === String(existing.testName || '').trim().toLowerCase()
+                            && Number(attempt.score) === Number(existing.score)
+                            && Number(attempt.correct) === Number(existing.correct)
+                            && Number(attempt.wrong) === Number(existing.wrong);
+                    })
+                    : -1;
+                if(duplicateIndex === -1) {
+                    mergedAttempts.push(attempt);
+                } else if(mergedAttempts[duplicateIndex].source === 'google-sheet' && attempt.source !== 'google-sheet') {
+                    mergedAttempts[duplicateIndex] = attempt;
+                }
+            });
+            return mergedAttempts
+                .sort((first, second) => (dashboardAttemptDate(second)?.getTime() || 0) - (dashboardAttemptDate(first)?.getTime() || 0));
+        }
+
+        function normalizeStudentHistoryName(value) {
+            return String(value || '').trim().toLocaleLowerCase().replace(/\s+/g, ' ');
+        }
+
+        function studentAttemptsFromScoreSheet(rows, user) {
+            if(!Array.isArray(rows)) {
+                throw new TypeError('The score history endpoint did not return a list.');
+            }
+            const emailName = String(user.email || '').split('@')[0];
+            const studentNames = new Set([
+                currentStudent,
+                user.displayName,
+                emailName
+            ].map(normalizeStudentHistoryName).filter(Boolean));
+
+            return rows.flatMap((row, index) => {
+                if(!Array.isArray(row) || row.length < 6) return [];
+                const rowName = normalizeStudentHistoryName(row[1]);
+                if(!studentNames.has(rowName)) return [];
+
+                const score = Number(row[3]);
+                const correct = Number(row[4]);
+                const wrong = Number(row[5]);
+                const completedAt = new Date(row[0]);
+                if(!Number.isFinite(score) || !Number.isFinite(correct) || !Number.isFinite(wrong) || Number.isNaN(completedAt.getTime())) {
+                    return [];
+                }
+
+                return [{
+                    id: `google-sheet-${index}-${completedAt.getTime()}`,
+                    source: 'google-sheet',
+                    testName: String(row[2] || 'Mock Test'),
+                    score,
+                    maxScore: Math.max(1, correct + wrong),
+                    correct,
+                    wrong,
+                    completedAt: completedAt.toISOString(),
+                    mode: 'computer'
+                }];
+            });
+        }
+
+        async function loadStudentDashboardData() {
+            const user = window.auth && window.auth.currentUser;
+            if(!user) {
+                window.currentStudentAttempts = [];
+                window.studentAttemptsLoadError = false;
+                window.studentAttemptsLoading = false;
+                window.studentAttemptsSyncError = false;
+                return;
+            }
+            const localAttempts = loadLocalStudentAttempts(user.uid);
+            window.currentStudentAttempts = localAttempts;
+            window.studentAttemptsLoading = true;
+            window.studentAttemptsSyncError = false;
+            let firestoreLoaded = false;
+            let sheetLoaded = false;
+            let remoteAttempts = [];
+            let sheetAttempts = [];
+            try {
+                const attemptsRef = window.collection(window.db, 'students', user.uid, 'testAttempts');
+                const attemptsSnapshot = await window.getDocs(attemptsRef);
+                remoteAttempts = attemptsSnapshot.docs.map(attemptDoc => ({ id: attemptDoc.id, ...attemptDoc.data() }));
+                firestoreLoaded = true;
+            } catch(error) {
+                console.error('Failed to load student test history:', error);
+            }
+            try {
+                const response = await fetch(REVIEW_SHEET_URL);
+                if(!response.ok) throw new Error(`Score history request failed (${response.status}).`);
+                sheetAttempts = studentAttemptsFromScoreSheet(await response.json(), user);
+                sheetLoaded = true;
+            } catch(error) {
+                console.error('Failed to load student score history from Google Sheets:', error);
+            } finally {
+                window.currentStudentAttempts = mergeStudentAttempts(remoteAttempts, localAttempts, sheetAttempts);
+                window.studentAttemptsLoadError = !firestoreLoaded && !sheetLoaded && !localAttempts.length;
+                window.studentAttemptsSyncError = !firestoreLoaded && !sheetLoaded && localAttempts.length > 0;
+                if(firestoreLoaded || sheetLoaded) saveLocalStudentAttempts(user.uid, window.currentStudentAttempts);
+                window.studentAttemptsLoading = false;
+            }
+        }
+
+        async function saveStudentAttempt(attempt) {
+            const user = window.auth && window.auth.currentUser;
+            if(!user || currentStudent === 'Free Trial User') return;
+
+            const attemptId = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+            const record = {
+                ...attempt,
+                testId: String(currentTestId),
+                mode: currentTestMode,
+                completedAt: new Date().toISOString()
+            };
+            window.currentStudentAttempts = mergeStudentAttempts([{ id: attemptId, ...record }], window.currentStudentAttempts || []);
+            const locallySaved = saveLocalStudentAttempts(user.uid, window.currentStudentAttempts);
+            try {
+                const attemptRef = window.doc(window.db, 'students', user.uid, 'testAttempts', attemptId);
+                await window.setDoc(attemptRef, record);
+                window.studentAttemptsSyncError = false;
+                window.studentAttemptsLoadError = false;
+                if(!saveLocalStudentAttempts(user.uid, window.currentStudentAttempts)) {
+                    showNotification('Your result synced to your account, but this device could not cache it.');
+                }
+            } catch(error) {
+                console.error('Failed to save student test result:', error);
+                window.studentAttemptsSyncError = true;
+                showNotification(locallySaved
+                    ? 'Your result is saved on this device, but could not sync to your account.'
+                    : 'Your result is ready, but could not be saved to your dashboard. Please try again later.');
+            }
+            renderStudentOverview();
+        }
+
+        function renderStudentOverview() {
+            const user = window.auth && window.auth.currentUser;
+            const name = user?.displayName || currentStudent || 'Student';
+            const email = user?.email || window.currentStudentEmail || 'Not available';
+            const nameElement = document.getElementById('student-overview-name');
+            const emailElement = document.getElementById('student-overview-email');
+            const avatarElement = document.getElementById('student-overview-avatar');
+            if(nameElement) nameElement.textContent = name;
+            if(emailElement) emailElement.textContent = email;
+            if(avatarElement) avatarElement.textContent = name.charAt(0).toUpperCase() || 'S';
+
+            const purchasedContainer = document.getElementById('student-purchased-courses');
+            const purchasedCount = document.getElementById('student-purchased-course-count');
+            const purchasedIds = Array.isArray(window.currentStudentPurchased) ? window.currentStudentPurchased : [];
+            const purchasedCategories = purchasedIds.map(id => categories.find(item => String(item.id) === String(id)))
+                .filter(Boolean);
+            const activeCourseCards = [];
+            const otherCourseCards = [];
+            const courseCardThemes = [
+                { card: 'border-orange-200', background: 'linear-gradient(135deg, #fff7ed 0%, #ffffff 68%, #fffbeb 100%)', tag: 'bg-orange-100 text-orange-800', price: 'text-orange-700', saving: 'bg-emerald-100 text-emerald-800' },
+                { card: 'border-sky-200', background: 'linear-gradient(135deg, #f0f9ff 0%, #ffffff 68%, #ecfeff 100%)', tag: 'bg-sky-100 text-sky-800', price: 'text-sky-700', saving: 'bg-emerald-100 text-emerald-800' },
+                { card: 'border-violet-200', background: 'linear-gradient(135deg, #f5f3ff 0%, #ffffff 68%, #fdf4ff 100%)', tag: 'bg-violet-100 text-violet-800', price: 'text-violet-700', saving: 'bg-emerald-100 text-emerald-800' },
+                { card: 'border-teal-200', background: 'linear-gradient(135deg, #f0fdfa 0%, #ffffff 68%, #ecfdf5 100%)', tag: 'bg-teal-100 text-teal-800', price: 'text-teal-700', saving: 'bg-emerald-100 text-emerald-800' }
+            ];
+            categories.forEach((category, index) => {
+                const purchased = purchasedIds.some(id => String(id) === String(category.id));
+                const isPaid = category.isPaid === true;
+                const isLocked = category.locked === true;
+                const canAccess = !isLocked && (!isPaid || purchased);
+                const tests = catalog.filter(test => String(test.categoryId) === String(category.id));
+                const currentPrice = Number(category.price) || 199;
+                const hasCoursePrice = isPaid && Number(category.price) > 0;
+                const originalPrice = Math.round(currentPrice * 2.2);
+                const savings = originalPrice - currentPrice;
+                const courseTheme = courseCardThemes[index % courseCardThemes.length];
+                const fee = hasCoursePrice ? `₹${currentPrice}` : 'Free';
+                const courseStatus = isLocked ? 'Unavailable' : purchased ? 'Active course' : isPaid ? 'Locked · Not purchased' : 'Free course';
+                const statusClass = isLocked ? 'bg-rose-50 text-rose-700' : canAccess ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800';
+                let action;
+                if(isLocked) {
+                    action = '<button type="button" disabled class="cursor-not-allowed rounded-xl bg-slate-200 px-3 py-2 text-xs font-black text-slate-500">Unavailable</button>';
+                } else if(isPaid && !purchased) {
+                    action = `<button type="button" onclick='window.handlePaidCategoryClick(${inlineTestId(category.id)}, ${currentPrice})' class="rounded-xl bg-orange-600 px-3 py-2 text-xs font-black text-white transition hover:bg-orange-700">Unlock · ${fee}</button>`;
+                } else {
+                    action = `<button type="button" onclick='window.openCategory(${inlineTestId(category.id)})' class="rounded-xl bg-slate-900 px-3 py-2 text-xs font-black text-white transition hover:bg-slate-700">Open tests →</button>`;
+                }
+                const card = purchased
+                    ? `<article class="flex h-full flex-col rounded-2xl border ${courseTheme.card} p-4 shadow-sm transition-shadow hover:shadow-md" style="background:${courseTheme.background}">
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <div class="min-w-0">
+                            <h3 class="break-words text-base font-black text-slate-900">${escapeDashboardText(category.name)}</h3>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                        ${hasCoursePrice ? `
+                        <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">Now</span>
+                        <span class="text-xl font-black ${courseTheme.price}">₹${currentPrice}</span>
+                        <span class="text-xs font-semibold text-slate-400 line-through">₹${originalPrice}</span>
+                        <span class="rounded-full ${courseTheme.saving} px-2 py-0.5 text-[10px] font-black">Save ₹${savings}</span>
+                        ` : '<span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">Now</span><span class="text-xl font-black text-emerald-600">Free</span>'}
+                    </div>
+                    <div class="mt-3 flex flex-wrap gap-1.5">
+                        <span class="rounded-lg ${courseTheme.tag} px-2 py-1 text-[10px] font-bold">${tests.length} Mock ${tests.length === 1 ? 'Test' : 'Tests'}</span>
+                        <span class="rounded-lg ${courseTheme.tag} px-2 py-1 text-[10px] font-bold">CBT</span>
+                        <span class="rounded-lg ${courseTheme.tag} px-2 py-1 text-[10px] font-bold">Tablet OMR</span>
+                        <span class="rounded-lg ${courseTheme.tag} px-2 py-1 text-[10px] font-bold">TCS-style experience</span>
+                    </div>
+                    <div class="mt-auto flex justify-end pt-3">${action}</div>
+                </article>`
+                    : `<article class="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <div class="min-w-0">
+                            <h3 class="break-words text-sm font-black text-slate-900">${escapeDashboardText(category.name)}</h3>
+                            <p class="mt-1 text-xs font-semibold text-slate-500">${tests.length} mock ${tests.length === 1 ? 'test' : 'tests'} · ${fee}</p>
+                        </div>
+                        <span class="rounded-full px-2.5 py-1 text-[10px] font-black ${statusClass}">${courseStatus}</span>
+                    </div>
+                    <div class="mt-auto flex justify-end pt-3">${action}</div>
+                </article>`;
+                (purchased ? activeCourseCards : otherCourseCards).push(card);
+            });
+            const missingPurchasedCategories = purchasedIds.filter(id => !categories.some(category => String(category.id) === String(id)));
+            missingPurchasedCategories.forEach(id => {
+                const name = window.currentStudentPurchaseNames?.[String(id)] || `Course ${id}`;
+                activeCourseCards.push(`<article class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div class="flex items-start justify-between gap-3"><div><h3 class="text-sm font-black text-slate-900">${escapeDashboardText(name)}</h3><p class="mt-1 text-xs text-slate-500">Course details are currently unavailable.</p></div><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700">Active course</span></div>
+                </article>`);
+            });
+            if(purchasedCount) purchasedCount.textContent = window.studentCoursesLoading ? '…' : purchasedCategories.length;
+            if(purchasedContainer) purchasedContainer.innerHTML = window.studentCoursesLoading
+                ? '<p class="col-span-full rounded-2xl bg-slate-50 p-4 text-sm text-slate-500" role="status">Loading your purchased courses…</p>'
+                : activeCourseCards.length
+                    ? activeCourseCards.join('')
+                    : '<p class="col-span-full rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">No purchased courses yet.</p>';
+            const otherCoursesContainer = document.getElementById('student-other-courses');
+            if(otherCoursesContainer) otherCoursesContainer.innerHTML = window.studentCoursesLoading
+                ? '<p class="col-span-full rounded-2xl bg-slate-50 p-4 text-sm text-slate-500" role="status">Loading other courses…</p>'
+                : otherCourseCards.length
+                    ? otherCourseCards.join('')
+                    : '<p class="col-span-full rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">There are no other courses available right now.</p>';
+
+            const attempts = Array.isArray(window.currentStudentAttempts) ? window.currentStudentAttempts : [];
+            const attemptsContainer = document.getElementById('student-test-attempts');
+            const chartContainer = document.getElementById('student-performance-chart');
+            const summary = document.getElementById('student-performance-summary');
+            const validAttempts = attempts.filter(attempt => Number.isFinite(Number(attempt.score)) && Number(attempt.maxScore) > 0);
+            const averagePercent = validAttempts.length
+                ? validAttempts.reduce((sum, attempt) => sum + Number(attempt.score) / Number(attempt.maxScore) * 100, 0) / validAttempts.length
+                : 0;
+            if(summary) summary.textContent = validAttempts.length
+                ? `${validAttempts.length} tests · ${averagePercent.toFixed(1)}% average score${window.studentAttemptsSyncError ? ' · saved on this device' : ''}`
+                : window.studentAttemptsLoading ? 'Loading your saved test history…'
+                : window.studentAttemptsLoadError ? 'Could not load saved test history.'
+                : 'Complete a mock test to see your analysis.';
+
+            if(chartContainer) {
+                if(!validAttempts.length) {
+                    const chartMessage = window.studentAttemptsLoading
+                        ? 'Loading your score history…'
+                        : window.studentAttemptsLoadError && !attempts.length
+                            ? 'Your score history could not be loaded. Please refresh the dashboard.'
+                            : window.studentAttemptsSyncError && attempts.length
+                                ? 'Showing test results saved on this device; cloud sync is unavailable.'
+                                : 'Your score trend will appear here after you complete a mock test.';
+                    chartContainer.innerHTML = `<div class="flex min-h-44 items-center justify-center px-4 text-center text-sm text-slate-500">${chartMessage}</div>`;
+                } else {
+                    const chartAttempts = validAttempts.slice(0, 10).reverse();
+                    const chartWidth = Math.max(280, chartContainer.clientWidth - 16, chartAttempts.length * 90);
+                    const chartHeight = 220;
+                    const left = 48, right = chartWidth - 18, top = 20, bottom = 168;
+                    const lowestPercent = Math.min(0, ...chartAttempts.map(attempt => Number(attempt.score) / Number(attempt.maxScore) * 100));
+                    const axisMinimum = Math.max(-100, Math.floor(lowestPercent / 25) * 25);
+                    const xFor = index => chartAttempts.length === 1 ? (left + right) / 2 : left + index * (right - left) / (chartAttempts.length - 1);
+                    const yFor = attempt => {
+                        const percent = Number(attempt.score) / Number(attempt.maxScore) * 100;
+                        return bottom - (Math.max(axisMinimum, Math.min(100, percent)) - axisMinimum) / (100 - axisMinimum) * (bottom - top);
+                    };
+                    const gridValues = [];
+                    for(let value = axisMinimum; value <= 100; value += 25) gridValues.push(value);
+                    const gridLines = gridValues.map(value => {
+                        const y = bottom - (value - axisMinimum) / (100 - axisMinimum) * (bottom - top);
+                        return `<g><line x1="${left}" y1="${y}" x2="${right}" y2="${y}" stroke="#e2e8f0" stroke-dasharray="4 4"/><text x="${left - 8}" y="${y + 4}" text-anchor="end" fill="#64748b" font-size="10">${value}%</text></g>`;
+                    }).join('');
+                    const points = chartAttempts.map((attempt, index) => `${xFor(index)},${yFor(attempt)}`).join(' ');
+                    const markers = chartAttempts.map((attempt, index) => {
+                        const date = dashboardAttemptDate(attempt);
+                        const shortName = String(attempt.testName || 'Mock test').slice(0, 14);
+                        const percent = (Number(attempt.score) / Number(attempt.maxScore) * 100).toFixed(1);
+                        return `<g><circle cx="${xFor(index)}" cy="${yFor(attempt)}" r="5" fill="#f97316" stroke="white" stroke-width="2"><title>${escapeDashboardText(attempt.testName)}: ${Number(attempt.score).toFixed(2)} / ${Number(attempt.maxScore)} (${percent}%)</title></circle><text x="${xFor(index)}" y="187" text-anchor="middle" fill="#334155" font-size="10">${escapeDashboardText(shortName)}</text><text x="${xFor(index)}" y="204" text-anchor="middle" fill="#94a3b8" font-size="9">${date ? date.toLocaleDateString([], { month: 'short', day: 'numeric' }) : ''}</text></g>`;
+                    }).join('');
+                    chartContainer.innerHTML = `<svg width="${chartWidth}" height="${chartHeight}" viewBox="0 0 ${chartWidth} ${chartHeight}" style="display:block;max-width:none;height:auto" role="img" aria-label="Score percentage over the last ${chartAttempts.length} tests">${gridLines}<polyline points="${points}" fill="none" stroke="#f97316" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${markers}</svg>`;
+                }
+            }
+
+            if(attemptsContainer) {
+                attemptsContainer.innerHTML = attempts.length
+                    ? attempts.slice(0, 10).map(attempt => {
+                        const score = Number(attempt.score);
+                        const date = dashboardAttemptDate(attempt);
+                        const displayedScore = Number.isFinite(score) ? Number(score.toFixed(2)).toString() : '—';
+                        return `<div class="flex items-center justify-between gap-3 rounded-xl border border-slate-100 px-3 py-2.5">
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-bold text-slate-800">${escapeDashboardText(attempt.testName || 'Mock Test')}</p>
+                                <p class="text-[11px] text-slate-500">${date ? date.toLocaleDateString() : 'Date unavailable'} · ${escapeDashboardText(attempt.mode || 'computer')} mode</p>
+                            </div>
+                            <p class="shrink-0 text-sm font-black text-orange-600">Total score: ${displayedScore}</p>
+                        </div>`;
+                    }).join('')
+                    : `<p class="rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">${window.studentAttemptsLoading ? 'Loading recent activity…' : window.studentAttemptsLoadError ? 'Could not load your test history. Please refresh the dashboard.' : 'No completed mock tests yet.'}</p>`;
+            }
+        }
+
+        async function openStudentDashboard() {
+            if(!window.auth?.currentUser) {
+                showNotification('Please sign in to view your dashboard.');
+                return;
+            }
+            window.studentAttemptsLoading = true;
+            showScreen('student-overview-screen');
+            renderStudentOverview();
+            await loadStudentDashboardData();
+            renderStudentOverview();
+        }
+
+        function openStudentCategories() {
+            renderCategories();
+            showScreen('category-screen');
+        }
+
+        function backFromTestList() {
+            const isSignedInStudent = Boolean(window.auth?.currentUser && currentStudent && currentStudent !== 'Free Trial User');
+            const destination = isSignedInStudent ? 'student-overview-screen' : 'category-screen';
+            if(!isSignedInStudent) renderCategories();
+            showScreen(destination, false);
+            history.replaceState({ screen: destination }, '', '');
+            if(isSignedInStudent) renderStudentOverview();
+        }
+
+        function openAllMockTests() {
+            if(!currentStudent || currentStudent === 'Free Trial User') {
+                showNotification('Please sign in to explore courses.');
+                return;
+            }
+            renderCategories('all-course-folders-grid');
+            showScreen('all-mock-tests-screen');
         }
 
         function renderAdminDashboard() {
@@ -3682,10 +4294,14 @@ async function saveTestToFirebaseSeparately(testId, testData) {
         function closeEditModal() { document.getElementById('edit-test-modal').classList.add('hide'); }
    
         function showInstructions(id) {
-            currentTestId = id;
-            currentTestMode = 'computer';
-            const testMeta = findTestById(id);
-            if(!testMeta) { showNotification('Test data is unavailable. Please try again.'); return; }
+                    const testMeta = findTestById(id);
+                    if(!testMeta) { showNotification('Test data is unavailable. Please try again.'); return; }
+                    if(!canAccessTest(testMeta)) {
+                        showNotification('This test is locked. Purchase or unlock its course to continue.');
+                        return;
+                    }
+                    currentTestId = testMeta.id;
+                    currentTestMode = 'computer';
             document.getElementById("inst-test-title").innerText = testMeta.name;
             document.getElementById("inst-time").innerText = `${testMeta.duration} Minutes`;
             
@@ -3702,6 +4318,10 @@ async function saveTestToFirebaseSeparately(testId, testData) {
         function startExamEngine() {
             const testMeta = findTestById(currentTestId);
             if(!testMeta) { showNotification('Test data is unavailable. Please try again.'); return; }
+            if(!canAccessTest(testMeta)) {
+                showNotification('This test is locked. Purchase or unlock its course to continue.');
+                return;
+            }
             testData = JSON.parse(JSON.stringify(testMeta.data)).map(question => ({ ...question, selectedOption: null, status: 'not-visited' }));
             currentQuestionIndex = 0;
             isHindiLanguage = false;
@@ -3716,6 +4336,10 @@ async function saveTestToFirebaseSeparately(testId, testData) {
         function startTabletTest(id) {
             const testMeta = findTestById(id);
             if(!testMeta) { showNotification('Test data is unavailable. Please try again.'); return; }
+            if(!canAccessTest(testMeta)) {
+                showNotification('This test is locked. Purchase or unlock its course to continue.');
+                return;
+            }
             currentTestId = testMeta.id;
             currentTestMode = 'tablet';
             document.getElementById('tablet-terms-test-title').textContent = testMeta.name;
@@ -4234,7 +4858,7 @@ function markForReview() {
             btns.forEach(btn => btn.style.display = 'none');
             html2pdf().from(document.getElementById('pdf-content')).save().then(() => btns.forEach(btn => btn.style.display = 'flex'));
         }
-        function submitExam(isAutomatic = false) {
+        async function submitExam(isAutomatic = false) {
             const userConfirmed = isAutomatic || confirm("Are you sure you want to submit the exam? Once submitted, you cannot change your answers.");
             
             if (!userConfirmed) {
@@ -4300,6 +4924,15 @@ function markForReview() {
 
             let now = new Date();
             let dateFormatted = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            await saveStudentAttempt({
+                testName: testMeta ? testMeta.name : "Mock Test",
+                score: Number(totalScore.toFixed(2)),
+                maxScore: testData.length,
+                correct,
+                wrong,
+                skipped,
+                durationSeconds: secondsSpent
+            });
 
             document.getElementById("report-student-name").innerText = currentStudent || "Student";
             document.getElementById("report-test-name").innerText = testMeta ? testMeta.name : "Mock Test";
@@ -4340,33 +4973,52 @@ function markForReview() {
 
         }
         function updateCategoryPassword(catId, pass) {
-    const cat = categories.find(c => c.id === catId);
+    const cat = categories.find(c => String(c.id) === String(catId));
     if(cat) {
         cat.password = pass.trim();
         saveAllData();
         showNotification("Category password updated successfully!", true);
     }
     }
-    function openCategory(catId) {
-    const cat = categories.find(c => c.id === catId);
-    
-    // अगर इस कैटेगरी पर पासवर्ड सेट है, तो यूजर से पूछो
-    if (cat && cat.password && cat.password !== "") {
-        let userPass = prompt(`Enter password to open "${cat.name}":`);
-        if (userPass !== cat.password) {
-            showNotification("Incorrect Password! Access Denied.");
-            return; // गलत पासवर्ड होने पर आगे नहीं जाने देगा
+        function categoryIsPurchased(category) {
+            return Array.isArray(window.currentStudentPurchased)
+                && window.currentStudentPurchased.some(id => String(id) === String(category.id));
         }
-    }
+        function canAccessTest(test) {
+            if(currentStudent === 'Free Trial User') return true;
+            const category = categories.find(item => String(item.id) === String(test.categoryId));
+            if(!category) return false;
+            if(category.locked || (category.isPaid === true && !categoryIsPurchased(category))) return false;
+            const hasPassword = typeof category.password === 'string' && category.password.trim() !== '';
+            return !hasPassword || (window.studentUnlockedCategories || []).some(id => String(id) === String(category.id));
+        }
+        function openCategory(catId) {
+        const cat = categories.find(c => String(c.id) === String(catId));
+        if(cat?.locked) {
+            showNotification("This course is currently unavailable.");
+            return;
+        }
+        if(cat?.isPaid === true && !categoryIsPurchased(cat)) {
+            window.handlePaidCategoryClick(cat.id, Number(cat.price) || 199);
+            return;
+        }
 
-    // अगर पासवर्ड सही है या पासवर्ड नहीं लगा है, तो टेस्ट डैशबोर्ड खोल दो
-    currentCategory = catId;
+        if (cat && cat.password && cat.password.trim() !== "") {
+            let userPass = prompt(`Enter password to open "${cat.name}":`);
+            if (userPass !== cat.password) {
+                showNotification("Incorrect Password! Access Denied.");
+                return;
+            }
+            window.studentUnlockedCategories = [...new Set([...(window.studentUnlockedCategories || []), String(cat.id)])];
+        }
+
+        currentCategory = cat ? cat.id : catId;
     document.getElementById('dash-cat-title').innerText = cat ? cat.name : "Mock Tests";
     showScreen('dashboard-screen');
     renderDashboard();
     }
     function verifyCategoryPassword(catId) {
-    const cat = categories.find(c => c.id === catId);
+    const cat = categories.find(c => String(c.id) === String(catId));
     const passInput = document.getElementById(`cat-pass-${catId}`);
     const errText = document.getElementById(`cat-err-${catId}`);
     
@@ -4375,6 +5027,7 @@ function markForReview() {
     if (passInput.value.trim() === cat.password) {
         // पासवर्ड सही है, अब आगे स्क्रीन खोल दो
         errText.classList.add("hide");
+        window.studentUnlockedCategories = [...new Set([...(window.studentUnlockedCategories || []), String(cat.id)])];
         currentCategory = catId;
         document.getElementById('dash-cat-title').innerText = cat.name;
         showScreen('dashboard-screen');
@@ -4634,14 +5287,22 @@ window.signOut = async function() {
         currentStudent = "";
         window.currentStudentEmail = "";
         window.currentStudentPurchased = []; 
+        window.currentStudentAttempts = [];
+        window.studentAttemptsLoadError = false;
+        window.studentAttemptsLoading = false;
+        window.studentAttemptsSyncError = false;
+        window.studentCoursesLoading = false;
+        window.studentUnlockedCategories = [];
 
         // 1. Desktop aur Mobile dono profile boxes chhupa dein
         const loggedBox = document.getElementById('logged-in-user-box');
         const mobileLoggedBox = document.getElementById('mobile-logged-in-box');
         if(loggedBox) loggedBox.classList.add('hide');
         if(mobileLoggedBox) mobileLoggedBox.classList.add('hide');
+        document.getElementById('mobile-student-dashboard-btn')?.classList.add('hide');
         document.getElementById('login-nav-btn')?.classList.remove('hide');
         document.getElementById('mobile-login-nav-btn')?.classList.remove('hide');
+        setStudentNavigation(false);
 
         // 2. Desktop dropdown menu band karein
         const dropdownMenu = document.getElementById('profile-dropdown-menu');
@@ -5031,6 +5692,11 @@ window.toggleMoreReviews = toggleMoreReviews;
         window.toggleHomepageFreeTrialTests = toggleHomepageFreeTrialTests;
         window.openStudyMaterialHub = openStudyMaterialHub;
         window.openStudyMaterialFiles = openStudyMaterialFiles;
+        window.openStudentDashboard = openStudentDashboard;
+        window.openStudentCategories = openStudentCategories;
+        window.openAllMockTests = openAllMockTests;
+        window.backFromTestList = backFromTestList;
+        window.navigateStudentSection = navigateStudentSection;
         window.downloadNote = downloadNote;
         window.adminLogin = window.adminLogin;
         window.showScreen = showScreen;
