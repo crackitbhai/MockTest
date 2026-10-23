@@ -728,6 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+            html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
             body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
             body.homepage-theme { background-color: #0b1221; color: #e2e8f0; }
             body.portal-screen-view > #login-screen,
@@ -747,16 +748,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 content: "";
                 position: absolute;
                 inset: 0 0 auto;
-                height: 540px;
+                height: 100%;
                 z-index: -1;
                 pointer-events: none;
             }
             .homepage-hero-layout::before {
-                background: url('https://images.unsplash.com/photo-1557989048-03456d01a26e?auto=format&fit=crop&w=1800&q=85') center 42% / cover;
-                opacity: 0.38;
+                background: url('https://images.unsplash.com/photo-1557989048-03456d01a26e?auto=format&fit=crop&w=1800&q=85') center 46% / cover;
+                opacity: 0.8;
             }
             .homepage-hero-layout::after {
-                background: linear-gradient(90deg, rgba(10, 22, 31, 0.96), rgba(10, 22, 31, 0.68)), linear-gradient(0deg, #101827 0%, transparent 74%);
+                background: linear-gradient(90deg, rgba(10, 22, 31, 0.78) 0%, rgba(10, 22, 31, 0.48) 48%, rgba(10, 22, 31, 0.16) 100%), linear-gradient(0deg, #101827 0%, transparent 72%);
             }
             .homepage-feature-panel {
                 order: 2;
@@ -813,6 +814,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 font-optical-sizing: auto;
                 letter-spacing: 0;
             }
+            @media (min-width: 769px) {
+                .homepage-hero-layout {
+                    min-height: clamp(600px, calc(100vh - 170px), 740px);
+                }
+                .homepage-hero-copy {
+                    flex: 1;
+                    align-items: center;
+                    padding: 104px 24px 32px !important;
+                }
+                .homepage-hero-copy .homepage-hero-inner {
+                    padding-bottom: 0;
+                }
+            }
             .homepage-feature-panel > div:first-child > p:last-child {
                 background: rgba(255, 255, 255, 0.055);
             }
@@ -831,7 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
             body.test-workspace-view > :not(#instructions-screen):not(#tablet-terms-screen):not(#exam-screen):not(#tablet-exam-screen):not(#result-screen):not(#notification-box) {
                 display: none !important;
             }
-            .tablet-hold-option { position: relative; overflow: hidden; touch-action: none; user-select: none; }
+            .tablet-hold-option { position: relative; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
             .tablet-hold-option::before {
                 content: "";
                 position: absolute;
@@ -846,6 +860,47 @@ document.addEventListener('DOMContentLoaded', () => {
             .tablet-omr-bubble { width: 25px; height: 25px; aspect-ratio: 1; border-radius: 9999px; }
             .tablet-omr-resize-handle { height: 16px; flex: 0 0 16px; touch-action: none; cursor: ns-resize; }
             #tablet-omr-panel { height: 34vh; min-height: 150px; max-height: 75vh; }
+            #tablet-omr-panel,
+            #tablet-omr-panel * {
+                user-select: none;
+                -webkit-user-select: none;
+                -webkit-touch-callout: none;
+            }
+            @media (max-width: 640px) {
+                #tablet-exam-screen .tablet-exam-header {
+                    display: grid;
+                    grid-template-columns: minmax(0, 1fr) auto auto;
+                    gap: 6px 8px;
+                    padding: 6px 10px;
+                }
+                .tablet-exam-header > div:first-child { min-width: 0; }
+                #tablet-exam-screen .tablet-exam-header .tablet-exam-metrics {
+                    grid-column: 2;
+                    grid-row: 1;
+                    display: flex;
+                    gap: 0;
+                }
+                .tablet-exam-metrics > div { display: flex; align-items: center; gap: 4px; padding: 5px 7px; white-space: nowrap; }
+                #tablet-exam-screen .tablet-timer-label { display: inline; font-size: 8px; }
+                #tablet-exam-screen .tablet-exam-metrics > div > span:last-child { font-size: 12px; }
+                #tablet-exam-screen .tablet-exam-metrics > div { padding: 4px 6px; }
+                #tablet-exam-screen .tablet-exam-submit { grid-column: 3; grid-row: 1; padding: 4px 6px; font-size: 10px; white-space: nowrap; }
+                #tablet-question-area { padding: 8px; }
+                #tablet-question-bilingual { min-height: 0; padding: 12px; }
+                #tablet-question-area > div > p { margin-top: 4px; }
+                #tablet-omr-panel {
+                    height: clamp(122px, 21vh, 168px);
+                    min-height: 0;
+                }
+                #tablet-omr-panel > div:nth-child(2) { min-height: 34px; padding: 5px 8px; }
+                #tablet-omr-panel > div:nth-child(2) h2 { font-size: 11px; white-space: nowrap; }
+                #tablet-omr-panel > div:nth-child(2) p { display: none; }
+                .tablet-omr-stats { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 4px 8px; font-size: 8px; white-space: nowrap; }
+                .tablet-omr-stats > span { display: flex; align-items: center; gap: 2px; }
+                .tablet-omr-resize-handle { height: 10px; flex-basis: 10px; }
+                #tablet-omr-grid { gap: 4px; padding: 4px; }
+                #tablet-omr-left, #tablet-omr-right { gap: 0; }
+            }
             @media (min-width: 768px) {
                 .tablet-omr-bubble { width: 29px; height: 29px; }
             }
@@ -891,6 +946,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .palette-section.open { right: 0; }
             #mobile-palette-overlay { display: none; position: fixed; inset: 0; top: 65px; background: rgba(0,0,0,0.4); z-index: 40; }
             #mobile-palette-overlay.open { display: block; }
+        }
+
+        @media (max-width: 640px) {
+            input:not([type="checkbox"]):not([type="radio"]),
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
         }
         
         @media print { .hide-on-pdf { display: none !important; } }
@@ -1024,15 +1087,8 @@ document.addEventListener('DOMContentLoaded', () => {
     <button id="mobile-login-nav-btn" onclick="window.toggleAuthMode('login'); document.getElementById('auth-modal').classList.remove('hide'); document.getElementById('mobile-menu').classList.add('hide');" class="w-full text-left bg-[#f97316] hover:bg-[#ea580c] text-white p-3 rounded-xl text-sm font-bold">Login</button>
 </div>
 
-<!-- Mobile Menu Drawer -->
-<div id="mobile-menu" class="hide md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3 shadow-xl z-40 fixed inset-x-0 top-[65px] max-h-[calc(100vh-65px)] overflow-y-auto">   <button onclick="window.scrollToSection('study-section'); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">📚 Study Material</button>
-    <a href="https://www.youtube.com/@crackitbhai" target="_blank" class="block w-full bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">🎥 YouTube Channel</a>
-    <button onclick="document.getElementById('review-board-section').scrollIntoView({behavior: 'smooth'}); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">⭐ Student Reviews</button>
-    <button onclick="window.openScoresModal(); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-amber-600 p-3 rounded-xl text-sm font-black text-white">🏆 Toppers Leaderboard</button>
-</div>
-
     <!-- Mobile Dropdown Menu Drawer (Toppers Included Here) -->
-    <div id="mobile-menu" class="hide md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3 shadow-xl z-40 relative">
+    <div id="mobile-menu-legacy" class="hide md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3 shadow-xl z-40 relative">
         <!-- 🏆 Toppers Button Inside Mobile Menu -->
         <button onclick="window.openScoresModal(); document.getElementById('mobile-menu').classList.add('hide');" class="w-full text-left flex items-center gap-3 text-amber-400 bg-slate-800/80 hover:bg-slate-800 px-4 py-2.5 rounded-xl text-sm font-bold transition border border-amber-500/30">
             🏆 Toppers Leaderboard
@@ -1048,7 +1104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </button>
         
 
-          <div id="profile-dropdown-menu" class="hide absolute right-0 mt-2 w-40 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-1.5 z-50">
+          <div id="mobile-profile-dropdown-menu-legacy" class="hide absolute right-0 mt-2 w-40 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-1.5 z-50">
         <button onclick="window.signOut()" class="w-full text-left bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white px-3 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
             <span>Sign Out</span>
@@ -1065,7 +1121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ℹ️ About Us
         </button>
         <!-- Yeh header ke andar ya upar wahi jagah hai, bas 'hide' class laga di hai taaki bina login ke na dikhe -->
-          <div id="profile-dropdown-menu" class="hide absolute right-0 mt-2 w-40 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-1.5 z-50">
+          <div id="mobile-profile-dropdown-menu-legacy-secondary" class="hide absolute right-0 mt-2 w-40 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-1.5 z-50">
         <button onclick="window.signOut()" class="w-full text-left bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white px-3 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
             <span>Sign Out</span>
@@ -1078,7 +1134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <!-- Student Login Screen -->
  <!-- Student Login Screen -->
-    <div id="login-screen" class="w-full min-h-[calc(100vh-65px)] overflow-y-auto bg-[#101827]">
+    <div id="login-screen" class="w-full overflow-y-auto bg-[#101827]">
 
         
 
@@ -1252,6 +1308,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </div>
         </div>
+
+<section id="homepage-free-trial-section" class="homepage-content max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div class="rounded-3xl border border-orange-400/20 bg-gradient-to-br from-[#111c2e] via-[#172235] to-[#111827] p-5 shadow-xl sm:p-8">
+        <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div>
+                <span class="text-xs font-black uppercase tracking-widest text-orange-400">Start practicing today</span>
+                <h2 class="mt-1 text-2xl font-black text-white sm:text-3xl">Try Free Test</h2>
+                <p class="mt-1 text-sm text-slate-400">Choose a free mock test and start right from here.</p>
+            </div>
+        </div>
+        <div id="homepage-free-trial-list" class="grid grid-cols-1 gap-4 sm:grid-cols-2"></div>
+        <div id="homepage-free-trial-more-container" class="mt-5 hidden text-center">
+            <button id="homepage-free-trial-more-button" onclick="window.toggleHomepageFreeTrialTests()" class="rounded-xl border border-slate-600 bg-slate-800 px-5 py-2.5 text-sm font-bold text-white transition hover:border-orange-400 hover:bg-slate-700">Show More</button>
+        </div>
+    </div>
+</section>
 
 <!-- ⌨️ Special Typing Test Series Section for JOA-IT & Clerk -->
 <section class="homepage-content max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -2180,18 +2252,15 @@ Explanation: HTML stands for HyperText Markup Language.<br>
     </section>
 
     <section id="tablet-exam-screen" class="hide fixed inset-0 z-[80] flex flex-col bg-slate-100 text-slate-900">
-        <header class="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3 shadow-sm sm:px-6">
+        <header class="tablet-exam-header flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3 shadow-sm sm:px-6">
             <div class="min-w-0">
                 <p class="text-[10px] font-black uppercase tracking-wide text-orange-600">Tablet Mock Test</p>
                 <h1 id="tablet-exam-title" class="truncate text-base font-black text-slate-900 sm:text-lg">Mock Test</h1>
             </div>
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center"><span class="block text-[9px] font-bold uppercase text-slate-500">Attempted</span><span id="tablet-attempted-count" class="text-sm font-black text-emerald-700">0</span></div>
-                <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center"><span class="block text-[9px] font-bold uppercase text-slate-500">Skipped</span><span id="tablet-skipped-count" class="text-sm font-black text-slate-700">0</span></div>
-                <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center"><span class="block text-[9px] font-bold uppercase text-slate-500">Review</span><span id="tablet-review-count" class="text-sm font-black text-sky-700">0</span></div>
-                <div class="rounded-lg bg-slate-900 px-3 py-2 text-center text-white"><span class="block text-[9px] font-bold uppercase text-slate-300">Time left · HH:MM</span><span id="tablet-timer-display" class="text-sm font-black">00:00</span></div>
-                <button onclick="window.submitExam()" class="rounded-xl bg-orange-600 px-4 py-3 text-xs font-black text-white hover:bg-orange-700 sm:text-sm">Submit Test</button>
+            <div class="tablet-exam-metrics flex flex-wrap items-center gap-2 sm:gap-3">
+                <div class="rounded-lg bg-slate-900 px-3 py-2 text-center text-white"><span class="tablet-timer-label block text-[9px] font-bold uppercase text-slate-300">Time left</span><span id="tablet-timer-display" class="text-sm font-black">00:00</span></div>
             </div>
+            <button onclick="window.submitExam()" class="tablet-exam-submit rounded-xl bg-orange-600 px-4 py-3 text-xs font-black text-white hover:bg-orange-700 sm:text-sm">Submit Test</button>
         </header>
 
         <main id="tablet-question-area" class="min-h-0 flex-1 overflow-y-auto bg-slate-200 p-3 sm:p-5">
@@ -2202,15 +2271,6 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 </div>
                 <article id="tablet-question-bilingual" class="mx-auto min-h-[420px] max-w-4xl border border-slate-300 bg-white p-5 shadow-md sm:p-9"></article>
                 <p class="mx-auto mt-2 max-w-4xl text-center text-[10px] font-bold text-slate-500">Mark your answer on the OMR sheet below by holding its bubble for one second.</p>
-                <div class="mt-4 flex flex-wrap justify-between gap-2 rounded-xl border border-slate-200 bg-white p-3">
-                    <button onclick="window.previousTabletQuestion()" class="rounded-lg border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50">← Previous</button>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="window.skipTabletQuestion()" class="rounded-lg border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50">Skip</button>
-                        <button onclick="window.reviewTabletQuestion()" class="rounded-lg border border-sky-200 bg-sky-50 px-4 py-2.5 text-xs font-bold text-sky-800 hover:bg-sky-100">Mark for Review</button>
-                        <button onclick="window.clearTabletAnswer()" class="rounded-lg border border-slate-300 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50">Clear Answer</button>
-                        <button onclick="window.nextTabletQuestion()" class="rounded-lg bg-slate-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-slate-800">Next →</button>
-                    </div>
-                </div>
             </div>
         </main>
 
@@ -2220,6 +2280,11 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             </div>
             <div class="flex min-h-12 shrink-0 items-center justify-between gap-2 border-b border-pink-200 bg-[#fce7ef] px-4 py-2 sm:px-6">
                 <h2 class="text-sm font-black text-black">OMR Answer Sheet</h2>
+                <div class="tablet-omr-stats">
+                    <span>Attempted <strong id="tablet-attempted-count" class="font-black text-emerald-700">0</strong></span>
+                    <span>Not Attempted <strong id="tablet-skipped-count" class="font-black text-slate-700">0</strong></span>
+                    <span>Review <strong id="tablet-review-count" class="font-black text-sky-700">0</strong></span>
+                </div>
                 <p class="text-[10px] font-semibold text-slate-800">Hold a bubble for 1 second</p>
             </div>
             <div id="tablet-omr-grid" class="grid min-h-0 flex-1 grid-cols-2 gap-4 overflow-y-auto bg-[#fff7fa] p-2 sm:gap-6 sm:p-4">
@@ -2270,10 +2335,6 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 <div id="question-text" class="text-base md:text-xl font-semibold mb-6 text-slate-800 leading-relaxed"></div>
              <!-- मुख्य क्वेश्चन और ऑप्शन्स वाला कार्ड बॉक्स जहाँ आपने इसे लपेटा हुआ है -->
 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col max-h-[60vh] overflow-y-auto">
-    <!-- Question Number & Text -->
-    <div id="q-number-display" class="..."></div>
-    <div id="question-text" class="..."></div>
-
     <!-- Options Container (जहाँ चारों विकल्प लोड होते हैं) -->
     <div id="options-container" class="space-y-3 mt-4">
         <!-- ऑप्शन्स यहाँ डाइनैमिकली आएंगे -->
@@ -2430,6 +2491,8 @@ Explanation: HTML stands for HyperText Markup Language.<br>
         let passcodes = ["128d54ca2ac4d21cb5a7536d1b26c7d23d8c1c5a934448557a627233211516f4"];
         let isFreeTrialEnabled = true;
         let freeTrialTestIds = [1];
+        let homepageFreeTrialExpanded = false;
+        let freeTrialReturnToHome = false;
         
         let logoClickCount = 0;
         
@@ -2509,6 +2572,7 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             if(container) {
                 container.style.display = isFreeTrialEnabled ? 'block' : 'none';
             }
+            renderHomepageFreeTrialTests();
         }
 
         function toggleFreeTrialSetting() {
@@ -2528,10 +2592,11 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             }
             saveAllData();
             renderAdminDashboard();
+            renderHomepageFreeTrialTests();
             showNotification("Free Trial Access Updated!", true);
         }
 
-        function openFreeTrialHub() {
+        function setFreeTrialStudent() {
             currentStudent = "Free Trial User";
             const uName = document.getElementById("nav-user-name");
             const pName = document.getElementById("palette-name");
@@ -2544,7 +2609,11 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             if(nAvatar) nAvatar.innerText = "F";
             if(pAvatar) pAvatar.innerText = "F";
             if(pNav) pNav.classList.remove("hide");
-            
+        }
+
+        function openFreeTrialHub() {
+            freeTrialReturnToHome = false;
+            setFreeTrialStudent();
             renderFreeTrialHub();
             showScreen('freetrial-hub-screen');
         }
@@ -2583,6 +2652,61 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             } else {
                 list.innerHTML = `<p class="text-slate-500 text-sm col-span-full text-center">No free trial tests currently configured by admin.</p>`;
             }
+        }
+
+        function renderHomepageFreeTrialTests() {
+            const section = document.getElementById('homepage-free-trial-section');
+            const list = document.getElementById('homepage-free-trial-list');
+            const moreContainer = document.getElementById('homepage-free-trial-more-container');
+            const moreButton = document.getElementById('homepage-free-trial-more-button');
+            if(!section || !list) return;
+
+            section.classList.toggle('hidden', !isFreeTrialEnabled);
+            const selectedTestIds = new Set((Array.isArray(freeTrialTestIds) ? freeTrialTestIds : []).map(String));
+            const freeTests = catalog.filter(test => selectedTestIds.has(String(test.id)));
+            const initialTestCount = 4;
+            const visibleTests = homepageFreeTrialExpanded ? freeTests : freeTests.slice(0, initialTestCount);
+
+            list.innerHTML = visibleTests.map(test => {
+                const testId = inlineTestId(test.id);
+                return `
+                    <article class="flex flex-col justify-between rounded-2xl border border-slate-700 bg-slate-900/80 p-5 shadow-sm transition hover:border-orange-400/60">
+                        <div>
+                            <span class="rounded-full bg-orange-500/15 px-3 py-1 text-[10px] font-black uppercase text-orange-300">Free Test</span>
+                            <h3 class="mt-3 mb-1 text-lg font-black text-white">${test.name}</h3>
+                            <p class="mb-4 text-xs font-bold text-slate-400">📚 ${test.data.length} questions <span class="px-1">·</span> ⏱️ ${test.duration} min</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick='window.startFreeTrialTest(${testId}, "computer")' class="rounded-xl bg-slate-700 px-2 py-3 text-xs font-black text-white transition hover:bg-slate-600">Computer Test</button>
+                            <button onclick='window.startFreeTrialTest(${testId}, "tablet")' class="rounded-xl bg-orange-600 px-2 py-3 text-xs font-black text-white transition hover:bg-orange-700">Tablet Test</button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            if(freeTests.length === 0) {
+                list.innerHTML = '<p class="col-span-full py-4 text-center text-sm text-slate-400">Free tests will appear here when available.</p>';
+            }
+            if(moreContainer) moreContainer.classList.toggle('hidden', freeTests.length <= initialTestCount);
+            if(moreButton) moreButton.textContent = homepageFreeTrialExpanded ? 'Show Less' : `Show More (${freeTests.length - initialTestCount})`;
+        }
+
+        function toggleHomepageFreeTrialTests() {
+            homepageFreeTrialExpanded = !homepageFreeTrialExpanded;
+            renderHomepageFreeTrialTests();
+        }
+
+        function startFreeTrialTest(id, mode) {
+            const selectedTestIds = new Set((Array.isArray(freeTrialTestIds) ? freeTrialTestIds : []).map(String));
+            if(!isFreeTrialEnabled || !selectedTestIds.has(String(id))) {
+                showNotification('This free trial test is currently unavailable.');
+                renderHomepageFreeTrialTests();
+                return;
+            }
+            setFreeTrialStudent();
+            freeTrialReturnToHome = true;
+            if(mode === 'tablet') startTabletTest(id);
+            else showInstructions(id);
         }
 
         function openStudyMaterialHub() {
@@ -3093,8 +3217,14 @@ async function addCategory() {
         };
 
         window.onpopstate = function(event) {
-            if(currentTestMode === 'tablet' && !document.getElementById('tablet-exam-screen').classList.contains('hide')) {
-                showScreen('tablet-terms-screen', false);
+            if(document.getElementById('tablet-exam-screen') && !document.getElementById('tablet-exam-screen').classList.contains('hide')) {
+                if(confirm("Are you sure you want to leave this test? Your answers and test progress will be lost.")) {
+                    clearInterval(timerInterval);
+                    cancelTabletHold();
+                    returnFromTabletTerms();
+                } else {
+                    history.pushState({ screen: "tablet-exam-screen" }, "", "");
+                }
             } else if(currentTestMode === 'tablet' && !document.getElementById('tablet-terms-screen').classList.contains('hide')) {
                 returnFromTabletTerms();
             } else if(currentStudent && document.getElementById("exam-screen") && !document.getElementById("exam-screen").classList.contains("hide")) {
@@ -3598,8 +3728,13 @@ async function saveTestToFirebaseSeparately(testId, testData) {
 
         function returnFromTabletTerms() {
             if(currentStudent === 'Free Trial User') {
-                renderFreeTrialHub();
-                showScreen('freetrial-hub-screen', false);
+                if(freeTrialReturnToHome) {
+                    freeTrialReturnToHome = false;
+                    showScreen('login-screen', false);
+                } else {
+                    renderFreeTrialHub();
+                    showScreen('freetrial-hub-screen', false);
+                }
             } else if(currentCategory !== null && currentCategory !== undefined) {
                 showScreen('dashboard-screen', false);
                 renderDashboard();
@@ -3621,7 +3756,7 @@ async function saveTestToFirebaseSeparately(testId, testData) {
             isHindiLanguage = false;
             totalTestDurationSeconds = Number(testMeta.duration || 0) * 60;
             timeRemaining = totalTestDurationSeconds;
-            tabletOmrHeight = 34;
+            tabletOmrHeight = window.matchMedia('(max-width: 640px)').matches ? 18 : 34;
             showScreen('tablet-exam-screen');
             resizeTabletOmr(tabletOmrHeight);
             renderTabletPaper();
@@ -3720,10 +3855,10 @@ async function saveTestToFirebaseSeparately(testId, testData) {
 
         function renderTabletStats() {
             const attempted = testData.filter(question => question.selectedOption !== null && question.selectedOption !== undefined).length;
-            const skipped = testData.filter(question => question.status === 'not-answered' && (question.selectedOption === null || question.selectedOption === undefined)).length;
+            const notAttempted = testData.length - attempted;
             const review = testData.filter(question => question.status === 'review').length;
             document.getElementById('tablet-attempted-count').textContent = attempted;
-            document.getElementById('tablet-skipped-count').textContent = skipped;
+            document.getElementById('tablet-skipped-count').textContent = notAttempted;
             document.getElementById('tablet-review-count').textContent = review;
         }
 
@@ -3786,9 +3921,13 @@ async function saveTestToFirebaseSeparately(testId, testData) {
         }
 
         function resizeTabletOmr(value) {
-            tabletOmrHeight = Math.max(20, Math.min(75, Number(value) || 34));
+            tabletOmrHeight = Math.max(14, Math.min(75, Number(value) || 34));
             const panel = document.getElementById('tablet-omr-panel');
-            if(panel) panel.style.height = `${tabletOmrHeight}vh`;
+            if(panel) {
+                panel.style.height = window.matchMedia('(max-width: 640px)').matches
+                    ? `max(122px, ${tabletOmrHeight}vh)`
+                    : `${tabletOmrHeight}vh`;
+            }
         }
 
         function beginTabletOmrResize(event) {
@@ -4017,7 +4156,7 @@ function markForReview() {
                 const seconds = timeRemaining % 60;
                 const activeTimerDisplay = document.getElementById(currentTestMode === 'tablet' ? 'tablet-timer-display' : 'timer-display');
                 if(activeTimerDisplay) activeTimerDisplay.innerText = currentTestMode === 'tablet' ? formatTabletTimer(timeRemaining) : `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                if (timeRemaining <= 0) { submitExam(); }
+                if (timeRemaining <= 0) { submitExam(true); }
             }, 1000);
         }
 
@@ -4095,8 +4234,8 @@ function markForReview() {
             btns.forEach(btn => btn.style.display = 'none');
             html2pdf().from(document.getElementById('pdf-content')).save().then(() => btns.forEach(btn => btn.style.display = 'flex'));
         }
-        function submitExam() {
-            let userConfirmed = confirm("Are you sure you want to submit the exam? Once submitted, you cannot change your answers.");
+        function submitExam(isAutomatic = false) {
+            const userConfirmed = isAutomatic || confirm("Are you sure you want to submit the exam? Once submitted, you cannot change your answers.");
             
             if (!userConfirmed) {
                 return; // अगर स्टूडेंट 'Cancel' दबाएगा, तो टेस्ट बंद नहीं होगा और यहीं रुक जाएगा
@@ -4249,46 +4388,41 @@ function markForReview() {
 }
 // आपका गूगल शीट का यूआरएल
 const REVIEW_SHEET_URL = "https://script.google.com/macros/s/AKfycbwOOCyu0eaOzvFgM_R9lE-iDIqy71yIgJMXmGhwkYTFjQW1M5aPZQiAYo5msoIJDwWn/exec";
-
-// 1. वेबसाइट खुलते ही गूगल शीट से सारे रिव्यूज लोड करना
-async function loadStudentReviews() {
-    const container = document.getElementById('reviews-container');
-    if(!container) return;
-    
-    try {
-        const response = await fetch(REVIEW_SHEET_URL + "?action=reviews");
-        const data = await response.json();
-        
-        
-        if(data && data.length > 0) {
-            container.innerHTML = "";
-            data.reverse().forEach(item => {
-                // अगर रिव्यू टेक्स्ट या नाम मौजूद है तभी कार्ड दिखाएं (undefined से बचने के लिए)
-                if(item.review && item.review !== "undefined") {
-                    let stars = "⭐".repeat(parseInt(item.rating) || 5);
-                    container.innerHTML += `
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
-                            <div>
-                                <div class="text-amber-400 text-xs mb-1">${stars}</div>
-                                <p class="text-xs text-slate-700 font-medium mb-4 leading-relaxed">"${item.review}"</p>
-                            </div>
-                            <div class="flex justify-between items-center pt-3 border-t border-slate-100 text-[11px]">
-                                <span class="font-black text-slate-900">👤 ${item.name || 'Student'}</span>
-                                <span class="text-slate-400">${item.date ? new Date(item.date).toLocaleDateString() : ''}</span>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-        } else {
-            container.innerHTML = `<p class="text-xs text-slate-400 text-center col-span-full">No reviews yet. Be the first to share your experience!</p>`;
-        }
-    } catch(err) {
-        container.innerHTML = `<p class="text-xs text-rose-500 text-center col-span-full">Failed to load reviews.</p>`;
+const DEFAULT_REVIEW_FALLBACK = [
+    {
+        name: "Akshey",
+        text: "Good but bhai atleast submit button ko visible to rkho samne ? 3 bar mock kia phr se krna pda Submit button dhundna pda vo alg",
+        rating: 5,
+        date: "21 Aug 2026"
+    },
+    {
+        name: "Av Bhardwaj",
+        text: "Free main Tcs level ke mock test provide krbane ke liye thanks itna bhatkne ke baad sufficient mock test mile 🙏❤️",
+        rating: 5,
+        date: "17 Aug 2026"
+    },
+    {
+        name: "Piyush panwar",
+        text: "The quality of this mock test is absolutely outstanding. It feels very close to the actual exam pattern with well-framed and challenging questions that genuinely test your preparation. The content difficulty level, and overall quality are simply top-notch. One of the best mock tests I’ve come across highly recommended! 🔥👏",
+        rating: 5,
+        date: "17 Aug 2026"
     }
-}
+];
+
 // 2. नया रिव्यू सबमिट करना (टाइप 'review' के साथ ताकि पुराना स्कोर सिस्टम भी सेफ रहे)
-async function submitStudentReview() {
+window.openReviewModal = function() {
+    const modal = document.getElementById('reviewModal');
+    if(modal) modal.classList.remove('hidden');
+}
+
+window.closeReviewModal = function() {
+    const modal = document.getElementById('reviewModal');
+    if(modal) modal.classList.add('hidden');
+}
+
+async function submitStudentReview(event) {
+    if(event) event.preventDefault();
+
     const name = document.getElementById('review-name').value.trim();
     const rating = document.getElementById('review-rating').value;
     const review = document.getElementById('review-text').value.trim();
@@ -4308,14 +4442,31 @@ async function submitStudentReview() {
             body: JSON.stringify({ type: "review", name, review, rating })
         });
 
-        showNotification("Review submitted successfully! ✨", true);
+        const localReview = {
+            name,
+            text: review,
+            rating: Number(rating) || 5,
+            date: new Date().toLocaleDateString()
+        };
+        try {
+            const savedReviews = JSON.parse(localStorage.getItem('crackitBhaiReviews') || '[]');
+            const previousReviews = Array.isArray(savedReviews) ? savedReviews : [];
+            localStorage.setItem('crackitBhaiReviews', JSON.stringify([
+                localReview,
+                ...previousReviews.filter(item => !(item.name === name && (item.text || item.review) === review))
+            ]));
+        } catch(error) {
+            console.warn("Could not save the review in this browser.", error);
+            showNotification("Review could not be saved in this browser.", false);
+            return;
+        }
+
+        window.showAllReviewsState = true;
+        showNotification("Review saved. It will appear here on this device.", true);
+        window.closeReviewModal();
         document.getElementById('review-name').value = "";
         document.getElementById('review-text').value = "";
-        
-        // थोड़ा सा इंतज़ार करके रिव्यूज रिफ्रेश करें ताकि शीट में डेटा सेव हो जाए
-        setTimeout(() => {
-            loadStudentReviews();
-        }, 1500);
+        await loadStudentReviews();
         
     } catch(err) {
         showNotification("Failed to submit review.");
@@ -4733,14 +4884,6 @@ async function loadAdminPaidStudentsData() {
 }
 
 
-// जब एडमिन पैनल खुले, तब यह फंक्शन चल जाना चाहिए
-window.addEventListener("DOMContentLoaded", () => {
-    // अगर आप एडमिन वाले पेज पर हैं तो इसे कॉल कर दें
-    if (document.getElementById("admin-paid-students-list")) {
-        loadAdminPaidStudentsData();
-    }
-});
-
 window.showAllReviewsState = false; // Default: sirf 3 dikhenge
 
 // 1. Google Sheet + LocalStorage se reviews fetch aur render karne ka function
@@ -4756,43 +4899,50 @@ async function loadStudentReviews() {
     // Agar background fetching nahi chal rahi hai, tabhi spinner dikhao
     if(spinner && !window.isFetchingMore) spinner.classList.remove('hidden');
     
+    const normalizeReviews = rows => rows
+        .filter(item => item && (item.text || item.review))
+        .map(item => ({
+            name: String(item.name || 'Student'),
+            text: String(item.text || item.review),
+            rating: Number(item.rating) || 5,
+            date: item.date || (item.Timestamp ? new Date(item.Timestamp).toLocaleDateString() : '')
+        }));
+
+    let remoteReviews = [];
     try {
         const response = await fetch(REVIEW_SHEET_URL + "?action=reviews");
+        if(!response.ok) throw new Error(`Review service returned HTTP ${response.status}`);
         const data = await response.json();
-        
-        if(spinner) spinner.classList.add('hidden');
+        const rows = Array.isArray(data) ? data : (Array.isArray(data.reviews) ? data.reviews : []);
+        remoteReviews = normalizeReviews(rows);
+    } catch(error) {
+        console.warn("Could not load live reviews; using saved reviews instead.", error);
+    }
 
-        let allReviews = [];
-        if(data && data.length > 0) {
-            data.reverse().forEach(item => {
-                if(item.review && item.review !== "undefined") {
-                    allReviews.push({
-                        name: item.name || 'Student',
-                        text: item.text || item.review || "",
-                        rating: item.rating || 5,
-                        date: item.date ? item.date : (item.Timestamp ? new Date(item.Timestamp).toLocaleDateString() : '')
-                    });
-                }
-            });
+    let localReviews = [];
+    try {
+        const storedReviews = JSON.parse(localStorage.getItem('crackitBhaiReviews') || '[]');
+        if(Array.isArray(storedReviews)) localReviews = normalizeReviews(storedReviews);
+    } catch(error) {
+        console.warn("Could not read saved reviews.", error);
+    }
+
+    const mergedReviews = new Map();
+    [...remoteReviews, ...localReviews].forEach(review => {
+        mergedReviews.set(`${review.name}_${review.text}`.toLowerCase(), review);
+    });
+    let allReviews = Array.from(mergedReviews.values());
+    if(allReviews.length === 0) allReviews = DEFAULT_REVIEW_FALLBACK;
+
+    if(remoteReviews.length > 0) {
+        try {
+            localStorage.setItem('crackitBhaiReviews', JSON.stringify(remoteReviews));
+        } catch(error) {
+            console.warn("Could not cache live reviews in this browser.", error);
         }
+    }
 
-        // LocalStorage wale reviews bhi sath me jod lein
-        let localReviews = JSON.parse(localStorage.getItem('crackitBhaiReviews')) || [];
-        
-        let combinedMap = new Map();
-        allReviews.forEach(rev => {
-            let key = (rev.name + "_" + rev.text).toLowerCase();
-            combinedMap.set(key, rev);
-        });
-
-        localReviews.forEach(rev => {
-            let key = (rev.name + "_" + rev.text).toLowerCase();
-            if(!combinedMap.has(key)) {
-                combinedMap.set(key, rev);
-            }
-        });
-
-        allReviews = Array.from(combinedMap.values());
+    if(spinner) spinner.classList.add('hidden');
 
         if(allReviews.length === 0) {
             container.innerHTML = `<p class="text-xs text-slate-400 text-center col-span-full py-10">No reviews yet. Be the first to share your experience!</p>`;
@@ -4816,14 +4966,14 @@ async function loadStudentReviews() {
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-3">
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <h5 class="font-extrabold text-slate-900 text-xs">${item.name}</h5>
+                            <h5 class="font-extrabold text-slate-900 text-xs">${sanitizeText(item.name)}</h5>
                             <div class="text-amber-500 text-[10px]">${stars}</div>
                         </div>
-                        <p class="text-slate-700 text-xs leading-relaxed">"${item.text}"</p>
+                        <p class="text-slate-700 text-xs leading-relaxed">"${sanitizeText(item.text)}"</p>
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t border-slate-100">
                         <span class="text-[10px] text-emerald-600 font-bold">✅ Verified Student</span>
-                        <span class="text-[9px] text-slate-400">${item.date || ''}</span>
+                        <span class="text-[9px] text-slate-400">${sanitizeText(String(item.date || ''))}</span>
                     </div>
                 </div>
             `;
@@ -4840,12 +4990,6 @@ async function loadStudentReviews() {
         }
         window.isFetchingMore = false;
 
-    } catch(err) {
-        if(spinner) spinner.classList.add('hidden');
-        if(expandBtn) expandBtn.disabled = false;
-        window.isFetchingMore = false;
-        container.innerHTML = `<p class="text-xs text-rose-500 text-center col-span-full py-6">Failed to load reviews.</p>`;
-    }
 }
 
 // 2. Toggle Button Action with strict Loading -> Show Less / Show More logic
@@ -4883,6 +5027,8 @@ window.toggleMoreReviews = toggleMoreReviews;
         // Global Window bindings
         window.login = login;
         window.openFreeTrialHub = openFreeTrialHub;
+        window.startFreeTrialTest = startFreeTrialTest;
+        window.toggleHomepageFreeTrialTests = toggleHomepageFreeTrialTests;
         window.openStudyMaterialHub = openStudyMaterialHub;
         window.openStudyMaterialFiles = openStudyMaterialFiles;
         window.downloadNote = downloadNote;
