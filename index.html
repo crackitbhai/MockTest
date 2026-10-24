@@ -152,9 +152,33 @@ window.updateCategoryPricing = async function(catId) {
     }
 }
 
+window.openPaidCourseAuth = function(mode) {
+    document.getElementById('paid-course-auth-gate')?.classList.add('hide');
+    window.toggleAuthMode(mode);
+    document.getElementById('auth-modal')?.classList.remove('hide');
+};
+
+window.closePaidCourseAuthGate = function() {
+    document.getElementById('paid-course-auth-gate')?.classList.add('hide');
+};
+
 window.handlePaidCategoryClick = function(catId, price) {
     const cat = categories.find(c => String(c.id) === String(catId));
     if (!cat) return;
+
+    const hasActiveStudentSession = Boolean(
+        window.auth?.currentUser
+        && currentStudent
+        && currentStudent !== 'Free Trial User'
+        && document.getElementById('login-nav-btn')?.classList.contains('hide')
+    );
+
+    if (!hasActiveStudentSession) {
+        const message = document.getElementById('paid-course-auth-message');
+        if(message) message.textContent = `Sign in or create an account to buy ${cat.name}.`;
+        document.getElementById('paid-course-auth-gate')?.classList.remove('hide');
+        return;
+    }
 
     // 1. पहले चेक करें कि क्या यूजर ने पहले से कोर्स खरीद रखा है
     const hasPurchased = Array.isArray(window.currentStudentPurchased)
@@ -710,36 +734,46 @@ window.sendPasswordReset = async function() {
         }
     }
 
-window.loadStorageDataFromFirebase = async function() {
-    try {
-        const docRef = doc(db, "appData", "mainContent");
-        const docSnap = await getDoc(docRef);
+let storageDataLoadPromise = null;
+let hasLoadedStorageData = false;
 
-        if (docSnap.exists()) {
-            const serverData = docSnap.data();
-            categories = serverData.categories || [];
-            notesList = serverData.notes || [];
-            studyFolders = serverData.studyFolders || [];
-            passcodes = serverData.passcodes || [];
-            isFreeTrialEnabled = serverData.isFreeTrialEnabled !== undefined ? serverData.isFreeTrialEnabled : true;
-            freeTrialTestIds = serverData.freeTrialTestIds || [];
+window.loadStorageDataFromFirebase = function() {
+    if(hasLoadedStorageData) return Promise.resolve();
+    if(storageDataLoadPromise) return storageDataLoadPromise;
+
+    storageDataLoadPromise = (async () => {
+        try {
+            const [docSnap, testsSnapshot] = await Promise.all([
+                getDoc(doc(db, "appData", "mainContent")),
+                getDocs(collection(db, "tests"))
+            ]);
+
+            if (docSnap.exists()) {
+                const serverData = docSnap.data();
+                categories = serverData.categories || [];
+                notesList = serverData.notes || [];
+                studyFolders = serverData.studyFolders || [];
+                passcodes = serverData.passcodes || [];
+                isFreeTrialEnabled = serverData.isFreeTrialEnabled !== undefined ? serverData.isFreeTrialEnabled : true;
+                freeTrialTestIds = serverData.freeTrialTestIds || [];
+            }
+
+            catalog = testsSnapshot.docs.map(document => document.data());
+            hasLoadedStorageData = true;
+
+            console.log("Loaded tests from Firebase collection:", catalog.length);
+
+            if(window.renderAdminDashboard) {
+                renderAdminDashboard();
+            }
+        } catch (error) {
+            console.error("Error loading data from Firebase:", error);
+        } finally {
+            storageDataLoadPromise = null;
         }
+    })();
 
-        // 'tests' कलेक्शन से सारे टेस्ट्स खींचकर लाएं
-        catalog = [];
-        const testsSnapshot = await getDocs(collection(db, "tests"));
-        testsSnapshot.forEach((document) => {
-            catalog.push(document.data());
-        });
-
-        console.log("Loaded tests from Firebase collection:", catalog.length);
-
-        if(window.renderAdminDashboard) {
-            renderAdminDashboard(); 
-        }
-    } catch (error) {
-        console.error("Error loading data from Firebase:", error);
-    }
+    return storageDataLoadPromise;
 }
 
 
@@ -789,7 +823,19 @@ document.addEventListener('DOMContentLoaded', () => {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
-            html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+            html {
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+                scrollbar-width: thin;
+                scrollbar-color: rgba(148, 163, 184, 0.5) transparent;
+            }
+            html::-webkit-scrollbar { width: 5px; height: 5px; }
+            html::-webkit-scrollbar-track { background: transparent; }
+            html::-webkit-scrollbar-thumb {
+                background: rgba(148, 163, 184, 0.5);
+                border-radius: 999px;
+            }
+            html::-webkit-scrollbar-thumb:hover { background: rgba(203, 213, 225, 0.8); }
             body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
             body.homepage-theme { background-color: #0b1221; color: #e2e8f0; }
             body.portal-screen-view > #login-screen,
@@ -899,6 +945,32 @@ document.addEventListener('DOMContentLoaded', () => {
             .auth-modal .auth-box {
                 flex: 0 0 auto;
                 margin-block: auto;
+            }
+            @media (max-width: 640px), (max-height: 640px) {
+                .auth-modal:not(.hide) {
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 64px 16px 24px;
+                }
+                .auth-modal .auth-box {
+                    margin: 0 0 16px;
+                }
+                .auth-modal #signup-box {
+                    padding: 20px;
+                }
+                .auth-modal #signup-box .pt-1 {
+                    display: none;
+                }
+            }
+            .paid-course-auth-gate {
+                align-items: flex-start;
+                overflow-y: auto;
+                padding-block: clamp(24px, 8vh, 80px);
+                overscroll-behavior: contain;
+            }
+            .paid-course-auth-gate > div {
+                max-height: calc(100dvh - 48px);
+                overflow-y: auto;
             }
             body.free-trial-only-view > :not(#freetrial-hub-screen) {
                 display: none !important;
@@ -1015,6 +1087,66 @@ document.addEventListener('DOMContentLoaded', () => {
             textarea {
                 font-size: 16px !important;
             }
+
+            .homepage-news-strip { gap: 6px; padding: 8px 12px; }
+            .homepage-news-marquee { flex: 1 1 100%; min-width: 0; }
+            .homepage-quick-links {
+                flex: 1 1 100%;
+                width: 100%;
+                min-width: 0;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                justify-content: flex-start;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .homepage-quick-links::-webkit-scrollbar { display: none; }
+            .homepage-quick-links > * { flex: 0 0 auto; }
+            .homepage-quick-links a { font-size: 11px; }
+            .homepage-hero-copy { padding: 32px 16px 24px !important; }
+            .homepage-feature-panel { padding: 0 16px 32px !important; }
+            .homepage-track-grid.homepage-track-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+            .homepage-track-grid > a,
+            .homepage-track-grid > div { min-width: 0; min-height: 64px; padding: 10px 12px; }
+            .homepage-track-grid h4 { font-size: 12px; }
+            .homepage-track-grid p { font-size: 10px; }
+            .homepage-track-grid > a > span:last-child,
+            .homepage-track-grid > div > span:last-child { font-size: 9px; }
+            .homepage-hero-inner h1 { font-size: 30px; line-height: 1.15; }
+            .homepage-hero-inner > p { font-size: 14px; }
+        }
+
+        @media (max-width: 380px) {
+            .homepage-track-grid.homepage-track-grid { grid-template-columns: minmax(0, 1fr); }
+            .homepage-hero-inner h1 { font-size: 27px; }
+        }
+
+        @media (min-width: 381px) and (max-width: 640px) {
+            .homepage-track-grid.homepage-track-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (min-width: 768px) and (max-width: 900px) {
+            header .desktop-nav-actions { display: none !important; }
+            header .mobile-nav-toggle { display: flex !important; }
+            .mobile-menu-drawer:not(.hide) { display: block !important; }
+            .homepage-hero-layout { min-height: 0; }
+            .homepage-hero-copy { padding: 56px 24px 28px !important; }
+            .homepage-feature-panel { padding: 0 24px 32px !important; }
+        }
+
+        @media (min-width: 1440px) {
+            .homepage-content.max-w-7xl,
+            .homepage-content .max-w-7xl {
+                max-width: min(1560px, calc(100vw - 64px));
+            }
+            #review-board-section { max-width: min(1560px, calc(100vw - 64px)); }
+            .homepage-feature-panel > div:first-child,
+            .homepage-hero-copy .homepage-hero-inner {
+                max-width: min(1400px, calc(100vw - 96px));
+            }
+            .homepage-hero-inner h1 { max-width: 1040px; }
+            .homepage-hero-inner > p { max-width: 850px; }
+            .homepage-hero-inner > div:last-child { max-width: 760px; }
         }
         
         @media print { .hide-on-pdf { display: none !important; } }
@@ -1046,8 +1178,8 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <!-- Desktop Right Buttons & Profile Dropdown -->
-    <div class="hidden md:flex items-center gap-2">
-        <button data-public-nav onclick="window.scrollToSection('study-section')" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">📚 Study</button>
+    <div class="desktop-nav-actions hidden md:flex items-center gap-2">
+        <button data-public-nav onclick="window.openCoursesCatalog()" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">📚 Study</button>
         <a data-public-nav href="https://www.youtube.com/@crackitbhai" target="_blank" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">🎥 YouTube</a>
         <button data-public-nav onclick="document.getElementById('review-board-section').scrollIntoView({behavior: 'smooth'})" class="text-slate-300 hover:text-white bg-slate-800/80 px-3 py-2 rounded-xl text-xs font-bold transition border border-slate-700/60">⭐ Reviews</button>
         <a data-public-nav href="aboutus.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center gap-1.5">
@@ -1120,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 </div>  
     <!-- Mobile Hamburger Toggle -->
-    <div class="flex md:hidden items-center">
+    <div class="mobile-nav-toggle flex md:hidden items-center">
         <button onclick="document.getElementById('mobile-menu').classList.toggle('hide')" class="bg-slate-800 text-white p-2 rounded-xl border border-slate-700 cursor-pointer">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path></svg>
         </button>
@@ -1128,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </header>
 
 <!-- Mobile Menu Drawer (Fixed & Scrollable) -->
-<div id="mobile-menu" class="hide md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3 shadow-xl z-40 fixed inset-x-0 top-[65px] max-h-[calc(100vh-65px)] overflow-y-auto">
+<div id="mobile-menu" class="mobile-menu-drawer hide md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3 shadow-xl z-40 fixed inset-x-0 top-[65px] max-h-[calc(100vh-65px)] overflow-y-auto">
     
     <!-- 🌟 Mobile Menu ke andar Profile & Sign Out Box -->
     <div id="mobile-logged-in-box" class="hide bg-slate-800 border border-slate-700 p-3 rounded-2xl flex items-center justify-between">
@@ -1149,7 +1281,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </button>
     <button id="mobile-student-dashboard-btn" onclick="window.openStudentDashboard(); document.getElementById('mobile-menu').classList.add('hide');" class="hide w-full text-left bg-orange-500/10 border border-orange-500/30 p-3 rounded-xl text-sm font-bold text-orange-200">📊 My Dashboard</button>
     <button data-public-nav onclick="document.getElementById('review-board-section').scrollIntoView({behavior: 'smooth'}); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">⭐ Student Reviews</button>
-    <button data-public-nav onclick="window.scrollToSection('study-section'); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">📚 Study Material</button>
+    <button data-public-nav onclick="window.openCoursesCatalog(); document.getElementById('mobile-menu').classList.add('hide')" class="w-full text-left bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">📚 Study Material</button>
     <a data-public-nav href="https://www.youtube.com/@crackitbhai" target="_blank" class="block w-full bg-slate-800 p-3 rounded-xl text-sm font-bold text-slate-200">🎥 YouTube Channel</a>
     <a data-public-nav href="aboutus.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center gap-1.5">
     <span>ℹ️</span> About Us
@@ -1176,7 +1308,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
             
 
-        <button onclick="window.scrollToSection ? window.scrollToSection('study-section') : ''; document.getElementById('mobile-menu').classList.add('hide');" class="w-full text-left flex items-center gap-3 text-slate-200 bg-slate-800/60 hover:bg-slate-800 px-4 py-2.5 rounded-xl text-sm font-bold transition">
+        <button onclick="window.openCoursesCatalog(); document.getElementById('mobile-menu').classList.add('hide');" class="w-full text-left flex items-center gap-3 text-slate-200 bg-slate-800/60 hover:bg-slate-800 px-4 py-2.5 rounded-xl text-sm font-bold transition">
             📚 Study Material
         </button>
         
@@ -1215,11 +1347,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
 
-<div class="w-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white py-2 px-4 shadow-md my-1">
+<div class="homepage-news-strip w-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white py-2 px-4 shadow-md my-1">
     <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2 text-xs font-bold">
         
         <!-- Left Marquee / Update Text -->
-        <div class="flex items-center gap-2 overflow-hidden flex-grow">
+        <div class="homepage-news-marquee flex items-center gap-2 overflow-hidden flex-grow">
             <span class="bg-white text-orange-600 px-1.5 py-0.2 rounded text-[9px] font-black uppercase tracking-wider shrink-0 shadow-sm animate-pulse">NEW</span>
             <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white font-medium">
                 🔥 HP JOA IT & HP Constable Mock Tests Live! Upcoming: Himachal Patwari Exam Series.
@@ -1227,7 +1359,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <!-- Right Quick Links (Without Scrollbar) -->
-        <div class="flex items-center gap-1.5 text-[10px] text-white shrink-0 flex-wrap">
+        <div class="homepage-quick-links flex items-center gap-1.5 text-[10px] text-white shrink-0 flex-wrap">
             <a href="joait.html" class="bg-black/20 hover:bg-black/40 px-2 py-0.5 rounded transition cursor-pointer">📚 JOA IT</a>
             <span class="text-white/60">•</span>
             <a href="constable.html" class="bg-black/20 hover:bg-black/40 px-2 py-0.5 rounded transition cursor-pointer">👮‍♂️ Constable</a>
@@ -1292,7 +1424,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div class="mt-5 flex flex-col sm:flex-row gap-3">
-            <button onclick="window.scrollToSection('study-section')" class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-xl text-sm font-bold shadow-sm transition">Explore Study Material <span aria-hidden="true">→</span></button>
+            <button onclick="window.openCoursesCatalog()" class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-xl text-sm font-bold shadow-sm transition">Explore Study Material <span aria-hidden="true">→</span></button>
             <a href="TYPING.HTML" class="inline-flex items-center justify-center gap-2 border border-slate-600 hover:border-sky-400 hover:bg-slate-800 text-slate-100 px-5 py-3 rounded-xl text-sm font-bold transition"><span aria-hidden="true">⌨️</span> Typing Practice</a>
         </div>
 
@@ -1303,6 +1435,19 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     </div>
 </div>
+</div>
+
+<div id="paid-course-auth-gate" class="paid-course-auth-gate hide fixed inset-0 z-[70] flex justify-center bg-black/70 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="paid-course-auth-title">
+    <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-2xl sm:p-8">
+        <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-2xl" aria-hidden="true">🔐</div>
+        <h2 id="paid-course-auth-title" class="text-xl font-black">Sign in to continue</h2>
+        <p id="paid-course-auth-message" class="mt-2 text-sm leading-relaxed text-slate-600">Sign in or create an account to purchase this course.</p>
+        <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <button type="button" onclick="window.openPaidCourseAuth('login')" class="rounded-xl bg-orange-600 px-4 py-3 text-sm font-black text-white transition hover:bg-orange-700">Login</button>
+            <button type="button" onclick="window.openPaidCourseAuth('signup')" class="rounded-xl bg-slate-900 px-4 py-3 text-sm font-black text-white transition hover:bg-slate-800">Create Account</button>
+        </div>
+        <button type="button" onclick="window.closePaidCourseAuthGate()" class="mt-3 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50">Back to Courses</button>
+    </div>
 </div>
 
 <div id="auth-modal" class="auth-modal hide fixed inset-0 z-[60] flex flex-col justify-center items-center overflow-y-auto bg-black/70 backdrop-blur-sm p-4">
@@ -1400,7 +1545,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div id="homepage-free-trial-list" class="grid grid-cols-1 gap-4 sm:grid-cols-2"></div>
         <div id="homepage-free-trial-more-container" class="mt-5 hidden text-center">
-            <button id="homepage-free-trial-more-button" onclick="window.toggleHomepageFreeTrialTests()" class="rounded-xl border border-slate-600 bg-slate-800 px-5 py-2.5 text-sm font-bold text-white transition hover:border-orange-400 hover:bg-slate-700">Show More</button>
+            <button id="homepage-free-trial-more-button" onclick="window.toggleHomepageFreeTrialTests()" class="rounded-xl border border-slate-600 bg-slate-800 px-5 py-2.5 text-sm font-bold text-white transition hover:border-orange-400 hover:bg-slate-700">Explore More Free Tests</button>
         </div>
     </div>
 </section>
@@ -1611,7 +1756,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- Review Board Section (Full Width, Dark Theme Matched, Max 6 + More Review Button) -->
     <div class="homepage-content w-full px-4 sm:px-8 py-10 flex justify-center bg-[#0b1221]">
-        <div id="review-board-section" class="bg-[#0f172a] text-slate-100 p-6 sm:p-10 rounded-[2.5rem] w-full max-w-[96%] border border-slate-800 shadow-2xl space-y-8">
+        <div id="review-board-section" class="bg-[#0f172a] text-slate-100 p-6 sm:p-10 rounded-[2.5rem] w-full max-w-7xl border border-slate-800 shadow-2xl space-y-8">
             
             <!-- Section Header & Write Review Button -->
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-6">
@@ -1854,10 +1999,19 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <section id="student-overview-screen" class="hide mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:py-10">
+        <div id="student-dashboard-loader" class="hide mb-6 rounded-3xl border border-orange-200 bg-gradient-to-r from-orange-50 via-white to-sky-50 p-5 shadow-sm sm:p-6">
+            <div class="flex items-center gap-3">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-xl shadow-lg shadow-orange-500/20">⏳</div>
+                <div class="flex-1">
+                    <div class="mb-2 h-3 w-28 animate-pulse rounded-full bg-orange-200"></div>
+                    <div class="h-5 w-52 animate-pulse rounded-full bg-slate-200"></div>
+                </div>
+            </div>
+        </div>
         <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div>
                 <p class="text-xs font-black uppercase tracking-[0.18em] text-orange-600">Student workspace</p>
-                <h1 class="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">My Dashboard</h1>
+                <h1 id="student-dashboard-title" class="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">Hi Student</h1>
             </div>
             <button onclick="window.openAllMockTests()" class="rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-black text-white transition hover:bg-orange-700">All Courses →</button>
         </div>
@@ -1887,7 +2041,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </section>
 
         <div class="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-2">
-            <article id="student-profile-section" class="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+            <article id="student-profile-section" class="hide scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
                 <div class="flex items-center gap-4">
                     <div id="student-overview-avatar" class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-100 text-xl font-black text-orange-700">S</div>
                     <div class="min-w-0">
@@ -2695,7 +2849,10 @@ Explanation: HTML stands for HyperText Markup Language.<br>
                 console.error("Load error:", e);
                 showNotification("Failed to load data from server.");
             }
+            if(typeof isFreeTrialEnabled === 'undefined') isFreeTrialEnabled = true;
+            if(!Array.isArray(freeTrialTestIds)) freeTrialTestIds = [];
             renderLoginScreenTrialBtn();
+            renderHomepageFreeTrialTests();
         } 
                 localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories));
             localStorage.setItem(STORAGE_KEY_TESTS, JSON.stringify(catalog));
@@ -2752,8 +2909,8 @@ Explanation: HTML stands for HyperText Markup Language.<br>
 
         function toggleFreeTrialTest(testId) {
             testId = parseInt(testId);
-            if(freeTrialTestIds.includes(testId)) {
-                freeTrialTestIds = freeTrialTestIds.filter(id => id !== testId);
+            if(freeTrialTestIds.some(id => String(id) === String(testId))) {
+                freeTrialTestIds = freeTrialTestIds.filter(id => String(id) !== String(testId));
             } else {
                 freeTrialTestIds.push(testId);
             }
@@ -2793,12 +2950,20 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             return catalog.find(test => String(test.id) === String(id)) || null;
         }
 
+        function getUniqueCatalogTests() {
+            const testsById = new Map();
+            catalog.forEach(test => {
+                if(!testsById.has(String(test.id))) testsById.set(String(test.id), test);
+            });
+            return Array.from(testsById.values());
+        }
+
         function renderFreeTrialHub() {
             const list = document.getElementById('freetrial-list');
             if(!list) return;
             list.innerHTML = "";
             const selectedTestIds = new Set((Array.isArray(freeTrialTestIds) ? freeTrialTestIds : []).map(String));
-            const freeTests = catalog.filter(test => selectedTestIds.has(String(test.id)));
+            const freeTests = getUniqueCatalogTests().filter(test => selectedTestIds.has(String(test.id)));
             if(freeTests.length > 0) {
                 freeTests.forEach(test => {
                     const testId = inlineTestId(test.id);
@@ -2828,11 +2993,11 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             const moreButton = document.getElementById('homepage-free-trial-more-button');
             if(!section || !list) return;
 
-            section.classList.toggle('hidden', !isFreeTrialEnabled);
             const selectedTestIds = new Set((Array.isArray(freeTrialTestIds) ? freeTrialTestIds : []).map(String));
-            const freeTests = catalog.filter(test => selectedTestIds.has(String(test.id)));
-            const initialTestCount = 4;
-            const visibleTests = homepageFreeTrialExpanded ? freeTests : freeTests.slice(0, initialTestCount);
+            const freeTests = getUniqueCatalogTests().filter(test => selectedTestIds.has(String(test.id)));
+            const shouldShowSection = Boolean(isFreeTrialEnabled || freeTests.length > 0);
+            section.classList.toggle('hidden', !shouldShowSection);
+            const visibleTests = homepageFreeTrialExpanded ? freeTests : freeTests.slice(0, 2);
 
             list.innerHTML = visibleTests.map(test => {
                 const testId = inlineTestId(test.id);
@@ -2854,8 +3019,8 @@ Explanation: HTML stands for HyperText Markup Language.<br>
             if(freeTests.length === 0) {
                 list.innerHTML = '<p class="col-span-full py-4 text-center text-sm text-slate-400">Free tests will appear here when available.</p>';
             }
-            if(moreContainer) moreContainer.classList.toggle('hidden', freeTests.length <= initialTestCount);
-            if(moreButton) moreButton.textContent = homepageFreeTrialExpanded ? 'Show Less' : `Show More (${freeTests.length - initialTestCount})`;
+            if(moreContainer) moreContainer.classList.toggle('hidden', freeTests.length <= 2);
+            if(moreButton) moreButton.textContent = homepageFreeTrialExpanded ? 'Show Less' : `Explore More Free Tests (${freeTests.length - 2})`;
         }
 
         function toggleHomepageFreeTrialTests() {
@@ -3325,11 +3490,28 @@ async function addCategory() {
             document.getElementById('mobile-logged-in-box')?.classList.toggle('hide', !isStudent);
         }
 
+        window.profileSectionVisible = false;
+
+        function syncStudentProfileVisibility() {
+            const profileSection = document.getElementById('student-profile-section');
+            if(!profileSection) return;
+            profileSection.classList.toggle('hide', !window.profileSectionVisible);
+        }
+
         async function navigateStudentSection(sectionId) {
             const overview = document.getElementById('student-overview-screen');
             if(!overview || overview.classList.contains('hide')) {
                 await openStudentDashboard();
             }
+            const profileSection = document.getElementById('student-profile-section');
+            if(sectionId === 'student-profile-section') {
+                window.profileSectionVisible = true;
+                syncStudentProfileVisibility();
+                profileSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+            window.profileSectionVisible = false;
+            syncStudentProfileVisibility();
             document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -3443,12 +3625,21 @@ async function addCategory() {
         };
 
         function goHome() {
+            const loginButton = document.getElementById('login-nav-btn');
+            const hasActiveStudentSession = Boolean(
+                window.auth?.currentUser
+                && currentStudent
+                && currentStudent !== 'Student'
+                && currentStudent !== 'Free Trial User'
+                && loginButton?.classList.contains('hide')
+            );
+
             if(currentStudent && currentStudent === "Free Trial User") {
                 openFreeTrialHub();
-            } else if(window.auth?.currentUser && currentStudent) {
+            } else if(hasActiveStudentSession) {
                 showScreen("student-overview-screen");
                 renderStudentOverview();
-            } else if(currentStudent) { 
+            } else if(currentStudent && currentStudent !== 'Student') {
                 showScreen("category-screen"); 
                 renderCategories(); 
             } else {
@@ -3467,10 +3658,10 @@ function renderCategories(gridId = 'category-grid') {
         grid.innerHTML = '';
         
         const themes = [
-            { bg: "bg-gradient-to-br from-orange-50 via-amber-50 to-white", border: "border-orange-200 hover:border-orange-400", iconBg: "bg-orange-500 text-white shadow-md shadow-orange-500/20", textHover: "group-hover:text-orange-600" },
-            { bg: "bg-gradient-to-br from-sky-50 via-blue-50 to-white", border: "border-sky-200 hover:border-sky-400", iconBg: "bg-sky-500 text-white shadow-md shadow-sky-500/20", textHover: "group-hover:text-sky-600" },
-            { bg: "bg-gradient-to-br from-emerald-50 via-teal-50 to-white", border: "border-emerald-200 hover:border-emerald-400", iconBg: "bg-emerald-500 text-white shadow-md shadow-emerald-500/20", textHover: "group-hover:text-emerald-600" },
-            { bg: "bg-gradient-to-br from-purple-50 via-fuchsia-50 to-white", border: "border-purple-200 hover:border-purple-400", iconBg: "bg-purple-500 text-white shadow-md shadow-purple-500/20", textHover: "group-hover:text-purple-600" }
+            { bg: "bg-gradient-to-br from-orange-50 via-amber-50 to-white", border: "border-orange-200 hover:border-orange-400", iconBg: "bg-orange-500 text-white shadow-md shadow-orange-500/20", textHover: "group-hover:text-orange-600", background: "linear-gradient(135deg, #fff7ed 0%, #ffffff 58%, #ffedd5 100%)", borderColor: "#fdba74", iconBackground: "#f97316", iconText: "#ffffff", textColor: "#c2410c" },
+            { bg: "bg-gradient-to-br from-sky-50 via-blue-50 to-white", border: "border-sky-200 hover:border-sky-400", iconBg: "bg-sky-500 text-white shadow-md shadow-sky-500/20", textHover: "group-hover:text-sky-600", background: "linear-gradient(135deg, #eff6ff 0%, #ffffff 58%, #dbeafe 100%)", borderColor: "#7dd3fc", iconBackground: "#0ea5e9", iconText: "#ffffff", textColor: "#0f766e" },
+            { bg: "bg-gradient-to-br from-emerald-50 via-teal-50 to-white", border: "border-emerald-200 hover:border-emerald-400", iconBg: "bg-emerald-500 text-white shadow-md shadow-emerald-500/20", textHover: "group-hover:text-emerald-600", background: "linear-gradient(135deg, #ecfdf5 0%, #ffffff 58%, #d1fae5 100%)", borderColor: "#6ee7b7", iconBackground: "#10b981", iconText: "#ffffff", textColor: "#047857" },
+            { bg: "bg-gradient-to-br from-purple-50 via-fuchsia-50 to-white", border: "border-purple-200 hover:border-purple-400", iconBg: "bg-purple-500 text-white shadow-md shadow-purple-500/20", textHover: "group-hover:text-purple-600", background: "linear-gradient(135deg, #faf5ff 0%, #ffffff 58%, #f3e8ff 100%)", borderColor: "#c4b5fd", iconBackground: "#8b5cf6", iconText: "#ffffff", textColor: "#6d28d9" }
         ];
 
         categories.forEach((cat, index) => {
@@ -3497,27 +3688,27 @@ function renderCategories(gridId = 'category-grid') {
             }
 
             const badgeHtml = isLocked 
-                ? '<span class="text-xs bg-rose-100 text-rose-700 font-bold px-3.5 py-1.5 rounded-full border border-rose-200 flex items-center gap-1 shadow-2xs">Locked 🔒</span>' 
+                ? '<span class="text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1 shadow-2xs" style="background:#fff1f2; color:#be123c; border:1px solid #fecdd3;">Locked 🔒</span>' 
                 : isPaid 
                     ? isPurchased
-                        ? '<span class="text-xs bg-emerald-100 text-emerald-700 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1">Active ✓</span>'
-                        : `<span class="text-xs bg-amber-100 text-amber-800 font-extrabold px-3.5 py-1.5 rounded-full border border-amber-200 shadow-2xs flex items-center gap-1">Locked 🔒 · ₹${price}</span>`
-                    : '<span class="text-xs bg-emerald-100 text-emerald-700 font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1">Free 🚀</span>';
+                        ? '<span class="text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-2xs flex items-center gap-1" style="background:#dcfce7; color:#166534; border:1px solid #bbf7d0;">Active ✓</span>'
+                        : `<span class="text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-2xs flex items-center gap-1" style="background:#fffbeb; color:#92400e; border:1px solid #fde68a;">Locked 🔒 · ₹${price}</span>`
+                    : '<span class="text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-2xs flex items-center gap-1" style="background:#d1fae5; color:#047857; border:1px solid #a7f3d0;">Free 🚀</span>';
 
             const waMessage = encodeURIComponent(`Hello Crackit Bhai, I want to know about ${cat.name}`);
 
             grid.innerHTML += `
-                <div onclick="${cardClickAction}" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} ${isLocked ? 'opacity-60' : 'hover:-translate-y-1 hover:shadow-2xl group'} cursor-pointer transition-all duration-300 flex flex-col justify-between h-auto min-h-[16rem] relative overflow-hidden shadow-sm">
+                <div onclick="${cardClickAction}" class="${theme.bg} p-7 rounded-[2rem] border ${theme.border} ${isLocked ? 'opacity-60' : 'hover:-translate-y-1 hover:shadow-2xl group'} cursor-pointer transition-all duration-300 flex flex-col justify-between h-auto min-h-[16rem] relative overflow-hidden shadow-sm" style="background: ${theme.background}; border-color: ${theme.borderColor}; box-shadow: 0 18px 36px -22px rgba(15, 23, 42, 0.2);">
                     <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/40 rounded-full blur-xl pointer-events-none"></div>
                     
                     <div>
                         <div class="relative z-10 flex justify-between items-start mb-4">
-                            <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110">📝</div>
+                            <div class="w-14 h-14 rounded-2xl ${theme.iconBg} flex items-center justify-center font-black text-2xl transition-transform group-hover:scale-110" style="background:${theme.iconBackground}; color:${theme.iconText}; box-shadow: 0 14px 26px -16px ${theme.iconBackground};">📝</div>
                             ${badgeHtml}
                         </div>
                         
                         <div class="relative z-10">
-                            <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight">${cat.name}</h3>
+                            <h3 class="text-xl font-black text-slate-900 mb-1 ${theme.textHover} transition-colors tracking-tight" style="color:${theme.textColor};">${cat.name}</h3>
                         </div>
                     </div>
 
@@ -3534,10 +3725,10 @@ function renderCategories(gridId = 'category-grid') {
                         ` : isPaid ? `
                             <!-- 👇 Buy Now और WhatsApp Logo बटन -->
                             <div class="flex items-center gap-2" onclick="event.stopPropagation()">
-                                <button onclick="window.handlePaidCategoryClick(${cat.id}, ${price})" class="flex-1 ${isPurchased ? 'bg-slate-900 hover:bg-slate-800' : 'bg-[#f97316] hover:bg-[#ea580c]'} text-white font-black py-2.5 px-3 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5">
+                                <button onclick="window.handlePaidCategoryClick(${cat.id}, ${price})" class="flex-1 text-white font-black py-2.5 px-3 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5" style="background:${isPurchased ? '#0f172a' : '#f97316'}; color:#ffffff;">
                                     ${isPurchased ? 'Open Course' : `🛒 Buy Now (₹${price})`}
                                 </button>
-                                <a href="https://wa.me/918219256192?text=${waMessage}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl transition shadow-sm flex items-center justify-center shrink-0" title="WhatsApp Help">
+                                <a href="https://wa.me/918219256192?text=${waMessage}" target="_blank" class="text-white p-2.5 rounded-xl transition shadow-sm flex items-center justify-center shrink-0" style="background:#10b981; color:#ffffff;" title="WhatsApp Help">
                                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                                 </a>
                             </div>
@@ -3806,9 +3997,14 @@ function renderCategories(gridId = 'category-grid') {
             const nameElement = document.getElementById('student-overview-name');
             const emailElement = document.getElementById('student-overview-email');
             const avatarElement = document.getElementById('student-overview-avatar');
+            const dashboardTitleElement = document.getElementById('student-dashboard-title');
+            const loaderElement = document.getElementById('student-dashboard-loader');
             if(nameElement) nameElement.textContent = name;
             if(emailElement) emailElement.textContent = email;
             if(avatarElement) avatarElement.textContent = name.charAt(0).toUpperCase() || 'S';
+            if(dashboardTitleElement) dashboardTitleElement.textContent = `Hi ${name}`;
+            if(loaderElement) loaderElement.classList.toggle('hide', !(window.studentAttemptsLoading || window.studentCoursesLoading));
+            syncStudentProfileVisibility();
 
             const purchasedContainer = document.getElementById('student-purchased-courses');
             const purchasedCount = document.getElementById('student-purchased-course-count');
@@ -3846,7 +4042,7 @@ function renderCategories(gridId = 'category-grid') {
                     action = `<button type="button" onclick='window.openCategory(${inlineTestId(category.id)})' class="rounded-xl bg-slate-900 px-3 py-2 text-xs font-black text-white transition hover:bg-slate-700">Open tests →</button>`;
                 }
                 const card = purchased
-                    ? `<article class="flex h-full flex-col rounded-2xl border ${courseTheme.card} p-4 shadow-sm transition-shadow hover:shadow-md" style="background:${courseTheme.background}">
+                    ? `<article class="flex h-full flex-col rounded-2xl border ${courseTheme.card} p-4 shadow-sm transition-shadow hover:shadow-md" style="background:${courseTheme.background}; border-color: ${courseTheme.card.includes('orange') ? '#fdba74' : courseTheme.card.includes('sky') ? '#7dd3fc' : courseTheme.card.includes('violet') ? '#c4b5fd' : '#6ee7b7'};">
                     <div class="flex flex-wrap items-start justify-between gap-3">
                         <div class="min-w-0">
                             <h3 class="break-words text-base font-black text-slate-900">${escapeDashboardText(category.name)}</h3>
@@ -3868,7 +4064,7 @@ function renderCategories(gridId = 'category-grid') {
                     </div>
                     <div class="mt-auto flex justify-end pt-3">${action}</div>
                 </article>`
-                    : `<article class="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    : `<article class="flex h-full flex-col rounded-2xl border ${courseTheme.card} p-4 shadow-sm transition-shadow hover:shadow-md" style="background:${courseTheme.background}; border-color: ${courseTheme.card.includes('orange') ? '#fdba74' : courseTheme.card.includes('sky') ? '#7dd3fc' : courseTheme.card.includes('violet') ? '#c4b5fd' : '#6ee7b7'};">
                     <div class="flex flex-wrap items-start justify-between gap-3">
                         <div class="min-w-0">
                             <h3 class="break-words text-sm font-black text-slate-900">${escapeDashboardText(category.name)}</h3>
@@ -3889,16 +4085,16 @@ function renderCategories(gridId = 'category-grid') {
             });
             if(purchasedCount) purchasedCount.textContent = window.studentCoursesLoading ? '…' : purchasedCategories.length;
             if(purchasedContainer) purchasedContainer.innerHTML = window.studentCoursesLoading
-                ? '<p class="col-span-full rounded-2xl bg-slate-50 p-4 text-sm text-slate-500" role="status">Loading your purchased courses…</p>'
+                ? '<div class="col-span-full rounded-3xl border border-dashed border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 p-5 text-center"><div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-xl">⏳</div><p class="text-sm font-bold text-slate-700">Loading your courses…</p></div>'
                 : activeCourseCards.length
                     ? activeCourseCards.join('')
-                    : '<p class="col-span-full rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">No purchased courses yet.</p>';
+                    : '<div class="col-span-full rounded-3xl border border-dashed border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-5 text-center"><div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-xl">✨</div><p class="text-sm font-black text-slate-800">No purchased course yet</p><p class="mt-1 text-xs text-slate-600">Pick a course you love and start your prep journey.</p></div>';
             const otherCoursesContainer = document.getElementById('student-other-courses');
             if(otherCoursesContainer) otherCoursesContainer.innerHTML = window.studentCoursesLoading
-                ? '<p class="col-span-full rounded-2xl bg-slate-50 p-4 text-sm text-slate-500" role="status">Loading other courses…</p>'
+                ? '<div class="col-span-full rounded-3xl border border-dashed border-sky-200 bg-gradient-to-r from-sky-50 to-blue-50 p-5 text-center"><div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-xl">🚀</div><p class="text-sm font-bold text-slate-700">Loading available courses…</p></div>'
                 : otherCourseCards.length
                     ? otherCourseCards.join('')
-                    : '<p class="col-span-full rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">There are no other courses available right now.</p>';
+                    : '<div class="col-span-full rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-5 text-center"><div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-xl">📚</div><p class="text-sm font-black text-slate-800">No course is open right now</p><p class="mt-1 text-xs text-slate-600">Fresh students can explore the catalog and start with a free course.</p></div>';
 
             const attempts = Array.isArray(window.currentStudentAttempts) ? window.currentStudentAttempts : [];
             const attemptsContainer = document.getElementById('student-test-attempts');
@@ -3967,7 +4163,7 @@ function renderCategories(gridId = 'category-grid') {
                             <p class="shrink-0 text-sm font-black text-orange-600">Total score: ${displayedScore}</p>
                         </div>`;
                     }).join('')
-                    : `<p class="rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">${window.studentAttemptsLoading ? 'Loading recent activity…' : window.studentAttemptsLoadError ? 'Could not load your test history. Please refresh the dashboard.' : 'No completed mock tests yet.'}</p>`;
+                    : `<div class="rounded-3xl border border-dashed border-slate-200 bg-gradient-to-r from-slate-50 to-white p-5 text-center"><div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-xl">🎯</div><p class="text-sm font-black text-slate-800">No test score yet</p><p class="mt-1 text-xs text-slate-600">Start with your first mock test and your performance will appear here.</p></div>`;
             }
         }
 
@@ -3977,6 +4173,8 @@ function renderCategories(gridId = 'category-grid') {
                 return;
             }
             window.studentAttemptsLoading = true;
+            window.studentCoursesLoading = true;
+            window.profileSectionVisible = false;
             showScreen('student-overview-screen');
             renderStudentOverview();
             await loadStudentDashboardData();
@@ -3986,6 +4184,18 @@ function renderCategories(gridId = 'category-grid') {
         function openStudentCategories() {
             renderCategories();
             showScreen('category-screen');
+        }
+
+        async function openCoursesCatalog() {
+            const grid = document.getElementById('category-grid');
+            if(!grid) return;
+
+            grid.innerHTML = '<p class="col-span-full rounded-2xl bg-white p-6 text-center text-sm text-slate-500">Loading courses...</p>';
+            showScreen('category-screen');
+            if(typeof window.loadStorageDataFromFirebase === 'function') {
+                await window.loadStorageDataFromFirebase();
+            }
+            renderCategories();
         }
 
         function backFromTestList() {
@@ -4031,11 +4241,12 @@ function renderCategories(gridId = 'category-grid') {
                 }
             }
 
+            const selectedFreeTrialIds = new Set((Array.isArray(freeTrialTestIds) ? freeTrialTestIds : []).map(String));
             const trialCheckboxes = document.getElementById('admin-free-trial-checkboxes');
             if(trialCheckboxes) {
-                trialCheckboxes.innerHTML = catalog.map(t => `
+                trialCheckboxes.innerHTML = getUniqueCatalogTests().map(t => `
                     <label class="flex items-center gap-2.5 text-xs font-bold text-slate-700 cursor-pointer p-2 hover:bg-slate-100 rounded-xl transition">
-                        <input type="checkbox" value="${t.id}" ${freeTrialTestIds.includes(t.id) ? 'checked' : ''} onchange="window.toggleFreeTrialTest(${t.id})" class="w-4 h-4 accent-[#f97316]">
+                        <input type="checkbox" value="${t.id}" ${selectedFreeTrialIds.has(String(t.id)) ? 'checked' : ''} onchange="window.toggleFreeTrialTest(${t.id})" class="w-4 h-4 accent-[#f97316]">
                         <span class="truncate">${t.name}</span>
                     </label>
                 `).join('');
@@ -5690,6 +5901,7 @@ window.toggleMoreReviews = toggleMoreReviews;
         window.openFreeTrialHub = openFreeTrialHub;
         window.startFreeTrialTest = startFreeTrialTest;
         window.toggleHomepageFreeTrialTests = toggleHomepageFreeTrialTests;
+        window.openCoursesCatalog = openCoursesCatalog;
         window.openStudyMaterialHub = openStudyMaterialHub;
         window.openStudyMaterialFiles = openStudyMaterialFiles;
         window.openStudentDashboard = openStudentDashboard;
@@ -5763,6 +5975,11 @@ window.toggleMoreReviews = toggleMoreReviews;
     window.firebaseSignup = firebaseSignup;
     window.firebaseLogin = window.firebaseLogin;
     window.toggleAuthMode = toggleAuthMode;
+
+    ['paid-course-auth-gate', 'auth-modal', 'loading-modal'].forEach(id => {
+        const overlay = document.getElementById(id);
+        if(overlay) document.body.appendChild(overlay);
+    });
     </script>
 </body>
 </html>
