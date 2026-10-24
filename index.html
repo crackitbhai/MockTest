@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const viewportMeta = document.querySelector('meta[name="viewport"]');
+        const isDesktopUserAgent = !/iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+        if (viewportMeta && isDesktopUserAgent && window.screen.width <= 900) {
+            viewportMeta.setAttribute('content', 'width=980, initial-scale=1.0');
+        }
+    </script>
     <title>Crackit Bhai - Mock Test Platform</title>
    <link rel="icon" type="image/png" href="./logo.png"> 
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -836,7 +843,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 border-radius: 999px;
             }
             html::-webkit-scrollbar-thumb:hover { background: rgba(203, 213, 225, 0.8); }
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #1e293b; }
             body.homepage-theme { background-color: #0b1221; color: #e2e8f0; }
             body.portal-screen-view > #login-screen,
             body.portal-screen-view > .homepage-content { display: none !important; }
@@ -1045,8 +1052,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 from { opacity: 0; transform: translateY(14px); }
                 to { opacity: 1; transform: translateY(0); }
             }
+            @keyframes homepage-background-drift {
+                from { transform: scale(1); }
+                to { transform: scale(1.055); }
+            }
+            @keyframes homepage-card-arrive {
+                from { opacity: 0; transform: translateY(12px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes homepage-live-pulse {
+                0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.35); }
+                50% { opacity: 0.85; transform: scale(1.12); box-shadow: 0 0 0 5px rgba(251, 146, 60, 0); }
+            }
+            .homepage-hero-layout::before {
+                animation: homepage-background-drift 24s ease-in-out infinite alternate;
+                transform-origin: center 46%;
+            }
+            .homepage-live-indicator { animation: homepage-live-pulse 1.8s ease-in-out infinite; }
             .homepage-hero-inner { animation: homepage-arrive 650ms ease-out both; }
             .homepage-feature-panel > div:first-child { animation: homepage-arrive 550ms ease-out both; }
+            .homepage-track-grid > a,
+            .homepage-track-grid > div {
+                animation: homepage-card-arrive 520ms ease-out both;
+            }
+            .homepage-track-grid > :nth-child(2) { animation-delay: 80ms; }
+            .homepage-track-grid > :nth-child(3) { animation-delay: 160ms; }
+            .homepage-track-grid > :nth-child(4) { animation-delay: 240ms; }
+
+            @media (prefers-reduced-motion: reduce) {
+                .homepage-hero-layout::before,
+                .homepage-hero-inner,
+                .homepage-feature-panel > div:first-child,
+                .homepage-track-grid > a,
+                .homepage-track-grid > div,
+                .homepage-live-indicator {
+                    animation: none !important;
+                }
+            }
         
         @keyframes arrow-move {
             0%, 100% { transform: translateY(0) scale(1); opacity: 0.85; }
@@ -1260,7 +1302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </header>
 
 <!-- Mobile Menu Drawer (Fixed & Scrollable) -->
-<div id="mobile-menu" class="mobile-menu-drawer hide md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3 shadow-xl z-40 fixed inset-x-0 top-[65px] max-h-[calc(100vh-65px)] overflow-y-auto">
+<div id="mobile-menu" class="mobile-menu-drawer hide md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-3 shadow-xl z-40 fixed inset-x-0 top-[71px] max-h-[calc(100vh-71px)] overflow-y-auto">
     
     <!-- 🌟 Mobile Menu ke andar Profile & Sign Out Box -->
     <div id="mobile-logged-in-box" class="hide bg-slate-800 border border-slate-700 p-3 rounded-2xl flex items-center justify-between">
@@ -1387,7 +1429,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="homepage-hero-copy items-center">
     <div class="homepage-hero-inner w-full max-w-xl mx-auto">
         <span class="inline-flex items-center gap-2 bg-orange-500/10 text-orange-200 border border-orange-400/30 px-3.5 py-2 rounded-full text-xs font-black uppercase">
-            <span class="w-2 h-2 rounded-full bg-orange-400"></span> Himachal exam preparation
+            <span class="homepage-live-indicator inline-block w-2 h-2 rounded-full bg-orange-400"></span> Himachal exam preparation
         </span>
         <h1 class="mt-5 text-3xl sm:text-4xl font-black leading-tight text-white">Himachal exam prep, <span class="text-orange-400">all in one place.</span></h1>
         <p class="mt-3 text-sm sm:text-base leading-relaxed text-slate-300">Mock tests, study material, and typing practice for JOA IT, HP Constable, TGT Arts, and Patwari exams.</p>
