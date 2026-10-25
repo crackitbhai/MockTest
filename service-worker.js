@@ -1,10 +1,12 @@
-const CACHE_NAME = 'crackit-bhai-app-v2';
+const CACHE_NAME = 'crackit-bhai-app-v4';
 const APP_SHELL = [
     './index.html',
     './manifest.webmanifest',
+    './favicon.ico',
     './app-icon.svg',
     './app-icon-192.png',
-    './app-icon-512.png'
+    './app-icon-512.png',
+    './patwari-practice.svg'
 ];
 
 self.addEventListener('install', event => {
