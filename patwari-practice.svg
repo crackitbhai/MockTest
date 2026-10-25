@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">Himachal Patwari in a government office</title>
+  <desc id="desc">Illustration of a Himachal Patwari wearing a traditional green and maroon Himachali cap, seated at an office desk with files and mountain views.</desc>
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#203653"/>
+      <stop offset="1" stop-color="#101a2a"/>
+    </linearGradient>
+    <linearGradient id="window" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#91c5d5"/>
+      <stop offset="1" stop-color="#e3c99b"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9b6039"/>
+      <stop offset="1" stop-color="#573923"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="560" rx="28" fill="url(#wall)"/>
+  <circle cx="820" cy="88" r="38" fill="#f6bd72"/>
+
+  <g>
+    <rect x="38" y="42" width="274" height="260" rx="16" fill="#0b1221" stroke="#52657a" stroke-width="10"/>
+    <rect x="52" y="56" width="246" height="232" rx="8" fill="url(#window)"/>
+    <path d="M52 221 115 143l44 50 57-91 82 104v82H52Z" fill="#55758a"/>
+    <path d="m115 143 22 28-26-8-19 14Zm101-41 32 45-28-13-23 12Z" fill="#f3eee3"/>
+    <path d="M52 246 127 187l51 47 53-41 67 58v37H52Z" fill="#334e5e"/>
+    <path d="M174 57v230M52 172h246" stroke="#334155" stroke-width="8"/>
+  </g>
+
+  <g>
+    <rect x="651" y="48" width="264" height="203" rx="14" fill="#17243a" stroke="#64748b" stroke-width="3"/>
+    <rect x="670" y="66" width="226" height="164" rx="8" fill="#263a53"/>
+    <text x="783" y="101" fill="#fdba74" font-family="Arial,sans-serif" font-size="17" font-weight="700" text-anchor="middle" letter-spacing="2">HIMACHAL PRADESH</text>
+    <path d="m714 185 42-50 27 31 32-44 55 63Z" fill="#8aa6b5"/>
+    <path d="m756 135 14 17-17-5-10 8Zm59-13 13 18-16-7-10 8Z" fill="#f8fafc"/>
+    <path d="M770 210h82" stroke="#fb923c" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <ellipse cx="495" cy="477" rx="222" ry="30" fill="#080e19" opacity=".55"/>
+  <path d="M350 276h300v190H350z" fill="#1b2638"/>
+  <path d="M367 291h266v162H367z" fill="#28364a"/>
+  <path d="M389 446h222v82H389z" fill="#111a28"/>
+  <path d="M407 514h18v35h-18zm168 0h18v35h-18z" fill="#09111d"/>
+
+  <g>
+    <path d="M421 362c0-48 34-78 76-78s76 30 76 78v79H421Z" fill="#d9e3e3"/>
+    <path d="M440 361c18 21 39 31 57 31s39-10 57-31l16 80H424Z" fill="#f1eee2"/>
+    <path d="M478 354h38l-7 24-12 10-12-10Z" fill="#dc8d58"/>
+    <path d="M469 363h55l-27 44Z" fill="#334e68"/>
+    <path d="M484 385h25l-12 22Z" fill="#fb923c"/>
+    <path d="M448 402c-17 10-34 20-51 37l18 26 54-32m72-31c17 10 34 20 51 37l-18 26-54-32" fill="#d9e3e3"/>
+    <path d="M409 435c-10 7-18 18-13 27 5 9 17 8 28 0l24-18-16-19Zm172 0c10 7 18 18 13 27-5 9-17 8-28 0l-24-18 16-19Z" fill="#c87d4e"/>
+  </g>
+
+  <g>
+    <path d="M460 244c0-43 23-72 53-72s53 29 53 72v29c0 35-24 59-53 59s-53-24-53-59Z" fill="#c98254"/>
+    <path d="M468 237c10-24 32-37 55-37 15 0 30 5 40 16v-9c0-32-20-55-50-55-31 0-51 24-51 57v28Z" fill="#2d211c"/>
+    <path d="M456 186c4-44 30-69 67-69 35 0 60 23 65 68-25-13-47-21-70-21-21 0-41 7-62 22Z" fill="#743b37"/>
+    <path d="M456 180c23-16 43-24 64-24 23 0 45 8 68 23l-1 20c-24-15-45-22-67-22-21 0-41 7-63 22Z" fill="#2f735b"/>
+    <path d="M456 189c25-16 44-23 64-23 22 0 44 7 68 22v14c-25-14-46-20-68-20-20 0-40 7-64 21Z" fill="#c6453d"/>
+    <path d="M476 250c6-4 13-4 19 0m28 0c6-4 13-4 19 0" fill="none" stroke="#442c28" stroke-width="4" stroke-linecap="round"/>
+    <path d="M496 270c7 6 16 6 23 0" fill="none" stroke="#754334" stroke-width="4" stroke-linecap="round"/>
+    <path d="M513 254v12" stroke="#a45e3e" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <path d="M0 456h960v104H0z" fill="url(#wood)"/>
+  <path d="M0 456h960v15H0z" fill="#c08552"/>
+  <path d="M158 401h94v54h-94z" fill="#f3e5c5"/>
+  <path d="M169 389h94v55h-94z" fill="#c88b45"/>
+  <path d="M179 378h94v57h-94z" fill="#e2bc78"/>
+  <path d="M175 395h57m-45 14h62m-50 14h53" stroke="#765436" stroke-width="3" opacity=".7"/>
+  <g transform="translate(700 365)">
+    <path d="M0 18h89v72H0z" fill="#f1e9d4"/>
+    <path d="M11 0h89v72H11z" fill="#e4d6b6"/>
+    <path d="M22 16h57m-57 13h57m-57 13h43" stroke="#8a7351" stroke-width="3" opacity=".7"/>
+    <path d="M75 0h25v9H75z" fill="#f97316"/>
+  </g>
+  <rect x="308" y="477" width="154" height="47" rx="10" fill="#18263a" stroke="#e4a762" stroke-width="2"/>
+  <text x="385" y="507" fill="#fff7ed" font-family="Arial,sans-serif" font-size="19" font-weight="700" text-anchor="middle" letter-spacing="2">PATWARI</text>
+</svg>
