@@ -12,7 +12,8 @@
     <meta property="og:description" content="हिन्दी और English में HP Patwari subjects, chapters और practice guidance. Bilingual subject and chapter navigation for HP Patwari practice.">
     <meta property="og:url" content="https://crackitbhai.in/patwari-mcq.html">
     <link rel="canonical" href="https://crackitbhai.in/patwari-mcq.html">
-    <link rel="icon" type="image/svg+xml" href="./app-icon.svg">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/svg+xml" href="/app-icon.svg">
     <title>HP Patwari MCQ Practice in Hindi and English | Crackit Bhai</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="application/ld+json">
@@ -37,14 +38,25 @@
         .quiz-option.incorrect { border-color: #fb7185; background: rgba(244,63,94,.1); color: #ffe4e6; }
         #subject-list[hidden] { display: none; }
         .english-label { display: block; margin-top: .2rem; font-size: .85em; font-weight: 500; color: #94a3b8; }
-        html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+        .brand-mark { animation: brand-glow 3s ease-in-out infinite; }
+        .hero-art { animation: hero-float 6s ease-in-out infinite; filter: drop-shadow(0 24px 35px rgba(2, 6, 23, .45)); }
+        .practice-cta { animation: cta-glow 2.4s ease-in-out infinite; }
+        @keyframes brand-glow { 50% { box-shadow: 0 0 24px rgba(249, 115, 22, .5); transform: translateY(-2px); } }
+        @keyframes hero-float { 50% { transform: translateY(-10px) rotate(.5deg); } }
+        @keyframes cta-glow { 50% { box-shadow: 0 0 24px rgba(249, 115, 22, .25); } }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .brand-mark, .hero-art, .practice-cta { animation: none; }
+        }
     </style>
 </head>
 <body class="min-h-screen antialiased">
     <header class="sticky top-0 z-50 border-b border-slate-800 bg-[#0f172a]/95 px-4 py-3 backdrop-blur">
         <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
-            <a href="./index.html" class="text-lg font-black tracking-wide text-white">CRACKIT <span class="text-orange-500">BHAI</span></a>
+            <a href="./index.html" class="flex items-center gap-2 text-lg font-black tracking-wide text-white">
+                <img src="./app-icon.svg" alt="" class="brand-mark h-9 w-9 rounded-xl">
+                CRACKIT <span class="text-orange-500">BHAI</span>
+            </a>
             <nav aria-label="मुख्य नेविगेशन / Main navigation" class="flex flex-wrap gap-2 text-xs font-bold">
                 <a href="./patwari.html" class="rounded-lg bg-slate-800 px-3 py-2 text-slate-200 hover:text-white">Complete syllabus</a>
                 <a href="./index.html" class="rounded-lg bg-slate-800 px-3 py-2 text-slate-200 hover:text-white">Home</a>
@@ -53,13 +65,30 @@
     </header>
 
     <main>
-        <section class="border-b border-slate-800 bg-gradient-to-b from-slate-800/70 to-[#0b1221] px-4 py-12 sm:py-16">
-            <div class="mx-auto max-w-5xl">
+        <section class="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-800/70 to-[#0b1221] px-4 py-12 sm:py-16">
+            <div class="pointer-events-none absolute -right-24 -top-20 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" aria-hidden="true"></div>
+            <div class="relative mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[1.08fr_.92fr] lg:gap-12">
+              <div class="relative z-10">
                 <a href="./patwari.html" class="text-sm font-bold text-orange-300 hover:text-orange-200">← Complete HP Patwari syllabus</a>
                 <p class="mt-6 inline-flex rounded-full border border-orange-400/30 bg-orange-500/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-orange-200">मौलिक अभ्यास प्रश्न<span class="english-label text-orange-200">Original practice questions</span></p>
                 <h1 class="mt-4 text-3xl font-black leading-tight text-white sm:text-5xl">HP Patwari MCQ अभ्यास<span class="english-label text-base sm:text-lg">HP Patwari MCQ Practice</span></h1>
                 <p class="mt-4 max-w-3xl text-base leading-relaxed text-slate-300">पहले विषय चुनें, फिर पाठ्यक्रम का अध्याय। उपलब्ध मिश्रित अभ्यास सेट में उत्तर, व्याख्या और अपना स्कोर देखें।<span class="english-label">Choose a subject, then a syllabus chapter. Try the available mixed practice set to see answers, explanations and your score.</span></p>
                 <p class="mt-4 max-w-3xl rounded-xl border border-amber-400/25 bg-amber-500/10 p-4 text-sm leading-relaxed text-amber-100">दी गई HPRCA syllabus PDF में अध्यायवार प्रश्नों की संख्या या अंक नहीं बताए गए हैं। नीचे दिए सवाल अभ्यास के लिए हैं; आधिकारिक परीक्षा-पैटर्न के लिए नवीनतम notification देखें।<span class="english-label text-amber-100">The supplied HPRCA syllabus PDF does not specify chapter-wise question counts or marks. These questions are for practice; check the latest official notification for the exam pattern.</span></p>
+                <a href="#practice" class="practice-cta mt-6 inline-flex items-center gap-2 rounded-xl bg-orange-600 px-5 py-3 text-sm font-black text-white shadow-lg transition hover:bg-orange-500">
+                    <span aria-hidden="true">✍️</span> अभ्यास शुरू करें / Start Practice
+                    <span aria-hidden="true">↓</span>
+                </a>
+              </div>
+              <div class="relative mx-auto w-full max-w-xl">
+                <div class="absolute -inset-4 rounded-[2rem] bg-orange-500/10 blur-2xl" aria-hidden="true"></div>
+                <div class="hero-art relative overflow-hidden rounded-[1.6rem] border border-slate-700/80 bg-slate-900/60 p-2 shadow-2xl">
+                    <img src="./patwari-practice.svg" alt="HP Patwari syllabus checklist and study guide illustration" class="w-full rounded-2xl">
+                    <div class="absolute right-5 top-5 rounded-2xl border border-white/10 bg-slate-950/85 px-4 py-3 shadow-xl backdrop-blur">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-orange-300">Practice mode</p>
+                        <p class="mt-1 text-sm font-black text-white">Choose · Solve · Improve</p>
+                    </div>
+                </div>
+              </div>
             </div>
         </section>
 
